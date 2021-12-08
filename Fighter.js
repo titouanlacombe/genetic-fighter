@@ -40,9 +40,9 @@ class Fighter extends GameObject
 	}
 
 	// Simulate the object
-	simulate(dt)
+	simulate()
 	{
-		if (this.controller) { this.controller.control(); }
+		if (this.controller) { this.controller.control(this); }
 		
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Fighter.vel_friction));

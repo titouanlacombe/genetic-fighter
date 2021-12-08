@@ -18,6 +18,7 @@ function init()
 	objects.push(player);
 }
 
+// User input handeling
 document.addEventListener('keydown', (e) => {
 	player.controller.input(e.code, true);
 });
