@@ -17,7 +17,7 @@ class Bullet extends GameObject
 		// Draw the body
 		ctx.beginPath();
 		ctx.arc(0, 0, Bullet.bulletSize, 0, 2 * Math.PI);
-		ctx.fillStyle = this.color;
+		ctx.fillStyle = "white";
 		ctx.fill();
 	}
 	

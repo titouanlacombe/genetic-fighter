@@ -20,6 +20,13 @@ class Vector2
 		return new Vector2(this.x, this.y);
 	}
 
+	rotate(angle) {
+		let cs = Math.cos(angle);
+		let sn = Math.sin(angle);
+		this.x = this.x * cs - this.y * sn;
+		this.y = this.x * sn + this.y * cs;
+	}
+
 	add(v) {
 		this.x += v.x;
 		this.y += v.y;

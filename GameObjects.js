@@ -57,8 +57,8 @@ class GameObject
 		this.frc.set();
 
 		// Rotation
-		this.rotvel = this.rotfrc * dt;
-		this.rot = this.rotvel * dt;
+		this.rotvel += this.rotfrc * dt;
+		this.rot += this.rotvel * dt;
 		this.rotfrc = 0;
 	}
 }

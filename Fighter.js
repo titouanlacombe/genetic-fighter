@@ -2,8 +2,11 @@
 class Fighter extends GameObject
 {
 	static fighterSize = 7;
-	static rot_command_authority = 1;
-	static thrust_command_authority = 1;
+	static fire_vel = 5;
+	static vel_friction = 0.02;
+	static rotvel_friction = 0.1;
+	static rot_command_authority = 0.03;
+	static thrust_command_authority = 0.15;
 
 	constructor()
 	{
@@ -21,8 +24,10 @@ class Fighter extends GameObject
 	{
 		let bullet = new Bullet(this.pos, this.vel);
 
-		// Compute rotation
-		bullet.vel.add(0, 0);
+		// Compute cannon rotation
+		let added_vel = new Vector2(0, Fighter.fire_vel);
+		added_vel.rotate(this.rot);
+		bullet.vel.add(added_vel);
 
 		objects.push(bullet);
 	}
@@ -48,13 +53,22 @@ class Fighter extends GameObject
 	// Simulate the object
 	simulate(dt)
 	{
+		// Vel friction
+		this.frc.add(this.vel.clone().mul(-Fighter.vel_friction));
+		
+		// Rotate friction
+		this.rotfrc += this.rotvel * -Fighter.rotvel_friction;
+
+		// Thrust
+		let thrustForce = new Vector2(0, -this.thrust_level);
+		thrustForce.rotate(this.rot);
+		this.frc.add(thrustForce);
 	}
 
 	command_thrust(level)
 	{
 		if (level < 0) { level = 0; }
 		if (level > 1) { level = 1; }
-		
 		this.thrust_level = level * Fighter.thrust_command_authority;
 	}
 
@@ -62,7 +76,6 @@ class Fighter extends GameObject
 	{
 		if (level < -1) { level = -1; }
 		if (level > 1) { level = 1; }
-		
 		this.rotfrc = level * Fighter.rot_command_authority;
 	}
 
@@ -75,10 +88,10 @@ class Fighter extends GameObject
 			this.fire();
 		}
 		else if (code == "q") {
-			this.command_rotation(1);
+			this.command_rotation(-1);
 		}
 		else if (code == "d") {
-			this.command_rotation(-1);
+			this.command_rotation(1);
 		}
 	}
 }
