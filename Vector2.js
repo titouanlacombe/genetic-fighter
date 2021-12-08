@@ -1,3 +1,4 @@
+// 2D Vector class
 class Vector2
 {
 	constructor(x, y) {
@@ -38,6 +39,7 @@ class Vector2
 	}
 }
 
+// Return a new vector wich is the distance between 2 vectors
 function dist(v1, v2) {
 	let d = v1.clone();
 	return d.sub(v2);

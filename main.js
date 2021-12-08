@@ -1,20 +1,19 @@
-let fastMode = false;
-let width, height;
+let fastMode = false; // If fast mode is active launch a loop that only simulate
+let width, height; // Dimentions of the canvas
 
+// Wait for the window to be fully loaded before launching the game
 window.requestAnimationFrame(_init);
 
+// Init and launch the loop
 function _init()
 {
 	init();
 
-	if (fastMode) {
-		computeLoop();
-	}
-	else {
-		interactiveLoop();
-	}
+	if (fastMode) { computeLoop(); }
+	else { interactiveLoop(); }
 }
 
+// 
 function interactiveLoop()
 {
 	simulate();
@@ -25,6 +24,7 @@ function interactiveLoop()
 	}
 }
 
+// 
 function computeLoop()
 {
 	while (running) {
@@ -33,7 +33,8 @@ function computeLoop()
 }
 
 // Callback to update the canvas size
-window.addEventListener('resize', () => {
+window.addEventListener('resize', () =>
+{
 	let canvas = document.getElementById('canvas');
 
 	// Update the canvas size
