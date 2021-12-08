@@ -14,6 +14,7 @@ function init()
 	}
 	
 	player = new Fighter();
+	player.color = "#9a39a3";
 	player.controller = new PlayerController(player);
 	objects.push(player);
 
