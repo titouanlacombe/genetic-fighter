@@ -14,12 +14,13 @@ function init()
 	}
 	
 	player = new Fighter();
+	player.controller = new PlayerController(player);
 	objects.push(player);
 }
 
 document.addEventListener('keypress', (e) => {
 	// console.log(e.key);
-	player.command_player(e.key);
+	player.controller.input(e.key);
 });
 
 // Draw the new frame

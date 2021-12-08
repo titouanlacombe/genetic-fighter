@@ -54,6 +54,13 @@ class Vector2
 	norm() {
 		return Math.sqrt(this.x * this.x + this.y * this.y);
 	}
+
+	draw(ctx) {
+		ctx.beginPath();
+		ctx.moveTo(0, 0);
+		ctx.lineTo(this.x, this.y);
+		ctx.stroke();
+	}
 }
 
 // Return a new vector wich is the distance between 2 vectors

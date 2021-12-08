@@ -17,19 +17,8 @@ class Fighter extends GameObject
 
 		this.color = "white";
 		this.thrust_level = 0;
-	}
 
-	// Spawn a bullet
-	fire()
-	{
-		let bullet = new Bullet(this.pos, this.vel);
-
-		// Compute cannon rotation
-		let added_vel = new Vector2(0, Fighter.fire_vel);
-		added_vel.rotate(this.rot);
-		bullet.vel.add(added_vel);
-
-		objects.push(bullet);
+		this.controller = null;
 	}
 
 	// Draw the object
@@ -48,11 +37,17 @@ class Fighter extends GameObject
 		ctx.strokeStyle = this.color;
 		ctx.lineWidth = 3;
 		ctx.stroke();
+
+		ctx.strokeStyle = "red";
+		ctx.lineWidth = 3;
+		this.vel.clone().mul(2).draw(ctx);
 	}
 
 	// Simulate the object
 	simulate(dt)
 	{
+		if (this.controller) { this.controller.control(); }
+		
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Fighter.vel_friction));
 		
@@ -63,8 +58,16 @@ class Fighter extends GameObject
 		let thrustForce = new Vector2(0, -this.thrust_level);
 		thrustForce.rotate(this.rot);
 		this.frc.add(thrustForce);
+
+		// Collisions
+		if (this.pos.x < 0) { this.pos.x = 0; }
+		else if (this.pos.x > width) { this.pos.x = width; }
+		if (this.pos.y < 0) { this.pos.y = 0; }
+		else if (this.pos.y > height) { this.pos.y = height; }
 	}
 
+	// Functions for controller
+	// Anti cheat functions
 	command_thrust(level)
 	{
 		if (level < 0) { level = 0; }
@@ -72,6 +75,7 @@ class Fighter extends GameObject
 		this.thrust_level = level * Fighter.thrust_command_authority;
 	}
 
+	// Anti cheat functions
 	command_rotation(level)
 	{
 		if (level < -1) { level = -1; }
@@ -79,19 +83,16 @@ class Fighter extends GameObject
 		this.rotfrc = level * Fighter.rot_command_authority;
 	}
 
-	command_player(code)
+	// Spawn a bullet
+	fire()
 	{
-		if (code == "z") {
-			this.command_thrust(1);
-		}
-		else if (code == "s") {
-			this.fire();
-		}
-		else if (code == "q") {
-			this.command_rotation(-1);
-		}
-		else if (code == "d") {
-			this.command_rotation(1);
-		}
+		let bullet = new Bullet(this.pos, this.vel);
+
+		// Compute cannon rotation
+		let added_vel = new Vector2(0, Fighter.fire_vel);
+		added_vel.rotate(this.rot);
+		bullet.vel.add(added_vel);
+
+		objects.push(bullet);
 	}
 }
