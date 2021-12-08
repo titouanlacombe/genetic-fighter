@@ -54,6 +54,13 @@ function simulate()
 		object._simulate(dt);
 	});
 
+	// Remove objects when dead
+	objects.forEach((object, index, array) => {
+		if (!object.alive) {
+			array.splice(index, 1);
+		}
+	});
+
 	// console.log(frame);
 	frame++;
 }

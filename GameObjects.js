@@ -10,6 +10,9 @@ class GameObject
 		this.rot = 0;
 		this.rotvel = 0;
 		this.rotfrc = 0;
+
+		this.radius = 0;
+		this.alive = true;
 	}
 	
 	_simulate(dt)
