@@ -43,6 +43,7 @@ function draw()
 		object._draw(ctx);
 	});
 
+	ctx.restore();
 	// running = false;
 }
 

@@ -23,8 +23,9 @@ class Vector2
 	rotate(angle) {
 		let cs = Math.cos(angle);
 		let sn = Math.sin(angle);
+		let tempX = this.x;
 		this.x = this.x * cs - this.y * sn;
-		this.y = this.x * sn + this.y * cs;
+		this.y = tempX * sn + this.y * cs;
 	}
 
 	add(v) {
@@ -53,6 +54,10 @@ class Vector2
 
 	norm() {
 		return Math.sqrt(this.x * this.x + this.y * this.y);
+	}
+
+	normalize(norm = 1) {
+		this.mul(norm / this.norm());
 	}
 
 	draw(ctx) {
