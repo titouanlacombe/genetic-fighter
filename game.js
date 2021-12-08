@@ -18,9 +18,12 @@ function init()
 	objects.push(player);
 }
 
-document.addEventListener('keypress', (e) => {
-	// console.log(e.key);
-	player.controller.input(e.key);
+document.addEventListener('keydown', (e) => {
+	player.controller.input(e.code, true);
+});
+
+document.addEventListener('keyup', (e) => {
+	player.controller.input(e.code, false);
 });
 
 // Draw the new frame

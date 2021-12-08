@@ -5,8 +5,8 @@ class Fighter extends GameObject
 	static fire_vel = 5;
 	static vel_friction = 0.02;
 	static rotvel_friction = 0.1;
-	static rot_command_authority = 0.03;
-	static thrust_command_authority = 0.15;
+	static rot_command_authority = 0.01;
+	static thrust_command_authority = 0.10;
 
 	constructor()
 	{
@@ -37,10 +37,6 @@ class Fighter extends GameObject
 		ctx.strokeStyle = this.color;
 		ctx.lineWidth = 3;
 		ctx.stroke();
-
-		ctx.strokeStyle = "red";
-		ctx.lineWidth = 3;
-		this.vel.clone().mul(2).draw(ctx);
 	}
 
 	// Simulate the object
