@@ -1,0 +1,5 @@
+make 1v1
+make small AI
+make 2v many
+improve game
+begin modeling evolution simmulation (if fastMode => call evolution)
