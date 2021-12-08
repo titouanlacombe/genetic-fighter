@@ -5,7 +5,7 @@ class Fighter extends GameObject
 	static vel_friction = 0.05;
 	static rotvel_friction = 0.1;
 	static rot_command_authority = 0.01;
-	static thrust_command_authority = 0.10;
+	static thrust_command_authority = 0.20;
 	static fuel_consumption = 0.2;
 
 	constructor()
@@ -118,7 +118,7 @@ class Fighter extends GameObject
 			thrustForce.rotate(this.rot);
 			this.frc.add(thrustForce);
 	
-			this.fuel -= level * Fighter.fuel_consumption * dt;
+			// this.fuel -= level * Fighter.fuel_consumption * dt;
 		}
 	}
 
@@ -138,6 +138,7 @@ class Fighter extends GameObject
 		// console.log(this.munitions);
 		
 		if (this.munitions > 0) {
+			// 	this.munitions--;
 			let bullet = new Bullet(this.pos, this.vel);
 	
 			// Added position
@@ -150,10 +151,7 @@ class Fighter extends GameObject
 			added_vel.rotate(this.rot);
 			bullet.vel.add(added_vel);
 	
-	
 			objects.push(bullet);
-
-			// 	this.munitions--;
 		}
 	}
 }

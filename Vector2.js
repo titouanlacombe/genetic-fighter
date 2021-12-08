@@ -23,7 +23,7 @@ class Vector2
 	rotate(angle) {
 		let cs = Math.cos(angle);
 		let sn = Math.sin(angle);
-		let tempX = this.x;
+		let tempX = this.x; // Very important
 		this.x = this.x * cs - this.y * sn;
 		this.y = tempX * sn + this.y * cs;
 	}

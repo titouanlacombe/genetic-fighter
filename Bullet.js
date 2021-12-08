@@ -2,7 +2,7 @@
 class Bullet extends GameObject
 {
 	static vel_friction = 0.01;
-	
+
     constructor(pos, vel)
     {
         super();
@@ -28,5 +28,10 @@ class Bullet extends GameObject
 	{
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Bullet.vel_friction));
+
+		// Kill if vel to low
+		if (this.vel.norm() < 1) {
+			this.alive = false;
+		}
 	}
 }
