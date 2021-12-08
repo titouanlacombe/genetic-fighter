@@ -16,16 +16,16 @@ function init()
 	player = new Fighter();
 	player.controller = new PlayerController(player);
 	objects.push(player);
+
+	// User input handeling
+	document.addEventListener('keydown', (e) => {
+		player.controller.input(e.code, true);
+	});
+
+	document.addEventListener('keyup', (e) => {
+		player.controller.input(e.code, false);
+	});
 }
-
-// User input handeling
-document.addEventListener('keydown', (e) => {
-	player.controller.input(e.code, true);
-});
-
-document.addEventListener('keyup', (e) => {
-	player.controller.input(e.code, false);
-});
 
 // Draw the new frame
 function draw()

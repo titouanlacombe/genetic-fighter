@@ -15,7 +15,7 @@ class GameObject
 	_simulate(dt)
 	{
 		this.euler(dt);
-		this.simulate();
+		this.simulate(dt);
 	}
 	
 	simulate()
