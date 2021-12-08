@@ -7,8 +7,9 @@ window.requestAnimationFrame(_init);
 // Init and launch the loop
 function _init()
 {
+	update_canvas_size();
 	init();
-
+	
 	if (fastMode) { computeLoop(); }
 	else { interactiveLoop(); }
 }
@@ -33,16 +34,18 @@ function computeLoop()
 }
 
 // Callback to update the canvas size
-window.addEventListener('resize', () =>
+function update_canvas_size()
 {
 	let canvas = document.getElementById('canvas');
 
 	// Update the canvas size
-	canvas.width = canvas.parentElement.width;
-	canvas.height = canvas.parentElement.height;
+	canvas.width = canvas.parentElement.offsetWidth;
+	canvas.height = canvas.parentElement.offsetHeight;
 	
-	// Remove padding & update global vars
-	let computedStyle = getComputedStyle(canvas.parentElement);
-	width = canvas.width -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
-	height = canvas.height -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom);
-});
+	width = canvas.width;
+	height = canvas.height;
+
+	// console.log(width, height);
+}
+
+window.addEventListener('resize', update_canvas_size);

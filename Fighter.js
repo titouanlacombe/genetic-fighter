@@ -1,33 +1,39 @@
+let fighterSize = 7;
+
 // Class Fighter, game object, main player
 class Fighter extends GameObject
 {
-	constructor() {
+	constructor()
+	{
 		super();
-		this.pos = new Vector2(50, 50);
-		this.vel = new Vector2(1, 0);
-		this.frc = new Vector2(0, 0);
+
+		this.pos.set(50, 50);
+		this.vel.set(1, 0);
+		this.rot = 0;
 
 		this.color = "white";
 	}
 
-	// Apply euler integration to the object properties
-	euler(dt) {
-		this.vel.add(this.frc.mul(dt));
-		this.pos.add(this.vel.clone().mul(dt));
-		
-		this.frc.mul(0);
-	}
-	
 	// Draw the object
-	draw(ctx) {
-		ctx.fillStyle = this.color;
+	draw(ctx)
+	{
+		// Draw the body
 		ctx.beginPath();
-		ctx.arc(this.pos.x, this.pos.y, 20, 0, 2*Math.PI);
+		ctx.arc(0, 0, fighterSize, 0, 2 * Math.PI);
+		ctx.fillStyle = this.color;
 		ctx.fill();
+
+		// Draw the cannon
+		ctx.beginPath();
+		ctx.moveTo(0, 0);
+		ctx.lineTo(0, -2 * fighterSize);
+		ctx.strokeStyle = this.color;
+		ctx.lineWidth = 3;
+		ctx.stroke();
 	}
 	
 	// Simulate the object
-	simulate(dt) {
-		this.euler(dt);
+	simulate(dt)
+	{
 	}
 }

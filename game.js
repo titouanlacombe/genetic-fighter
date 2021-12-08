@@ -1,6 +1,7 @@
 let objects = []; // Array of game objects
 let running = true; // If false stops the loops
 let frame = 0; // Number of the current frame
+let player; // Player game object
 
 let dt = 1;	// delta of time between each steps
 
@@ -11,6 +12,9 @@ function init()
 	for (let i = 0; i < 10; i++) {
 		objects.push(new Fighter());
 	}
+	
+	player = new Fighter();
+	objects.push(player);
 }
 
 // Draw the new frame
@@ -26,10 +30,10 @@ function draw()
 
 	// Draw the objects
 	objects.forEach(object => {
-		object.draw(ctx);
+		object._draw(ctx);
 	});
 
-	running = false;
+	// running = false;
 }
 
 // Simulate a step
@@ -37,7 +41,7 @@ function simulate()
 {
 	// Simulate the objects
 	objects.forEach(object => {
-		object.simulate(dt);
+		object._simulate(dt);
 	});
 
 	console.log(frame);

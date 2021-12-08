@@ -1,7 +1,12 @@
 // 2D Vector class
 class Vector2
 {
-	constructor(x, y) {
+	constructor(x = 0, y = 0) {
+		this.x = x;
+		this.y = y;
+	}
+
+	set(x = 0, y = 0) {
 		this.x = x;
 		this.y = y;
 	}
