@@ -1,11 +1,14 @@
 // Bullet
 class Bullet extends GameObject
 {
-    constructor(x, y)
+    static bulletSize = 3;
+
+    constructor(pos, vel)
     {
         super();
 
-        this.pos = set(x, y);
+        this.pos.setV(pos);
+        this.vel.setV(vel);
     }
 
 	// Draw the object
@@ -13,7 +16,7 @@ class Bullet extends GameObject
 	{
 		// Draw the body
 		ctx.beginPath();
-		ctx.arc(0, 0, fighterSize, 0, 2 * Math.PI);
+		ctx.arc(0, 0, Bullet.bulletSize, 0, 2 * Math.PI);
 		ctx.fillStyle = this.color;
 		ctx.fill();
 	}
@@ -21,5 +24,6 @@ class Bullet extends GameObject
 	// Simulate the object
 	simulate(dt)
 	{
+        // Simulate drag
 	}
 }

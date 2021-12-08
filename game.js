@@ -9,13 +9,18 @@ let dt = 1;	// delta of time between each steps
 function init()
 {
 	// Spawns the fighters
-	for (let i = 0; i < 10; i++) {
+	for (let i = 0; i < 0; i++) {
 		objects.push(new Fighter());
 	}
 	
 	player = new Fighter();
 	objects.push(player);
 }
+
+document.addEventListener('keypress', (e) => {
+	// console.log(e.key);
+	player.command_player(e.key);
+});
 
 // Draw the new frame
 function draw()
@@ -44,6 +49,6 @@ function simulate()
 		object._simulate(dt);
 	});
 
-	console.log(frame);
+	// console.log(frame);
 	frame++;
 }

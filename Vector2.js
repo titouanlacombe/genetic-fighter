@@ -11,6 +11,11 @@ class Vector2
 		this.y = y;
 	}
 
+	setV(v) {
+		this.x = v.x;
+		this.y = v.y;
+	}
+
 	clone() {
 		return new Vector2(this.x, this.y);
 	}
