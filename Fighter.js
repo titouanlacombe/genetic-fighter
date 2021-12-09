@@ -14,6 +14,11 @@ class Fighter extends GameObject {
 		if (!x) { x = Math.random() * width; }
 		if (!y) { y = Math.random() * height; }
 
+		this.color = "#FFF";
+		this.canon_color = this.color;
+		this.thrusters_color = this.color;
+		this.body_color = this.color;
+
 		this.pos.set(x, y);
 		this.vel.set();
 		
@@ -24,28 +29,42 @@ class Fighter extends GameObject {
 		this.fuel = this.max_fuel;
 		this.life = this.max_life;
 		this.munitions = this.max_munitions;
-		
-		this.color = "white";
-		this.controller = null;
+
+    this.controller = null;
 		this.radius = 7;
 		this.cannon_cooldown = 0;
 	}
 
 	// Draw the object
 	draw(ctx) {
-		// Draw the body
-		ctx.beginPath();
-		ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
-		ctx.fillStyle = this.color;
-		ctx.fill();
-
 		// Draw the cannon
 		ctx.beginPath();
 		ctx.moveTo(0, 0);
 		ctx.lineTo(0, -2 * this.radius);
-		ctx.strokeStyle = this.color;
-		ctx.lineWidth = 3;
+		ctx.strokeStyle = this.canon_color;
+		ctx.lineWidth = this.radius / 3;
 		ctx.stroke();
+
+		// Draw thrusters
+		ctx.beginPath();
+		ctx.moveTo(this.radius * 0.8, 0);
+		ctx.lineTo(this.radius, 1.2 * this.radius);
+		ctx.strokeStyle = this.thrusters_color;
+		ctx.lineWidth = this.radius / 3;
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.moveTo(-this.radius * 0.8, 0);
+		ctx.lineTo(-this.radius, 1.2 * this.radius);
+		ctx.strokeStyle = this.thrusters_color;
+		ctx.lineWidth = this.radius / 3;
+		ctx.stroke();
+
+		// Draw the body
+		ctx.beginPath();
+		ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
+		ctx.fillStyle = this.body_color;
+		ctx.fill();
 	}
 
 	// Simulate the object
@@ -76,9 +95,26 @@ class Fighter extends GameObject {
 			this.wall_collide();
 		}
 
+		// Objects Collisions
+		objects.forEach(object => {
+			if (object != this
+				&& dist(object.pos, this.pos).norm() < object.radius + this.radius) {
+				if (object instanceof Bullet) {
+					this.life -= 10;
+					this.body_color = merge_colors("#FF0000", this.body_color, 10);
+
+					// Destroy the bullet
+					object.alive = false;
+				}
+				else {
+					this.life = 0;
+				}
+			}
+		});
+
 		// dies if life < 0
 		if (this.life <= 0) {
-			this.color = "red";
+			this.body_color = "#FF0000";
 			this.alive = false;
 		}
 	}
@@ -110,7 +146,8 @@ class Fighter extends GameObject {
 		thrustForce.rotate(this.rot);
 		this.frc.add(thrustForce);
 
-		// this.fuel -= level * Fighter.fuel_consumption * dt;
+		this.fuel -= level * Fighter.fuel_consumption * dt;
+		this.thrusters_color = merge_colors("#FF0000", this.thrusters_color, level * Fighter.fuel_consumption * dt * 5);
 	}
 
 	// Apply rotation controll force
@@ -140,10 +177,11 @@ class Fighter extends GameObject {
 			return false;
 		}
 
+		this.munitions--;
+		this.canon_color = merge_colors("#FF0000", this.canon_color, 2);
 		// reset cooldown
 		this.cannon_cooldown = Fighter.cannon_fire_cooldown;
 
-		// this.munitions--;
 		let bullet = new Bullet(this.pos, this.vel);
 
 		// Added position
