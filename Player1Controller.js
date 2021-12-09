@@ -12,7 +12,7 @@ class Player1Controller extends Controller
 		object.command_rotation(this.rotate);
 		object.command_thrust(this.thrust, dt);
 		if (this.fire) {
-			object.fire(objects);
+			object.fire(dt, objects);
 			this.fire = false;
 		}
 	}

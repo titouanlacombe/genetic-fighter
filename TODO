@@ -4,6 +4,7 @@ thruster => fuel
 body => life
 cannon => munitions
 
+unnable tu turn if vel too low
 wall collide handle same as object collide
 
 make small basic AI {

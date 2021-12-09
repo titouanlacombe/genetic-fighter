@@ -60,4 +60,8 @@ class GameObject
 	collision(object)
 	{
 	}
+
+	die()
+	{
+	}
 }

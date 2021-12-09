@@ -7,14 +7,14 @@ class AIController extends Controller
 
 		// DNA
 		this.rotation_sensibility = 0.7;
-		this.fire_cooldown = 3;
+		this.cannon_fire_cooldown = 3;
 		this.min_fire_error = 0.1;
 		this.loose_focus_dist = 500;
 		this.direction_importance = 0;
 		
 		// Variables
 		this.focused = null;
-		this.last_fire = 0;
+		this.cannon_cooldown = 0;
 	}
 
 	// Choose closest fighter
@@ -97,13 +97,14 @@ class AIController extends Controller
 		rotation *= this.rotation_sensibility;
 
 		// fire if current aim close enough to targeted aim && cooldown passed
-		if (this.last_fire < 0
+		if (this.cannon_cooldown < 0
 			&& Math.abs(rotation) < this.min_fire_error) {
-			object.fire(objects);
-			this.last_fire = this.fire_cooldown;
+			if (object.fire(dt, objects)) {
+				this.cannon_cooldown = this.cannon_fire_cooldown;
+			}
 		}
 		else {
-			this.last_fire -= dt;
+			this.cannon_cooldown -= dt;
 		}
 
 		object.command_thrust(thrust, dt);

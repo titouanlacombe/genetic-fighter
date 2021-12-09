@@ -6,6 +6,7 @@ class Fighter extends GameObject {
 	static rot_command_authority = 0.01;
 	static thrust_command_authority = 0.20;
 	static fuel_consumption = 0.2;
+	static cannon_fire_cooldown = 4;
 
 	constructor(x, y) {
 		super();
@@ -23,6 +24,7 @@ class Fighter extends GameObject {
 		this.color = "white";
 		this.controller = null;
 		this.radius = 7;
+		this.cannon_cooldown = 0;
 	}
 
 	// Draw the object
@@ -122,10 +124,20 @@ class Fighter extends GameObject {
 	}
 
 	// Spawn a bullet
-	fire(objects) {
+	// Return success
+	fire(dt, objects) {
 		if (this.munitions <= 0) {
-			return;
+			return false;
 		}
+		
+		// Cannon cooldown
+		if (this.cannon_cooldown > 0) {
+			this.cannon_cooldown -= dt;
+			return false;
+		}
+
+		// reset cooldown
+		this.cannon_cooldown = Fighter.cannon_fire_cooldown;
 
 		// this.munitions--;
 		let bullet = new Bullet(this.pos, this.vel);
@@ -141,6 +153,8 @@ class Fighter extends GameObject {
 		bullet.vel.add(added_vel);
 
 		objects.push(bullet);
+
+		return true;
 	}
 
 	collision(object)
@@ -151,6 +165,16 @@ class Fighter extends GameObject {
 		}
 		else {
 			this.life -= 100;
+		}
+	}
+
+	die()
+	{
+		if (this.controller instanceof Player1Controller) {
+			console.log("Player 1 died");
+		}
+		else if (this.controller instanceof Player2Controller) {
+			console.log("Player 2 died");
 		}
 	}
 }
