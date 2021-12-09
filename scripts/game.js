@@ -20,7 +20,7 @@ function init() {
 	let objects = []; // Array of game objects
 
 	// Spawns the AIs
-	for (let i = 0; i < 0; i++) {
+	for (let i = 0; i < 1000; i++) {
 		let f = new Fighter();
 		f.controller = new AIController();
 		objects.push(f);
@@ -51,8 +51,9 @@ function draw(objects) {
 
 // Simulate a step
 function simulate(dt, objects) {
-	// Handle collisions
-	CollisionManager.check_collisions(objects);
+	// Handle collisions & out of bounds
+	CollisionManager.object_to_bounds(objects, 0, width, 0, height, true);
+	CollisionManager.object_to_object(objects);
 
 	// Simulate the objects
 	objects.forEach(object => {

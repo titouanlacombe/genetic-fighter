@@ -3,19 +3,19 @@ class Fighter extends GameObject {
 	static friction = 0.05;
 	static rot_friction = 0.1;
 
-	static size = 15;
+	static size = 5;
 	static lineWidth = Fighter.size / 2.5;
 
 	static rot_command_authority = 0.01;
 	static thrust_command_authority = 0.20;
 
-	static fuel_consumption = 0.2;
-	static fire_vel = 5;
+	static fuel_consumption = 0.1;
+	static fire_vel = 10;
 	static cannon_fire_cooldown = 4;
 
 	static max_fuel = 100;
 	static max_life = 100;
-	static max_munitions = 100;
+	static max_munitions = 300;
 
 	constructor(x, y, color = Color.white, controller = null) {
 		super();
@@ -93,31 +93,25 @@ class Fighter extends GameObject {
 		// Rotate friction
 		this.rotfrc += this.rotvel * -Fighter.rot_friction;
 
-		// Wall Collisions
-		// TODO integrate into collision
-		if (this.pos.x < 0) {
-			this.pos.x = 0;
-			this.wall_collide();
-		} else if (this.pos.x > width) {
-			this.pos.x = width;
-			this.wall_collide();
-		}
-		if (this.pos.y < 0) {
-			this.pos.y = 0;
-			this.wall_collide();
-		} else if (this.pos.y > height) {
-			this.pos.y = height;
-			this.wall_collide();
-		}
-
 		// dies if life < 0
 		if (this.life <= 0) {
 			this.alive = false;
 		}
 	}
 
-	wall_collide() {
+	out_of_bound(reason) {
 		this.vel.set(); // Reset vel
+
+		if (reason == "min_x") {
+			this.pos.x = this.radius;
+		} else if (reason == "max_x") {
+			this.pos.x = width - this.radius;
+		} else if (reason == "min_y") {
+			this.pos.y = this.radius;
+		} else if (reason == "max_y") {
+			this.pos.y = height - this.radius;
+		}
+
 		this.life -= 50;
 	}
 
@@ -195,7 +189,7 @@ class Fighter extends GameObject {
 
 	collision(object) {
 		if (object instanceof Bullet) {
-			this.life -= 10;
+			this.life -= 20;
 			object.alive = false; // Destroy the bullet
 		} else if (object instanceof Fighter) {
 			this.life -= 100;

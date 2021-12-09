@@ -1,8 +1,6 @@
 // Abstract class GameObject
-class GameObject
-{
-	constructor()
-	{
+class GameObject {
+	constructor() {
 		this.pos = new Vector2();
 		this.vel = new Vector2();
 		this.frc = new Vector2();
@@ -14,20 +12,17 @@ class GameObject
 		this.radius = 0;
 		this.alive = true;
 	}
-	
-	_simulate(dt, objects)
-	{
+
+	_simulate(dt, objects) {
 		this.euler(dt);
 		this.simulate(dt, objects);
 	}
-	
-	simulate(objects)
-	{
+
+	simulate(objects) {
 		// Empty
 	}
-	
-	_draw(ctx)
-	{
+
+	_draw(ctx) {
 		ctx.save();
 
 		// Translate & rotate to the object
@@ -40,14 +35,12 @@ class GameObject
 		ctx.restore();
 	}
 
-	draw(ctx)
-	{
+	draw(ctx) {
 		// Empty
 	}
 
 	// Apply euler integration to the object properties
-	euler(dt)
-	{
+	euler(dt) {
 		// Translation
 		this.vel.add(this.frc.mul(dt));
 		this.pos.add(this.vel.clone().mul(dt));
@@ -59,13 +52,15 @@ class GameObject
 		this.rotfrc = 0;
 	}
 
-	collision(object)
-	{
+	collision(object) {
 		// Empty
 	}
 
-	die()
-	{
+	out_of_bound() {
+		// Empty
+	}
+
+	die() {
 		// Empty
 	}
 }

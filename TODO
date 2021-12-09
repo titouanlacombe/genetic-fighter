@@ -1,5 +1,3 @@
-wall collide handle same as object collide
-
 improve AI {
 	1- avoid near by fighter
 	2- avoid near by bullets
@@ -11,15 +9,14 @@ improve AI {
 
 improve game? {
 	unnable tu turn if vel too low?
-	improve models?
 	improve feel
-	improve fuel / life / munitions
 	add obstacles ?
 	improve controller design (currently not able to force call of command functions + not access to dt etc...)
 }
 
-begin modeling evolution simmulation
-being able to visualize evolution {
+begin modeling evolution simmulation {
+	being able to visualize evolution
+	if no munitions left in objects => winner max life
 	evolution sim loop does a generation by frames
 	then display the results
 	evolution game object
