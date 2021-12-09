@@ -1,4 +1,4 @@
-class Player2Controller extends PlayerController {
+class Player2Controller extends Player1Controller {
     input(code, status) {
         // console.log(code, status);
 

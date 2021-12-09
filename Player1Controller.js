@@ -1,5 +1,5 @@
 // Control the object via key presses
-class PlayerController extends Controller
+class Player1Controller extends Controller
 {
 	constructor() {
 		super();

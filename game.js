@@ -1,3 +1,23 @@
+let players = [];
+
+function player_factory(x, y, color, controller)
+{
+	let player = new Fighter(x, y);
+	player.color = color;
+	player.controller = controller;
+
+	// User input handeling
+	document.addEventListener('keydown', (e) => {
+		controller.input(e.code, true);
+	});
+
+	document.addEventListener('keyup', (e) => {
+		controller.input(e.code, false);
+	});
+
+	return player;
+}
+
 // Initialize the game
 function init() {
 	let objects = []; // Array of game objects
@@ -7,27 +27,8 @@ function init() {
 		objects.push(new Fighter());
 	}
 
-	let player1 = new Fighter(100, 200);
-	player1.color = "#9a39a3";
-	player1.controller = new PlayerController();
-	objects.push(player1);
-
-	let player2 = new Fighter(200, 100);
-	player2.color = "#fff";
-	player2.controller = new Player2Controller();
-	objects.push(player2);
-
-	// User input handeling
-
-	document.addEventListener('keydown', (e) => {
-		player1.controller.input(e.code, true);
-		player2.controller.input(e.code, true);
-	});
-
-	document.addEventListener('keyup', (e) => {
-		player1.controller.input(e.code, false);
-		player2.controller.input(e.code, false);
-	});
+	objects.push(player_factory(100, height / 2, "#9a39a3", new Player1Controller()));
+	objects.push(player_factory(width - 100, height / 2, "#4287f5", new Player2Controller()));
 
 	return objects;
 }
@@ -52,11 +53,12 @@ function draw(objects) {
 
 // Simulate a step
 function simulate(dt, objects) {
-	// console.log(objects);
 	// Simulate the objects
 	objects.forEach(object => {
 		object._simulate(dt, objects);
 	});
+
+	CollisionManager.check_collisions(objects);
 
 	// Remove objects when dead
 	objects.forEach((object, index, array) => {

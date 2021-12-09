@@ -1,10 +1,10 @@
-make 1v1
-
 add thruster
 color of:
 thruster => fuel
 body => life
 cannon => munitions
+
+wall collide handle same as object collide
 
 make small basic AI {
 	force priority:

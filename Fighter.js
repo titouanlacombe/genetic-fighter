@@ -10,17 +10,18 @@ class Fighter extends GameObject {
 	constructor(x, y) {
 		super();
 
+		if (!x) { x = Math.random() * width; }
+		if (!y) { y = Math.random() * height; }
+
 		this.pos.set(x, y);
-		this.vel.set(0, 0);
-
-		this.color = "white";
-
-		this.controller = null;
-
+		this.vel.set();
+		
 		this.fuel = 100;
 		this.life = 100;
 		this.munitions = 100;
-
+		
+		this.color = "white";
+		this.controller = null;
 		this.radius = 7;
 	}
 
@@ -69,22 +70,6 @@ class Fighter extends GameObject {
 			this.wall_collide();
 		}
 
-		// Objects Collisions
-		objects.forEach(object => {
-			if (object != this
-				&& dist(object.pos, this.pos).norm() < object.radius + this.radius) {
-				if (object instanceof Bullet) {
-					this.life -= 10;
-
-					// Destroy the bullet
-					object.alive = false;
-				}
-				else {
-					this.life = 0;
-				}
-			}
-		});
-
 		// dies if life < 0
 		if (this.life <= 0) {
 			this.color = "red";
@@ -92,6 +77,7 @@ class Fighter extends GameObject {
 		}
 	}
 
+	// TODO integrate into collision
 	wall_collide() {
 		// Reset vel
 		this.vel.set();
@@ -145,5 +131,16 @@ class Fighter extends GameObject {
 		bullet.vel.add(added_vel);
 
 		objects.push(bullet);
+	}
+
+	collision(object)
+	{
+		if (object instanceof Bullet) {
+			this.life -= 10;
+			object.alive = false; // Destroy the bullet
+		}
+		else {
+			this.life -= 100;
+		}
 	}
 }
