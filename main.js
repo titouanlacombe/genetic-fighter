@@ -1,35 +1,24 @@
-let fastMode = false; // If fast mode is active launch a loop that only simulate
+let running = true; // If false stops the loops
+let global_objects;
 let width, height; // Dimentions of the canvas
-
-// Wait for the window to be fully loaded before launching the game
-window.requestAnimationFrame(_init);
 
 // Init and launch the loop
 function _init()
 {
 	update_canvas_size();
-	init();
-	
-	if (fastMode) { computeLoop(); }
-	else { interactiveLoop(); }
+	global_objects = init();
+	loop();
 }
 
-// 
-function interactiveLoop()
+function loop(dt)
 {
-	simulate();
-	draw();
+	dt = 1; // fix delta time to a constant
+
+	simulate(dt, global_objects);
+	draw(global_objects);
 
 	if (running) {
-		window.requestAnimationFrame(interactiveLoop);
-	}
-}
-
-// 
-function computeLoop()
-{
-	while (running) {
-		simulate();
+		window.requestAnimationFrame(loop);
 	}
 }
 
@@ -49,3 +38,6 @@ function update_canvas_size()
 }
 
 window.addEventListener('resize', update_canvas_size);
+
+// Wait for the window to be fully loaded before launching the game
+window.requestAnimationFrame(_init);

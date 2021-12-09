@@ -1,5 +1,40 @@
 make 1v1
-make small AI
+
+add thruster
+color of:
+thruster => fuel
+body => life
+cannon => munitions
+
+make small basic AI {
+	force priority:
+	1- avoid near by fighter
+	2- avoid near by bullets
+	3- try to put focused target at center (improvement: estimate bullet travel time, aim accordingely, with target current speed)
+	
+	fire when aim close enough to targeted aim
+	change focus ?
+}
 make 2v many
-improve game
-begin modeling evolution simmulation (if fastMode => call evolution)
+
+improve game? {
+	improve models?
+	improve feel
+	improve fuel/life/munitions
+}
+
+begin modeling evolution simmulation
+being able to visualize evolution {
+	delete fastMode & fast loop
+	when evolution sim loop does a generation by frames
+	then display the results
+
+	give objects list at simulate (objects no longer global)
+	remove more global vars ?
+	game object evolution
+}
+
+add interesting mechanics {
+	damage proportional to kinetic energy
+
+}

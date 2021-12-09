@@ -24,7 +24,7 @@ class Bullet extends GameObject
 	}
 	
 	// Simulate the object
-	simulate(dt)
+	simulate(dt, objects)
 	{
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Bullet.vel_friction));

@@ -4,7 +4,7 @@ class Controller
     constructor() {
     }
 
-    control() {
+    control(object, dt, objects) {
         abstractError();
     }
 

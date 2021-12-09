@@ -45,9 +45,9 @@ class Fighter extends GameObject
 	}
 
 	// Simulate the object
-	simulate(dt)
+	simulate(dt, objects)
 	{
-		if (this.controller) { this.controller.control(this, dt); }
+		if (this.controller) { this.controller.control(this, dt, objects); }
 		
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Fighter.vel_friction));
@@ -133,7 +133,7 @@ class Fighter extends GameObject
 	}
 
 	// Spawn a bullet
-	fire()
+	fire(objects)
 	{
 		// console.log(this.munitions);
 		

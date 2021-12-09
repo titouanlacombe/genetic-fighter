@@ -8,11 +8,11 @@ class PlayerController extends Controller
 		this.fire = false;
 	}
 
-	control(object, dt) {
+	control(object, dt, objects) {
 		object.command_rotation(this.rotate);
 		object.command_thrust(this.thrust, dt);
 		if (this.fire) {
-			object.fire();
+			object.fire(objects);
 			this.fire = false;
 		}
 	}

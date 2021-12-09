@@ -15,13 +15,13 @@ class GameObject
 		this.alive = true;
 	}
 	
-	_simulate(dt)
+	_simulate(dt, objects)
 	{
 		this.euler(dt);
-		this.simulate(dt);
+		this.simulate(dt, objects);
 	}
 	
-	simulate()
+	simulate(objects)
 	{
 		abstractError();
 	}

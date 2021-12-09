@@ -1,19 +1,16 @@
-let objects = []; // Array of game objects
-let running = true; // If false stops the loops
 let frame = 0; // Number of the current frame
-let player; // Player game object
-
-let dt = 1;	// delta of time between each steps
 
 // Initialize the game
 function init()
 {
+	let objects = []; // Array of game objects
+	
 	// Spawns the fighters
 	for (let i = 0; i < 0; i++) {
 		objects.push(new Fighter());
 	}
 	
-	player = new Fighter();
+	let player = new Fighter();
 	player.color = "#9a39a3";
 	player.controller = new PlayerController(player);
 	objects.push(player);
@@ -26,10 +23,12 @@ function init()
 	document.addEventListener('keyup', (e) => {
 		player.controller.input(e.code, false);
 	});
+
+	return objects;
 }
 
 // Draw the new frame
-function draw()
+function draw(objects)
 {
 	// Retrieve the drawing context
 	var canvas = document.getElementById('canvas');
@@ -45,15 +44,16 @@ function draw()
 	});
 
 	ctx.restore();
-	// running = false;
+	// running = false; // Stop at frame 1 (debug tool)
 }
 
 // Simulate a step
-function simulate()
+function simulate(dt, objects)
 {
+	// console.log(objects);
 	// Simulate the objects
 	objects.forEach(object => {
-		object._simulate(dt);
+		object._simulate(dt, objects);
 	});
 
 	// Remove objects when dead
