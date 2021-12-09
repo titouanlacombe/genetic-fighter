@@ -24,7 +24,7 @@ class AIController extends Controller
 		let min_distance = Infinity;
 		near_by_objects.forEach(potential => {
 			if (potential instanceof Fighter) {
-				let distance = dist(object.pos, potential.pos).norm();
+				let distance = Vector2.dist(object.pos, potential.pos).norm();
 				if (distance < min_distance) {
 					this.focused = potential;
 					min_distance = distance;
@@ -38,7 +38,7 @@ class AIController extends Controller
 		let near = [];
 		objects.forEach(object2 => {
 			if (object != object2
-				&& dist(object.pos, object2.pos).norm() < AIController.vision_range)
+				&& Vector2.dist(object.pos, object2.pos).norm() < AIController.vision_range)
 			{
 				near.push(object2);
 			}
@@ -53,7 +53,7 @@ class AIController extends Controller
 		if (this.focused) {
 			// Change focus if => too far or dead
 			if (!this.focused.alive
-				|| dist(this.focused.pos, object.pos).norm() > this.loose_focus_dist)
+				|| Vector2.dist(this.focused.pos, object.pos).norm() > this.loose_focus_dist)
 			{
 				this.focused = null;
 			}
@@ -91,7 +91,7 @@ class AIController extends Controller
 
 		// rotate to put target in center
 		// improvement: estimate bullet travel time, aim accordingely, with target current speed
-		rotation += dist(this.focused.pos, object.pos).angle() - current_aim;
+		rotation += Vector2.dist(this.focused.pos, object.pos).angle() - current_aim;
 		
 		// scale rotation force
 		rotation *= this.rotation_sensibility;

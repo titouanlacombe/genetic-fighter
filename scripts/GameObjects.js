@@ -23,6 +23,7 @@ class GameObject
 	
 	simulate(objects)
 	{
+		// Empty
 	}
 	
 	_draw(ctx)
@@ -35,12 +36,13 @@ class GameObject
 
 		this.draw(ctx);
 
-		// reset ctx transformations
+		// reseting ctx transformations by restoring saved state
 		ctx.restore();
 	}
 
 	draw(ctx)
 	{
+		// Empty
 	}
 
 	// Apply euler integration to the object properties
@@ -59,9 +61,11 @@ class GameObject
 
 	collision(object)
 	{
+		// Empty
 	}
 
 	die()
 	{
+		// Empty
 	}
 }

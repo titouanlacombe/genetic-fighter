@@ -3,16 +3,16 @@ class Player2Controller extends Player1Controller {
         // console.log(code, status);
 
         if (code == "KeyW" || code == "KeyZ") {
-            this.thrust = status ? 1 : 0;
+            super.input("ArrowUp", status);
         }
         else if (code == "KeyS") {
-            this.fire = status;
+            super.input("ArrowDown", status);
         }
         else if (code == "KeyA" || code == "KeyQ") {
-            this.rotate = status ? -1 : 0;
+            super.input("ArrowLeft", status);
         }
         else if (code == "KeyD") {
-            this.rotate = status ? 1 : 0;
+            super.input("ArrowRight", status);
         }
     }
 }

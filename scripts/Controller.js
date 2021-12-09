@@ -2,12 +2,14 @@
 class Controller
 {
     constructor() {
+        // Empty
     }
 
     control(object, dt, objects) {
-        abstractError();
+        abstract_error();
     }
 
     input() {
+        // Empty
     }
 }

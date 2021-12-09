@@ -1,16 +1,16 @@
 // Bullet
 class Bullet extends GameObject
 {
-	static vel_friction = 0.01;
+	static friction = 0.01;
 
-    constructor(pos, vel)
+    constructor(pos, vel, radius = 3)
     {
         super();
 
-        this.pos.setV(pos);
-        this.vel.setV(vel);
+        this.pos.set_v(pos);
+        this.vel.set_v(vel);
 
-		this.radius = 3;
+		this.radius = radius;
     }
 
 	// Draw the object
@@ -27,7 +27,7 @@ class Bullet extends GameObject
 	simulate(dt, objects)
 	{
 		// Vel friction
-		this.frc.add(this.vel.clone().mul(-Bullet.vel_friction));
+		this.frc.add(this.vel.clone().mul(-Bullet.friction));
 
 		// Kill if vel to low
 		if (this.vel.norm() < 1) {

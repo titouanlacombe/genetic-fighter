@@ -1,7 +1,7 @@
 let width, height; // Dimentions of the canvas
 let global_objects; // State of the simulation
 let running = true; // If false stops the loops
-let frame = 0; // Number of the current frame
+let frames = 0; // Number of the current frame
 let previous_time = 0;
 
 // Init and launch the loop
@@ -13,21 +13,21 @@ function _init() {
 
 function loop(time) {
 	let dt = (time - previous_time);
-	// console.log("fps: ", 1000 / dt);
-	dt /= 16;
 	previous_time = time;
+	
+	// console.log("fps: ", 1000 / dt);
 
+	dt /= 16; // Correction so that dt is close to 1 on 60 fps
 	// dt = 1; // fix delta time to a constant (debug tool)
 
 	simulate(dt, global_objects);
 	draw(global_objects);
 
-	// console.log(frame);
-	frame++;
+	frames++;
+	// console.log(frames);
 
-	// running = false; // Stop at frame 1 (debug tool)
 	if (running) {
-		window.requestAnimationFrame(loop);
+		window.requestAnimationFrame(loop); // Comment to stop at frame 1 (debug tool)
 	}
 }
 

@@ -1,27 +1,19 @@
-add thruster
-color of:
-thruster => fuel
-body => life
-cannon => munitions
-
-unnable tu turn if vel too low
 wall collide handle same as object collide
 
-make small basic AI {
-	force priority:
+improve AI {
 	1- avoid near by fighter
 	2- avoid near by bullets
-	3- try to put focused target at center (improvement: estimate bullet travel time, aim accordingely, with target current speed)
+	3- estimate bullet travel time, aim accordingely, with target current speed
 	
-	fire when aim close enough to targeted aim
-	change focus ?
+	maintain speed
+	states (evading, aiming, suicide)
 }
-make 2v many
 
 improve game? {
+	unnable tu turn if vel too low?
 	improve models?
 	improve feel
-	improve fuel/life/munitions
+	improve fuel / life / munitions
 	add obstacles ?
 	improve controller design (currently not able to force call of command functions + not access to dt etc...)
 }

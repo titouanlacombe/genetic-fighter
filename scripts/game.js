@@ -2,11 +2,9 @@ let players = [];
 
 function player_factory(x, y, color, controller)
 {
-	let player = new Fighter(x, y);
-	player.color = color;
-	player.controller = controller;
+	let player = new Fighter(x, y, color, controller);
 
-	// User input handeling
+	// User input linking
 	document.addEventListener('keydown', (e) => {
 		controller.input(e.code, true);
 	});
@@ -30,8 +28,8 @@ function init() {
 	}
 	
 	// Spawns the Players
-	objects.push(player_factory(100, height / 2, "#9a39a3", new Player1Controller()));
-	// objects.push(player_factory(width - 100, height / 2, "#4287f5", new Player2Controller()));
+	objects.push(player_factory(100, height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
+	// objects.push(player_factory(width - 100, height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
 
 	return objects;
 }
@@ -50,18 +48,17 @@ function draw(objects) {
 	objects.forEach(object => {
 		object._draw(ctx);
 	});
-
-	ctx.restore();
 }
 
 // Simulate a step
 function simulate(dt, objects) {
+	// Handle collisions
+	CollisionManager.check_collisions(objects);
+
 	// Simulate the objects
 	objects.forEach(object => {
 		object._simulate(dt, objects);
 	});
-
-	CollisionManager.check_collisions(objects);
 
 	// Remove objects when dead
 	objects.forEach((object, index, array) => {
