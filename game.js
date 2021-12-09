@@ -40,7 +40,6 @@ function draw(objects) {
 	});
 
 	ctx.restore();
-	running = false; // Stop at frame 1 (debug tool)
 }
 
 // Simulate a step

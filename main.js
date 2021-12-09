@@ -9,17 +9,14 @@ let previous_time = 0;
 function _init() {
 	update_canvas_size();
 	global_objects = init();
-	loop();
+	loop(0);
 }
 
 function loop(time) {
-	let dt;
-	// console.log((time - previous_time));
-	dt = (time - previous_time) / 16;
+	let dt = (time - previous_time) / 16;
 	previous_time = time;
-	console.log(dt);
-	// dt = 1; // fix delta time to a constant
-
+	
+	// dt = 1; // fix delta time to a constant (debug tool)
 
 	simulate(dt, global_objects);
 	draw(global_objects);
@@ -27,6 +24,7 @@ function loop(time) {
 	// console.log(frame);
 	frame++;
 
+	// running = false; // Stop at frame 1 (debug tool)
 	if (running) {
 		window.requestAnimationFrame(loop);
 	}
