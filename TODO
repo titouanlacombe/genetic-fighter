@@ -5,6 +5,8 @@ improve AI {
 	
 	maintain speed
 	states (evading, aiming, suicide)
+
+	pid for targets
 }
 
 improve game? {
