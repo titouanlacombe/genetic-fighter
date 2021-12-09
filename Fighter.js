@@ -107,19 +107,19 @@ class Fighter extends GameObject
 	// Apply thrust controll force
 	command_thrust(level, dt)
 	{
-		// console.log(this.fuel);
-		
-		if (this.fuel > 0) {
-			// Anti cheat
-			if (level < 0) { level = 0; }
-			if (level > 1) { level = 1; }
-	
-			let thrustForce = new Vector2(0, -level * Fighter.thrust_command_authority);
-			thrustForce.rotate(this.rot);
-			this.frc.add(thrustForce);
-	
-			// this.fuel -= level * Fighter.fuel_consumption * dt;
+		if (this.fuel <= 0) {
+			return;
 		}
+
+		// Anti cheat
+		if (level < 0) { level = 0; }
+		if (level > 1) { level = 1; }
+
+		let thrustForce = new Vector2(0, -level * Fighter.thrust_command_authority);
+		thrustForce.rotate(this.rot);
+		this.frc.add(thrustForce);
+
+		// this.fuel -= level * Fighter.fuel_consumption * dt;
 	}
 
 	// Apply rotation controll force
@@ -135,23 +135,23 @@ class Fighter extends GameObject
 	// Spawn a bullet
 	fire(objects)
 	{
-		// console.log(this.munitions);
-		
-		if (this.munitions > 0) {
-			// 	this.munitions--;
-			let bullet = new Bullet(this.pos, this.vel);
-	
-			// Added position
-			let added_pos = new Vector2(0, -2 * this.radius);
-			added_pos.rotate(this.rot);
-			bullet.pos.add(added_pos);
-	
-			// Added velocity
-			let added_vel = new Vector2(0, -Fighter.fire_vel);
-			added_vel.rotate(this.rot);
-			bullet.vel.add(added_vel);
-	
-			objects.push(bullet);
+		if (this.munitions <= 0) {
+			return;
 		}
+		
+		// 	this.munitions--;
+		let bullet = new Bullet(this.pos, this.vel);
+
+		// Added position
+		let added_pos = new Vector2(0, -2 * this.radius);
+		added_pos.rotate(this.rot);
+		bullet.pos.add(added_pos);
+
+		// Added velocity
+		let added_vel = new Vector2(0, -Fighter.fire_vel);
+		added_vel.rotate(this.rot);
+		bullet.vel.add(added_vel);
+
+		objects.push(bullet);
 	}
 }
