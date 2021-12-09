@@ -23,7 +23,7 @@ function init() {
 	let objects = []; // Array of game objects
 
 	// Spawns the AIs
-	for (let i = 0; i < 10; i++) {
+	for (let i = 0; i < 500; i++) {
 		let f = new Fighter();
 		f.controller = new AIController();
 		objects.push(f);
