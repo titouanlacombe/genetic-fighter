@@ -1,17 +1,16 @@
-class AIController extends Controller
-{
+class AIController extends Controller {
 	static vision_range = 1000;
 
 	constructor() {
 		super();
 
 		// DNA
-		this.rotation_sensibility = 0.7;
+		this.rotation_sensibility = 0.5;
 		this.cannon_fire_cooldown = 3;
-		this.min_fire_error = 0.1;
+		this.min_fire_error = 0.05;
 		this.loose_focus_dist = 500;
 		this.direction_importance = 0;
-		
+
 		// Variables
 		this.focused = null;
 		this.cannon_cooldown = 0;
@@ -19,8 +18,7 @@ class AIController extends Controller
 
 	// Choose closest fighter
 	// Bias via ones in front (TODO)
-	change_focus(object, near_by_objects)
-	{
+	change_focus(object, near_by_objects) {
 		let min_distance = Infinity;
 		near_by_objects.forEach(potential => {
 			if (potential instanceof Fighter) {
@@ -33,35 +31,31 @@ class AIController extends Controller
 		});
 	}
 
-	get_near_by_objects(object, objects)
-	{
+	get_near_by_objects(object, objects) {
 		let near = [];
 		objects.forEach(object2 => {
-			if (object != object2
-				&& Vector2.dist(object.pos, object2.pos).norm() < AIController.vision_range)
-			{
+			if (object != object2 &&
+				Vector2.dist(object.pos, object2.pos).norm() < AIController.vision_range) {
 				near.push(object2);
 			}
 		});
 		return near;
 	}
 
-	control(object, dt, objects)
-	{
+	control(object, dt, objects) {
 		let near_by_objects = this.get_near_by_objects(object, objects);
 
 		if (this.focused) {
 			// Change focus if => too far or dead
-			if (!this.focused.alive
-				|| Vector2.dist(this.focused.pos, object.pos).norm() > this.loose_focus_dist)
-			{
+			if (!this.focused.alive ||
+				Vector2.dist(this.focused.pos, object.pos).norm() > this.loose_focus_dist) {
 				this.focused = null;
 			}
 		}
 
 		if (!this.focused) {
 			this.change_focus(object, near_by_objects);
-			
+
 			// If can't find target: exit
 			if (!this.focused) {
 				// console.log("change_focus failed", object);
@@ -77,9 +71,9 @@ class AIController extends Controller
 
 		near_by_objects.forEach(object => {
 			// avoid near by fighter
-			
+
 			// avoid near by bullets
-			
+
 			// avoid near by walls
 		});
 
@@ -92,18 +86,17 @@ class AIController extends Controller
 		// rotate to put target in center
 		// improvement: estimate bullet travel time, aim accordingely, with target current speed
 		rotation += Vector2.dist(this.focused.pos, object.pos).angle() - current_aim;
-		
+
 		// scale rotation force
 		rotation *= this.rotation_sensibility;
 
 		// fire if current aim close enough to targeted aim && cooldown passed
-		if (this.cannon_cooldown < 0
-			&& Math.abs(rotation) < this.min_fire_error) {
+		if (this.cannon_cooldown < 0 &&
+			Math.abs(rotation) < this.min_fire_error) {
 			if (object.fire(dt, objects)) {
 				this.cannon_cooldown = this.cannon_fire_cooldown;
 			}
-		}
-		else {
+		} else {
 			this.cannon_cooldown -= dt;
 		}
 
