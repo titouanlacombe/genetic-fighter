@@ -1,6 +1,7 @@
-let running = true; // If false stops the loops
-let global_objects;
 let width, height; // Dimentions of the canvas
+let global_objects; // State of the simulation
+let running = true; // If false stops the loops
+let frame = 0; // Number of the current frame
 
 // Init and launch the loop
 function _init()
@@ -16,6 +17,9 @@ function loop(dt)
 
 	simulate(dt, global_objects);
 	draw(global_objects);
+
+	// console.log(frame);
+	frame++;
 
 	if (running) {
 		window.requestAnimationFrame(loop);

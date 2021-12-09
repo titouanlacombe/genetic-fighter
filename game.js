@@ -1,5 +1,3 @@
-let frame = 0; // Number of the current frame
-
 // Initialize the game
 function init()
 {
@@ -62,7 +60,4 @@ function simulate(dt, objects)
 			array.splice(index, 1);
 		}
 	});
-
-	// console.log(frame);
-	frame++;
 }
