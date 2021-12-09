@@ -25,16 +25,11 @@ improve game? {
 
 begin modeling evolution simmulation
 being able to visualize evolution {
-	delete fastMode & fast loop
-	when evolution sim loop does a generation by frames
+	evolution sim loop does a generation by frames
 	then display the results
-
-	give objects list at simulate (objects no longer global)
-	remove more global vars ?
-	game object evolution
+	evolution game object
 }
 
 add interesting mechanics {
 	damage proportional to kinetic energy
-
 }
