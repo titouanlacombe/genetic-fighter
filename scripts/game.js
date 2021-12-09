@@ -1,7 +1,6 @@
 let players = [];
 
-function player_factory(x, y, color, controller)
-{
+function player_factory(x, y, color, controller) {
 	let player = new Fighter(x, y, color, controller);
 
 	// User input linking
@@ -21,12 +20,12 @@ function init() {
 	let objects = []; // Array of game objects
 
 	// Spawns the AIs
-	for (let i = 0; i < 500; i++) {
+	for (let i = 0; i < 0; i++) {
 		let f = new Fighter();
 		f.controller = new AIController();
 		objects.push(f);
 	}
-	
+
 	// Spawns the Players
 	objects.push(player_factory(100, height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
 	// objects.push(player_factory(width - 100, height / 2, Color.fromHex("#4287f5"), new Player2Controller()));

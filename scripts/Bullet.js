@@ -3,14 +3,14 @@ class Bullet extends GameObject
 {
 	static friction = 0.01;
 
-    constructor(pos, vel, radius = 3)
+    constructor(pos, vel)
     {
         super();
 
         this.pos.set_v(pos);
         this.vel.set_v(vel);
 
-		this.radius = radius;
+		this.radius = Fighter.lineWidth / 2;
     }
 
 	// Draw the object

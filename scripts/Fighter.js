@@ -2,14 +2,17 @@
 class Fighter extends GameObject {
 	static friction = 0.05;
 	static rot_friction = 0.1;
-	
+
+	static size = 15;
+	static lineWidth = Fighter.size / 2.5;
+
 	static rot_command_authority = 0.01;
 	static thrust_command_authority = 0.20;
-	
+
 	static fuel_consumption = 0.2;
 	static fire_vel = 5;
 	static cannon_fire_cooldown = 4;
-	
+
 	static max_fuel = 100;
 	static max_life = 100;
 	static max_munitions = 100;
@@ -18,29 +21,32 @@ class Fighter extends GameObject {
 		super();
 
 		// Generate random position if no provided
-		if (!x) { x = Math.random() * width; }
-		if (!y) { y = Math.random() * height; }
+		if (!x) {
+			x = Math.random() * width;
+		}
+		if (!y) {
+			y = Math.random() * height;
+		}
 
 		this.pos.set(x, y);
 		this.vel.set();
-		
-    	this.controller = controller;
-		
+
+		this.controller = controller;
+
 		this.color = color;
-		
+
 		this.fuel = Fighter.max_fuel;
 		this.life = Fighter.max_life;
 		this.munitions = Fighter.max_munitions;
 
-		this.radius = 7;
+		this.radius = Fighter.size;
 		this.cannon_cooldown = 0;
 	}
 
 	draw_thruster(ctx, sign) {
+		ctx.beginPath();
 		ctx.moveTo(sign * this.radius * 0.8, 0);
-		ctx.lineTo(sign * this.radius, 1.2 * this.radius);
-		ctx.strokeStyle = this.thrusters_color;
-		ctx.lineWidth = this.radius / 3;
+		ctx.lineTo(sign * this.radius * 0.8, this.radius * 1.3);
 		ctx.stroke();
 	}
 
@@ -50,12 +56,13 @@ class Fighter extends GameObject {
 
 	// Draw the object
 	draw(ctx) {
+		ctx.lineWidth = Fighter.lineWidth;
+
 		// Draw the cannon
 		ctx.strokeStyle = this.get_color(this.munitions, 0, Fighter.max_munitions);
 		ctx.beginPath();
 		ctx.moveTo(0, 0);
-		ctx.lineTo(0, -2.4 * this.radius);
-		ctx.lineWidth = this.radius / 3;
+		ctx.lineTo(0, -2 * this.radius);
 		ctx.stroke();
 
 		// Draw thrusters
@@ -67,18 +74,19 @@ class Fighter extends GameObject {
 		ctx.fillStyle = this.get_color(this.life, 0, Fighter.max_life);
 		ctx.beginPath();
 		ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
-		ctx.fillStyle = this.body_color;
 		ctx.fill();
 	}
 
 	// Simulate the object
 	simulate(dt, objects) {
 		// Controller
-		if (this.controller) { this.controller.control(this, dt, objects); }
-		
+		if (this.controller) {
+			this.controller.control(this, dt, objects);
+		}
+
 		// Cannon cooldown
 		this.cannon_cooldown -= dt;
-		
+
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Fighter.friction));
 
@@ -90,16 +98,14 @@ class Fighter extends GameObject {
 		if (this.pos.x < 0) {
 			this.pos.x = 0;
 			this.wall_collide();
-		}
-		else if (this.pos.x > width) {
+		} else if (this.pos.x > width) {
 			this.pos.x = width;
 			this.wall_collide();
 		}
 		if (this.pos.y < 0) {
 			this.pos.y = 0;
 			this.wall_collide();
-		}
-		else if (this.pos.y > height) {
+		} else if (this.pos.y > height) {
 			this.pos.y = height;
 			this.wall_collide();
 		}
@@ -117,39 +123,47 @@ class Fighter extends GameObject {
 
 	// Functions for controller
 	// Apply thrust controll force
-	command_thrust(level, dt) {
+	command_thrust(throttle, dt) {
 		if (this.fuel <= 0) {
 			return;
 		}
 
-		if (isNaN(level)) {
-			console.log("thrust level NaN");
+		if (isNaN(throttle)) {
+			console.log("thrust throttle NaN");
 			return;
 		}
 
 		// Anti cheat
-		if (level < 0) { level = 0; }
-		if (level > 1) { level = 1; }
-		
-		this.fuel -= level * Fighter.fuel_consumption * dt;
+		if (throttle < 0) {
+			throttle = 0;
+		}
+		if (throttle > 1) {
+			throttle = 1;
+		}
 
-		let thrustForce = new Vector2(0, -level * Fighter.thrust_command_authority);
+		this.fuel -= throttle * Fighter.fuel_consumption * dt;
+
+		let thrustForce = new Vector2(0, -throttle * Fighter.thrust_command_authority);
 		thrustForce.rotate(this.rot);
 		this.frc.add(thrustForce);
 	}
 
 	// Apply rotation controll force
-	command_rotation(level) {
-		if (isNaN(level)) {
-			console.log("rotation level NaN");
+	command_rotation(throttle) {
+		if (isNaN(throttle)) {
+			console.log("rotation throttle NaN");
 			return;
 		}
 
 		// Anti cheat
-		if (level < -1) { level = -1; }
-		if (level > 1) { level = 1; }
+		if (throttle < -1) {
+			throttle = -1;
+		}
+		if (throttle > 1) {
+			throttle = 1;
+		}
 
-		this.rotfrc = level * Fighter.rot_command_authority;
+		this.rotfrc = throttle * Fighter.rot_command_authority;
 	}
 
 	// Spawn a bullet
@@ -164,9 +178,9 @@ class Fighter extends GameObject {
 		this.cannon_cooldown = Fighter.cannon_fire_cooldown; // reset cooldown
 
 		// Create new bullet
-		let bullet = new Bullet(this.pos, this.vel);
+		let bullet = new Bullet(this.pos, this.vel, this.r);
 		// Add cannon position
-		let added_pos = new Vector2(0, -2.5 * this.radius);
+		let added_pos = new Vector2(0, -2.1 * this.radius);
 		added_pos.rotate(this.rot);
 		bullet.pos.add(added_pos);
 		// Add my velocity
@@ -179,23 +193,19 @@ class Fighter extends GameObject {
 		return true;
 	}
 
-	collision(object)
-	{
+	collision(object) {
 		if (object instanceof Bullet) {
 			this.life -= 10;
 			object.alive = false; // Destroy the bullet
-		}
-		else if (object instanceof Fighter) {
+		} else if (object instanceof Fighter) {
 			this.life -= 100;
 		}
 	}
 
-	die()
-	{
+	die() {
 		if (this.controller instanceof Player1Controller) {
 			console.log("Player 1 died");
-		}
-		else if (this.controller instanceof Player2Controller) {
+		} else if (this.controller instanceof Player2Controller) {
 			console.log("Player 2 died");
 		}
 	}
