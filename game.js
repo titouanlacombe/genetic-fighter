@@ -1,13 +1,12 @@
 // Initialize the game
-function init()
-{
+function init() {
 	let objects = []; // Array of game objects
-	
+
 	// Spawns the fighters
 	for (let i = 0; i < 0; i++) {
 		objects.push(new Fighter());
 	}
-	
+
 	let player = new Fighter();
 	player.color = "#9a39a3";
 	player.controller = new PlayerController(player);
@@ -26,8 +25,7 @@ function init()
 }
 
 // Draw the new frame
-function draw(objects)
-{
+function draw(objects) {
 	// Retrieve the drawing context
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
@@ -42,12 +40,11 @@ function draw(objects)
 	});
 
 	ctx.restore();
-	// running = false; // Stop at frame 1 (debug tool)
+	running = false; // Stop at frame 1 (debug tool)
 }
 
 // Simulate a step
-function simulate(dt, objects)
-{
+function simulate(dt, objects) {
 	// console.log(objects);
 	// Simulate the objects
 	objects.forEach(object => {
