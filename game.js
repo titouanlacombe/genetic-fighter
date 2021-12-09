@@ -7,18 +7,26 @@ function init() {
 		objects.push(new Fighter());
 	}
 
-	let player = new Fighter();
-	player.color = "#9a39a3";
-	player.controller = new PlayerController(player);
-	objects.push(player);
+	let player1 = new Fighter(100, 200);
+	player1.color = "#9a39a3";
+	player1.controller = new PlayerController();
+	objects.push(player1);
+
+	let player2 = new Fighter(200, 100);
+	player2.color = "#fff";
+	player2.controller = new Player2Controller();
+	objects.push(player2);
 
 	// User input handeling
+
 	document.addEventListener('keydown', (e) => {
-		player.controller.input(e.code, true);
+		player1.controller.input(e.code, true);
+		player2.controller.input(e.code, true);
 	});
 
 	document.addEventListener('keyup', (e) => {
-		player.controller.input(e.code, false);
+		player1.controller.input(e.code, false);
+		player2.controller.input(e.code, false);
 	});
 
 	return objects;

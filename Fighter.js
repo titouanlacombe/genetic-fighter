@@ -1,6 +1,5 @@
 // Class Fighter, game object, main player
-class Fighter extends GameObject
-{
+class Fighter extends GameObject {
 	static fire_vel = 5;
 	static vel_friction = 0.05;
 	static rotvel_friction = 0.1;
@@ -8,11 +7,10 @@ class Fighter extends GameObject
 	static thrust_command_authority = 0.20;
 	static fuel_consumption = 0.2;
 
-	constructor()
-	{
+	constructor(x, y) {
 		super();
 
-		this.pos.set(300, 150);
+		this.pos.set(x, y);
 		this.vel.set(0, 0);
 
 		this.color = "white";
@@ -27,8 +25,7 @@ class Fighter extends GameObject
 	}
 
 	// Draw the object
-	draw(ctx)
-	{
+	draw(ctx) {
 		// Draw the body
 		ctx.beginPath();
 		ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
@@ -45,13 +42,12 @@ class Fighter extends GameObject
 	}
 
 	// Simulate the object
-	simulate(dt, objects)
-	{
+	simulate(dt, objects) {
 		if (this.controller) { this.controller.control(this, dt, objects); }
-		
+
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Fighter.vel_friction));
-		
+
 		// Rotate friction
 		this.rotfrc += this.rotvel * -Fighter.rotvel_friction;
 
@@ -76,11 +72,10 @@ class Fighter extends GameObject
 		// Objects Collisions
 		objects.forEach(object => {
 			if (object != this
-				&& dist(object.pos, this.pos).norm() < object.radius + this.radius)
-			{
+				&& dist(object.pos, this.pos).norm() < object.radius + this.radius) {
 				if (object instanceof Bullet) {
 					this.life -= 10;
-					
+
 					// Destroy the bullet
 					object.alive = false;
 				}
@@ -97,8 +92,7 @@ class Fighter extends GameObject
 		}
 	}
 
-	wall_collide()
-	{
+	wall_collide() {
 		// Reset vel
 		this.vel.set();
 		this.life -= 50;
@@ -106,8 +100,7 @@ class Fighter extends GameObject
 
 	// Functions for controller
 	// Apply thrust controll force
-	command_thrust(level, dt)
-	{
+	command_thrust(level, dt) {
 		if (this.fuel <= 0) {
 			return;
 		}
@@ -124,8 +117,7 @@ class Fighter extends GameObject
 	}
 
 	// Apply rotation controll force
-	command_rotation(level)
-	{
+	command_rotation(level) {
 		// Anti cheat
 		if (level < -1) { level = -1; }
 		if (level > 1) { level = 1; }
@@ -134,17 +126,16 @@ class Fighter extends GameObject
 	}
 
 	// Spawn a bullet
-	fire(objects)
-	{
+	fire(objects) {
 		if (this.munitions <= 0) {
 			return;
 		}
-		
+
 		// 	this.munitions--;
 		let bullet = new Bullet(this.pos, this.vel);
 
 		// Added position
-		let added_pos = new Vector2(0, -2 * this.radius);
+		let added_pos = new Vector2(0, -3 * this.radius);
 		added_pos.rotate(this.rot);
 		bullet.pos.add(added_pos);
 
