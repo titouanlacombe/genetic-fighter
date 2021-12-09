@@ -79,7 +79,6 @@ class Fighter extends GameObject
 				&& dist(object.pos, this.pos).norm() < object.radius + this.radius)
 			{
 				if (object instanceof Bullet) {
-					console.log("hit!");
 					this.life -= 10;
 					
 					// Destroy the bullet
