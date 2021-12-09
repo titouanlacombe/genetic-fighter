@@ -17,9 +17,13 @@ class Fighter extends GameObject {
 		this.pos.set(x, y);
 		this.vel.set();
 		
-		this.fuel = 100;
-		this.life = 100;
-		this.munitions = 100;
+		this.max_fuel = 100;
+		this.max_life = 100;
+		this.max_munitions = 100;
+		
+		this.fuel = this.max_fuel;
+		this.life = this.max_life;
+		this.munitions = this.max_munitions;
 		
 		this.color = "white";
 		this.controller = null;
