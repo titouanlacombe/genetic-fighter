@@ -73,7 +73,7 @@ class Fighter extends GameObject {
 		// dies if life < 0
 		if (this.life <= 0) {
 			this.color = "red";
-			// this.alive = false;
+			this.alive = false;
 		}
 	}
 
@@ -91,6 +91,11 @@ class Fighter extends GameObject {
 			return;
 		}
 
+		if (isNaN(level)) {
+			console.log("thrust level NaN");
+			return;
+		}
+
 		// Anti cheat
 		if (level < 0) { level = 0; }
 		if (level > 1) { level = 1; }
@@ -104,6 +109,11 @@ class Fighter extends GameObject {
 
 	// Apply rotation controll force
 	command_rotation(level) {
+		if (isNaN(level)) {
+			console.log("rotation level NaN");
+			return;
+		}
+
 		// Anti cheat
 		if (level < -1) { level = -1; }
 		if (level > 1) { level = 1; }
@@ -117,7 +127,7 @@ class Fighter extends GameObject {
 			return;
 		}
 
-		// 	this.munitions--;
+		// this.munitions--;
 		let bullet = new Bullet(this.pos, this.vel);
 
 		// Added position

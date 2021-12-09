@@ -4,7 +4,6 @@ let running = true; // If false stops the loops
 let frame = 0; // Number of the current frame
 let previous_time = 0;
 
-
 // Init and launch the loop
 function _init() {
 	update_canvas_size();

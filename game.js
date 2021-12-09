@@ -22,13 +22,16 @@ function player_factory(x, y, color, controller)
 function init() {
 	let objects = []; // Array of game objects
 
-	// Spawns the fighters
-	for (let i = 0; i < 0; i++) {
-		objects.push(new Fighter());
+	// Spawns the AIs
+	for (let i = 0; i < 500; i++) {
+		let f = new Fighter();
+		f.controller = new AIController();
+		objects.push(f);
 	}
-
-	objects.push(player_factory(100, height / 2, "#9a39a3", new Player1Controller()));
-	objects.push(player_factory(width - 100, height / 2, "#4287f5", new Player2Controller()));
+	
+	// Spawns the Players
+	// objects.push(player_factory(100, height / 2, "#9a39a3", new Player1Controller()));
+	// objects.push(player_factory(width - 100, height / 2, "#4287f5", new Player2Controller()));
 
 	return objects;
 }
