@@ -21,6 +21,7 @@ improve game? {
 	improve models?
 	improve feel
 	improve fuel/life/munitions
+	add obstacles ?
 }
 
 begin modeling evolution simmulation
