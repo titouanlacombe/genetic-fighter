@@ -6,25 +6,33 @@ class Fighter extends GameObject {
 	static rot_command_authority = 0.01;
 	static thrust_command_authority = 0.20;
 	static fuel_consumption = 0.2;
+	static cannon_fire_cooldown = 4;
 
 	constructor(x, y) {
 		super();
 
-		this.pos.set(x, y);
-		this.vel.set(0, 0);
+		if (!x) { x = Math.random() * width; }
+		if (!y) { y = Math.random() * height; }
 
 		this.color = "#FFF";
 		this.canon_color = this.color;
 		this.thrusters_color = this.color;
 		this.body_color = this.color;
 
-		this.controller = null;
+		this.pos.set(x, y);
+		this.vel.set();
+		
+		this.max_fuel = 100;
+		this.max_life = 100;
+		this.max_munitions = 100;
+		
+		this.fuel = this.max_fuel;
+		this.life = this.max_life;
+		this.munitions = this.max_munitions;
 
-		this.fuel = 100;
-		this.life = 100;
-		this.munitions = 100;
-
+    this.controller = null;
 		this.radius = 7;
+		this.cannon_cooldown = 0;
 	}
 
 	// Draw the object
@@ -107,10 +115,11 @@ class Fighter extends GameObject {
 		// dies if life < 0
 		if (this.life <= 0) {
 			this.body_color = "#FF0000";
-			// this.alive = false;
+			this.alive = false;
 		}
 	}
 
+	// TODO integrate into collision
 	wall_collide() {
 		// Reset vel
 		this.vel.set();
@@ -121,6 +130,11 @@ class Fighter extends GameObject {
 	// Apply thrust controll force
 	command_thrust(level, dt) {
 		if (this.fuel <= 0) {
+			return;
+		}
+
+		if (isNaN(level)) {
+			console.log("thrust level NaN");
 			return;
 		}
 
@@ -138,6 +152,11 @@ class Fighter extends GameObject {
 
 	// Apply rotation controll force
 	command_rotation(level) {
+		if (isNaN(level)) {
+			console.log("rotation level NaN");
+			return;
+		}
+
 		// Anti cheat
 		if (level < -1) { level = -1; }
 		if (level > 1) { level = 1; }
@@ -146,13 +165,23 @@ class Fighter extends GameObject {
 	}
 
 	// Spawn a bullet
-	fire(objects) {
+	// Return success
+	fire(dt, objects) {
 		if (this.munitions <= 0) {
-			return;
+			return false;
+		}
+		
+		// Cannon cooldown
+		if (this.cannon_cooldown > 0) {
+			this.cannon_cooldown -= dt;
+			return false;
 		}
 
 		this.munitions--;
 		this.canon_color = merge_colors("#FF0000", this.canon_color, 2);
+		// reset cooldown
+		this.cannon_cooldown = Fighter.cannon_fire_cooldown;
+
 		let bullet = new Bullet(this.pos, this.vel);
 
 		// Added position
@@ -166,5 +195,28 @@ class Fighter extends GameObject {
 		bullet.vel.add(added_vel);
 
 		objects.push(bullet);
+
+		return true;
+	}
+
+	collision(object)
+	{
+		if (object instanceof Bullet) {
+			this.life -= 10;
+			object.alive = false; // Destroy the bullet
+		}
+		else {
+			this.life -= 100;
+		}
+	}
+
+	die()
+	{
+		if (this.controller instanceof Player1Controller) {
+			console.log("Player 1 died");
+		}
+		else if (this.controller instanceof Player2Controller) {
+			console.log("Player 2 died");
+		}
 	}
 }

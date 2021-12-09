@@ -1,5 +1,5 @@
 // Control the object via key presses
-class PlayerController extends Controller
+class Player1Controller extends Controller
 {
 	constructor() {
 		super();
@@ -12,7 +12,7 @@ class PlayerController extends Controller
 		object.command_rotation(this.rotate);
 		object.command_thrust(this.thrust, dt);
 		if (this.fire) {
-			object.fire(objects);
+			object.fire(dt, objects);
 			this.fire = false;
 		}
 	}

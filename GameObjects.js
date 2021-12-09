@@ -23,7 +23,6 @@ class GameObject
 	
 	simulate(objects)
 	{
-		abstractError();
 	}
 	
 	_draw(ctx)
@@ -42,7 +41,6 @@ class GameObject
 
 	draw(ctx)
 	{
-		abstractError();
 	}
 
 	// Apply euler integration to the object properties
@@ -57,5 +55,13 @@ class GameObject
 		this.rotvel += this.rotfrc * dt;
 		this.rot += this.rotvel * dt;
 		this.rotfrc = 0;
+	}
+
+	collision(object)
+	{
+	}
+
+	die()
+	{
 	}
 }

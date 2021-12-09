@@ -9,11 +9,13 @@ class Vector2
 	set(x = 0, y = 0) {
 		this.x = x;
 		this.y = y;
+		return this;
 	}
 
 	setV(v) {
 		this.x = v.x;
 		this.y = v.y;
+		return this;
 	}
 
 	clone() {
@@ -26,6 +28,15 @@ class Vector2
 		let tempX = this.x; // Very important
 		this.x = this.x * cs - this.y * sn;
 		this.y = tempX * sn + this.y * cs;
+		return this;
+	}
+
+	angle() {
+		return Math.atan2(this.y, this.x);
+	}
+
+	scalar(v) {
+		return v.x * this.x + v.y * this.y;
 	}
 
 	add(v) {
@@ -57,7 +68,13 @@ class Vector2
 	}
 
 	normalize(norm = 1) {
-		this.mul(norm / this.norm());
+		let current_norm = this.norm();
+		if (current_norm == 0) {
+			return this;
+		}
+
+		this.mul(norm / current_norm);
+		return this;
 	}
 
 	draw(ctx) {

@@ -1,10 +1,11 @@
-make 1v1
-
 add thruster
 color of:
 thruster => fuel
 body => life
 cannon => munitions
+
+unnable tu turn if vel too low
+wall collide handle same as object collide
 
 make small basic AI {
 	force priority:
@@ -22,6 +23,7 @@ improve game? {
 	improve feel
 	improve fuel/life/munitions
 	add obstacles ?
+	improve controller design (currently not able to force call of command functions + not access to dt etc...)
 }
 
 begin modeling evolution simmulation

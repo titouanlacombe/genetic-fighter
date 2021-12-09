@@ -34,4 +34,12 @@ class Bullet extends GameObject
 			this.alive = false;
 		}
 	}
+
+	collision(object)
+	{
+		if (object instanceof Bullet) {
+			// les Bullets s'annulent
+			this.alive = false;
+		}
+	}
 }

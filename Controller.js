@@ -9,6 +9,5 @@ class Controller
     }
 
     input() {
-        abstractError();
     }
 }

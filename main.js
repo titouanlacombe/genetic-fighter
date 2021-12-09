@@ -4,7 +4,6 @@ let running = true; // If false stops the loops
 let frame = 0; // Number of the current frame
 let previous_time = 0;
 
-
 // Init and launch the loop
 function _init() {
 	update_canvas_size();
@@ -13,9 +12,11 @@ function _init() {
 }
 
 function loop(time) {
-	let dt = (time - previous_time) / 16;
+	let dt = (time - previous_time);
+	// console.log("fps: ", 1000 / dt);
+	dt /= 16;
 	previous_time = time;
-	
+
 	// dt = 1; // fix delta time to a constant (debug tool)
 
 	simulate(dt, global_objects);
