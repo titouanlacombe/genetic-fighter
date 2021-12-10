@@ -2,6 +2,9 @@ improve AI {
 	3- estimate bullet travel time, aim accordingely, with target current speed
 	states (evading, aiming, suicide)
 	pid for targets
+	when no focus => state search
+	no munitions => suicide
+	no fuel => turret
 }
 
 improve game? {
