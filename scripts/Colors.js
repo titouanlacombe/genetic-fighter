@@ -1,7 +1,13 @@
 class Color
 {
 	static white = new Color(255, 255, 255);
+	static black = new Color(0, 0, 0);
 	static red = new Color(255, 0, 0);
+	static green = new Color(0, 255, 0);
+	static blue = new Color(0, 0, 255);
+	static yellow = new Color(255, 255, 0);
+	static magenta = new Color(255, 0, 255);
+	static cyan = new Color(0, 255, 255);
 
 	constructor(r, g, b) {
 		this.r = r;

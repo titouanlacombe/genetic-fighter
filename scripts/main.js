@@ -26,11 +26,11 @@ function loop(new_time) {
 	
 	// console.log("fps: ", 1000 / dt);
 
-	dt *= 1 / 64; // Correction so that dt is close to 1 on 60 fps
+	dt *= 1 / 128; // Correction so that dt is close to 1 on 60 fps
 	// dt = 1; // fix delta time to a constant (debug tool)
 
-	simulate(dt, global_objects);
 	draw(global_objects);
+	simulate(dt, global_objects);
 
 	frames++;
 	// console.log(frames);

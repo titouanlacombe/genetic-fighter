@@ -21,7 +21,7 @@ function init() {
 	let objects = []; // Array of game objects
 
 	// Spawns the AIs
-	for (let i = 0; i < 3; i++) {
+	for (let i = 0; i < 2; i++) {
 		let f = new Fighter();
 		f.controller = new AIController();
 		objects.push(f);
@@ -83,6 +83,7 @@ function get_winner(objects) {
 }
 
 function exit() {
+	draw(global_objects);
 	if (winner) {
 		console.log("Winner: ", winner);
 	}

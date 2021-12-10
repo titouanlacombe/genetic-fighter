@@ -90,10 +90,13 @@ class Vector2
 	}
 
 	// Draw a debug of the vector at ctx
-	draw(ctx) {
+	draw(ctx, color = Color.white, scale = 1) {
+		let v = this.clone().mul(scale);
+		ctx.strokeStyle = color;
+
 		ctx.beginPath();
 		ctx.moveTo(0, 0);
-		ctx.lineTo(this.x, this.y);
+		ctx.lineTo(v.x, v.y);
 		ctx.stroke();
 	}
 	

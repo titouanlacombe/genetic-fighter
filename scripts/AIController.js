@@ -10,11 +10,13 @@ class AIController extends Controller {
 		this.min_fire_error = 0.05;
 		this.loose_focus_dist = 500;
 		this.direction_importance = 1;
-		this.aim_importance = 0;
+		this.aim_importance = 2;
 		this.target_speed = 2;
-		this.avoid_fighter_k = 0.01;
-		this.wanted_fighter_dist = 300;
-		this.avoid_bullet_k = 0.3;
+		this.avoid_fighter_k = 0.5;
+		this.wanted_fighter_dist = 200;
+		this.avoid_bullet_k = 3;
+		this.min_bullet_dist = 40;
+		this.min_thrust = 0.1;
 
 		// Variables
 		this.focused = null;
@@ -69,27 +71,33 @@ class AIController extends Controller {
 			}
 		}
 
-		let ctx = object.apply_transform_ctx(get_context()); // Debug drawing context
-		ctx.strokeStyle = Color.red;
-		ctx.lineWidth = 3;
+		let ctx = get_context(); // Debug drawing context
+		ctx.translate(object.pos.x, object.pos.y);
+		ctx.lineWidth = 2;
 
 		// vector representing the direction & speed we want to go
 		let target_vel = new Vector2();
 
 		near_by_objects.forEach(threat => {
-			let distance_v = Vector2.dist(threat.pos, object.pos);
+			let distance_v = Vector2.dist(object.pos, threat.pos);
 			let distance = distance_v.norm();
-
+			
 			if (distance != 0) {
 				// avoid near by fighter
 				if (threat instanceof Fighter) {
-					let norm = this.wanted_fighter_dist - distance;
-					norm *= 1 / distance;
-					target_vel.add(distance_v.normalize(this.avoid_fighter_k * norm));
+					let norm = (this.wanted_fighter_dist / distance) ** 2 - 1;
+					let avoidance_v = distance_v.normalize(this.avoid_fighter_k * norm);
+					target_vel.add(avoidance_v);
+
+					avoidance_v.draw(ctx, Color.cyan, 100);
 				}
 				// avoid near by bullets
 				else if (threat instanceof Bullet) {
-					target_vel.add(distance_v.normalize(this.avoid_bullet_k * (1 / distance)));
+					let norm = this.min_bullet_dist / (distance ** 2);
+					let avoidance_v = distance_v.normalize(this.avoid_bullet_k * norm);
+					target_vel.add(avoidance_v);
+
+					avoidance_v.draw(ctx, Color.magenta, 100);
 				}
 			}
 		});
@@ -100,18 +108,22 @@ class AIController extends Controller {
 		let current_direction = Vector2.fromAngle(current_aim); // current direction vector
 		
 		// correct to desired speed
+		target_vel.draw(ctx, Color.red, 100);
 		target_vel.normalize(this.target_speed);
-		target_vel.clone().mul(10).draw(ctx);
-		let vel_change = Vector2.dist(object.vel, target_vel);
+		object.vel.draw(ctx, Color.green, 20);
+		let vel_change = Vector2.dist(target_vel, object.vel);
+		vel_change.draw(ctx, Color.yellow, 10);
 
 		// thrust if we are pointing in the direction we want to go
 		let thrust = vel_change.scalar(current_direction);
+		thrust += this.min_thrust;
 		// rotate to go where we want
 		let rotation = (vel_change.angle() - current_aim) * this.direction_importance;
 
 		// rotate to put target in center
 		// improvement: estimate bullet travel time, aim accordingely, with target current speed
 		let target = Vector2.dist(this.focused.pos, object.pos).angle();
+		// Vector2.fromAngle(target).draw(ctx, Color.cyan, 40);
 		rotation += (target - current_aim) * this.aim_importance;
 
 		// scale rotation force
