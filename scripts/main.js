@@ -6,9 +6,16 @@ let time = 0;
 
 // Init and launch the loop
 function _init() {
+	running = true;
 	update_canvas_size();
 	global_objects = init();
 	loop(0);
+}
+
+// Retrieve the drawing context
+function get_context() {
+	var canvas = document.getElementById('canvas');
+	return canvas.getContext('2d');
 }
 
 function loop(new_time) {

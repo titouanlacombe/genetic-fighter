@@ -9,7 +9,12 @@ class AIController extends Controller {
 		this.cannon_fire_cooldown = 4;
 		this.min_fire_error = 0.05;
 		this.loose_focus_dist = 500;
-		this.direction_importance = 0;
+		this.direction_importance = 1;
+		this.aim_importance = 0;
+		this.target_speed = 2;
+		this.avoid_fighter_k = 0.01;
+		this.wanted_fighter_dist = 300;
+		this.avoid_bullet_k = 0.3;
 
 		// Variables
 		this.focused = null;
@@ -63,44 +68,60 @@ class AIController extends Controller {
 			}
 		}
 
-		let thrust = 0; // wanted thrust
-		let rotation = 0; // wanted aim direction
-		let current_aim = (object.rot - Math.PI / 2) % (2 * Math.PI); // current aim angle
 		// vector representing the direction & speed we want to go
-		let target_direction = new Vector2();
+		let target_vel = new Vector2();
 
-		near_by_objects.forEach(object => {
-			// avoid near by fighter
+		near_by_objects.forEach(threat => {
+			let distance_v = Vector2.dist(threat.pos, object.pos);
+			let distance = distance_v.norm();
 
-			// avoid near by bullets
-
-			// avoid near by walls
+			if (distance != 0) {
+				// avoid near by fighter
+				if (threat instanceof Fighter) {
+					let norm = this.wanted_fighter_dist - distance;
+					norm *= 1 / distance;
+					target_vel.add(distance_v.normalize(this.avoid_fighter_k * norm));
+				}
+				// avoid near by bullets
+				else if (threat instanceof Bullet) {
+					target_vel.add(distance_v.normalize(this.avoid_bullet_k * (1 / distance)));
+				}
+			}
 		});
 
-		// thrust if we are pointing in the direction we want to go
-		thrust += target_direction.scalar(object.vel.clone().normalize());
+		// avoid near by walls
 
+		let current_aim = (object.rot - Math.PI / 2) % (2 * Math.PI); // current aim angle
+		let current_direction = Vector2.fromAngle(current_aim); // current direction vector
+		
+		// correct to desired speed
+		target_vel.normalize(this.target_speed);
+		let vel_change = Vector2.dist(object.vel, target_vel);
+
+		// thrust if we are pointing in the direction we want to go
+		let thrust = vel_change.scalar(current_direction);
 		// rotate to go where we want
-		rotation += (target_direction.angle() - current_aim) * this.direction_importance;
+		let rotation = (vel_change.angle() - current_aim) * this.direction_importance;
 
 		// rotate to put target in center
 		// improvement: estimate bullet travel time, aim accordingely, with target current speed
-		rotation += Vector2.dist(this.focused.pos, object.pos).angle() - current_aim;
+		let target = Vector2.dist(this.focused.pos, object.pos).angle();
+		rotation += (target - current_aim) * this.aim_importance;
 
 		// scale rotation force
 		rotation *= this.rotation_sensibility;
 
+		object.command_thrust(thrust, dt);
+		object.command_rotation(rotation);
+
 		// fire if current aim close enough to targeted aim && cooldown passed
 		if (this.cannon_cooldown < 0 &&
-			Math.abs(rotation) < this.min_fire_error) {
+			Math.abs(target - current_aim) < this.min_fire_error) {
 			if (object.fire(dt, objects)) {
 				this.cannon_cooldown = this.cannon_fire_cooldown;
 			}
 		} else {
 			this.cannon_cooldown -= dt;
 		}
-
-		object.command_thrust(thrust, dt);
-		object.command_rotation(rotation);
 	}
 }

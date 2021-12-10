@@ -102,4 +102,9 @@ class Vector2
 		let d = v1.clone();
 		return d.sub(v2);
 	}
+
+	// Create a unit vector from an angle
+	static fromAngle(angle) {
+		return new Vector2(Math.cos(angle), Math.sin(angle));
+	}
 }

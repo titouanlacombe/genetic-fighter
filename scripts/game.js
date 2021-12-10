@@ -21,14 +21,14 @@ function init() {
 	let objects = []; // Array of game objects
 
 	// Spawns the AIs
-	for (let i = 0; i < 1000; i++) {
+	for (let i = 0; i < 3; i++) {
 		let f = new Fighter();
 		f.controller = new AIController();
 		objects.push(f);
 	}
 
 	// Spawns the Players
-	objects.push(player_factory(100, height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
+	// objects.push(player_factory(100, height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
 	// objects.push(player_factory(width - 100, height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
 
 	return objects;
@@ -36,9 +36,7 @@ function init() {
 
 // Draw the new frame
 function draw(objects) {
-	// Retrieve the drawing context
-	var canvas = document.getElementById('canvas');
-	var ctx = canvas.getContext('2d');
+	ctx = get_context();
 
 	// Clear the canvas
 	ctx.fillStyle = "black";
@@ -97,6 +95,6 @@ function exit() {
 // Reseting the sim
 document.addEventListener('keydown', (e) => {
 	if (e.code == "KeyR") {
-		global_objects = init();
+		_init();
 	}
 });
