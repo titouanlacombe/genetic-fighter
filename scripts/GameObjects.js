@@ -13,36 +13,34 @@ class GameObject {
 		this.alive = true;
 	}
 
-	_simulate(dt, objects) {
-		this.euler(dt);
-		this.simulate(dt, objects);
+	_simulate() {
+		this.euler();
+		this.simulate();
 	}
 
-	simulate(objects) {
+	simulate() {
 		// Empty
 	}
 
 	// Translate & rotate to the object
-	apply_transform_ctx(ctx) {
+	apply_transform_ctx() {
 		ctx.translate(this.pos.x, this.pos.y);
 		ctx.rotate(this.rot);
-		return ctx;
 	}
 
-	_draw(ctx) {
+	_draw() {
 		ctx.save();
-		this.apply_transform_ctx(ctx);
-		this.draw(ctx);
-		// reseting ctx transformations by restoring saved state
-		ctx.restore();
+		this.apply_transform_ctx();
+		this.draw();
+		ctx.restore(); // reseting ctx transformations by restoring saved state
 	}
 
-	draw(ctx) {
+	draw() {
 		// Empty
 	}
 
 	// Apply euler integration to the object properties
-	euler(dt) {
+	euler() {
 		// Translation
 		this.vel.add(this.frc.mul(dt));
 		this.pos.add(this.vel.clone().mul(dt));

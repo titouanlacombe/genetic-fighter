@@ -1,19 +1,23 @@
-let width, height; // Dimentions of the canvas
-let global_objects; // State of the simulation
-let running = true; // If false stops the loops
+// Private
 let last_request_id; // Last request of requestAnimationFrame
+let running; // If false stops the loops
+
+// Public
+let width, height; // Dimentions of the canvas
 let frames = 0; // Number of the current frame
-let time = 0;
+let time = 0; // Time since the start
+let dt = 0; // Delta time between last frames
+let ctx; // 2D drawing context
 
 // Init and launch the loop
 function init() {
 	running = true;
 	update_canvas_size();
-	global_objects = initing();
+	initing();
 	last_request_id = window.requestAnimationFrame(loop);
 }
 
-// Retrieve the drawing context
+// Retrieve the canvas drawing context
 function get_context() {
 	let canvas = document.getElementById('canvas');
 	let ctx = canvas.getContext('2d');
@@ -21,26 +25,27 @@ function get_context() {
 	return ctx;
 }
 
+function fps() {
+	return 1000 / dt;
+}
+
 function loop(new_time) {
-	let dt = (new_time - time);
+	dt = (new_time - time);
+	// console.log("fps: ", fps());
 	time = new_time;
-	
-	// console.log("fps: ", 1000 / dt);
 
 	dt *= 1 / 128; // Correction so that dt is close to 1 on 60 fps
 	// dt = 1; // fix delta time to a constant (debug tool)
 
-	draw(global_objects);
-	simulate(dt, global_objects);
+	ctx = get_context();
+	draw();
+	simulate();
 
 	frames++;
 	// console.log(frames);
 
 	if (running) {
 		last_request_id = window.requestAnimationFrame(loop); // Comment to stop at frame 1 (debug tool)
-	}
-	else {
-		exiting();
 	}
 }
 
@@ -52,14 +57,9 @@ function exit() {
 // Callback to update the canvas size
 function update_canvas_size() {
 	let canvas = document.getElementById('canvas');
-
 	// Update the canvas size
-	canvas.width = canvas.parentElement.offsetWidth;
-	canvas.height = canvas.parentElement.offsetHeight;
-
-	width = canvas.width;
-	height = canvas.height;
-
+	width = canvas.width = canvas.parentElement.offsetWidth;
+	height = canvas.height = canvas.parentElement.offsetHeight;
 	// console.log(width, height);
 }
 

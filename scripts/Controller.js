@@ -5,7 +5,7 @@ class Controller
         // Empty
     }
 
-    control(object, dt, objects) {
+    control() {
         abstract_error();
     }
 

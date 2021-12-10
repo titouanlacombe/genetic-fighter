@@ -38,7 +38,7 @@ class AIController extends Controller {
 		});
 	}
 
-	get_near_by_objects(object, objects) {
+	get_near_by_objects(object) {
 		let near = [];
 		objects.forEach(object2 => {
 			if (object != object2 &&
@@ -65,11 +65,11 @@ class AIController extends Controller {
 	}
 
 	// fire if current aim close enough to targeted aim && cooldown passed
-	control_cannon(object, target, current_aim, dt, objects) {
+	control_cannon(object, target, current_aim) {
 		if (this.cannon_cooldown < 0 &&
 			Math.abs(target - current_aim) < this.min_fire_error) {
 			// Try to fire
-			if (object.fire(dt, objects)) {
+			if (object.fire()) {
 				// If success reset cooldown
 				this.cannon_cooldown = this.cannon_fire_cooldown;
 			}
@@ -78,7 +78,7 @@ class AIController extends Controller {
 		}
 	}
 
-	manage_direction(object, dt, objects, near_by_objects) {
+	manage_direction(object, near_by_objects) {
 		// vector representing the direction & speed we want to go
 		let target_vel = new Vector2();
 
@@ -128,7 +128,7 @@ class AIController extends Controller {
 		// improvement: estimate bullet travel time, aim accordingely, with target current speed
 		if (this.focused) {
 			let target = Vector2.dist(this.focused.pos, object.pos).angle();
-			this.control_cannon(object, target, current_aim, dt, objects);
+			this.control_cannon(object, target, current_aim);
 			// Vector2.fromAngle(target).draw(ctx, Color.cyan, 40);
 			rotation += (target - current_aim) * this.aim_importance;
 		}
@@ -136,19 +136,19 @@ class AIController extends Controller {
 		// scale rotation force
 		rotation *= this.rotation_sensibility;
 
-		object.command_thrust(thrust, dt);
+		object.command_thrust(thrust);
 		object.command_rotation(rotation);
 	}
 
-	control(object, dt, objects) {
-		let near_by_objects = this.get_near_by_objects(object, objects);
+	control(object) {
+		let near_by_objects = this.get_near_by_objects(object);
 		this.manage_focus(object, near_by_objects);
 
 		let ctx = get_context(); // Debug drawing context
 		ctx.translate(object.pos.x, object.pos.y);
 		ctx.lineWidth = 2;
 
-		this.manage_direction(object, dt, objects, near_by_objects);
+		this.manage_direction(object, near_by_objects);
 
 		ctx.restore();
 	}

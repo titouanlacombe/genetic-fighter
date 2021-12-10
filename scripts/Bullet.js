@@ -12,7 +12,7 @@ class Bullet extends GameObject {
 	}
 
 	// Draw the object
-	draw(ctx) {
+	draw() {
 		// Draw the body
 		ctx.beginPath();
 		ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
@@ -21,7 +21,7 @@ class Bullet extends GameObject {
 	}
 
 	// Simulate the object
-	simulate(dt, objects) {
+	simulate() {
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Bullet.friction));
 

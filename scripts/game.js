@@ -1,3 +1,4 @@
+let objects; // Objects in the simulation
 let players = [];
 let winner;
 
@@ -8,7 +9,6 @@ function player_factory(x, y, color, controller) {
 	document.addEventListener('keydown', (e) => {
 		controller.input(e.code, true);
 	});
-
 	document.addEventListener('keyup', (e) => {
 		controller.input(e.code, false);
 	});
@@ -16,47 +16,43 @@ function player_factory(x, y, color, controller) {
 	return player;
 }
 
-// Initialize the game
+// Initialize game
 function initing() {
-	let objects = []; // Array of game objects
+	objects = []; // Array of game objects
 
-	// Spawns the AIs
+	// Spawns AIs
 	for (let i = 0; i < 2; i++) {
 		let f = new Fighter();
 		f.controller = new AIController();
 		objects.push(f);
 	}
 
-	// Spawns the Players
+	// Spawns Players
 	// objects.push(player_factory(100, height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
 	// objects.push(player_factory(width - 100, height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
-
-	return objects;
 }
 
-// Draw the new frame
-function draw(objects) {
-	ctx = get_context();
-
-	// Clear the canvas
+// Draw new frame
+function draw() {
+	// Clear canvas
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, width, height);
 
-	// Draw the objects
+	// Draw objects
 	objects.forEach(object => {
-		object._draw(ctx);
+		object._draw();
 	});
 }
 
 // Simulate a step
-function simulate(dt, objects) {
+function simulate() {
 	// Handle collisions & out of bounds
 	CollisionManager.object_to_bounds(objects, 0, width, 0, height, true);
 	CollisionManager.object_to_object(objects);
 
 	// Simulate the objects
 	objects.forEach(object => {
-		object._simulate(dt, objects);
+		object._simulate();
 	});
 
 	// Remove objects when dead
@@ -69,6 +65,7 @@ function simulate(dt, objects) {
 
 	winner = get_winner(objects);
 	if (winner != null || objects.length == 0) {
+		exiting();
 		exit();
 	}
 }
@@ -85,7 +82,8 @@ function get_winner(objects) {
 }
 
 function exiting() {
-	draw(global_objects);
+	draw(objects);
+	
 	if (winner) {
 		console.log("Winner: ", winner);
 	}

@@ -45,7 +45,7 @@ class Fighter extends GameObject {
 		this.cannon_cooldown = 0;
 	}
 
-	draw_thruster(ctx, sign) {
+	draw_thruster(sign) {
 		ctx.beginPath();
 		ctx.moveTo(sign * this.radius * 0.8, 0);
 		ctx.lineTo(sign * this.radius * 0.8, this.radius * 1.3);
@@ -57,7 +57,7 @@ class Fighter extends GameObject {
 	}
 
 	// Draw the object
-	draw(ctx) {
+	draw() {
 		ctx.lineWidth = Fighter.lineWidth;
 
 		// Draw the cannon
@@ -80,10 +80,10 @@ class Fighter extends GameObject {
 	}
 
 	// Simulate the object
-	simulate(dt, objects) {
+	simulate() {
 		// Controller
 		if (this.controller) {
-			this.controller.control(this, dt, objects);
+			this.controller.control(this);
 		}
 
 		// Cannon cooldown
@@ -119,7 +119,7 @@ class Fighter extends GameObject {
 
 	// Functions for controller
 	// Apply thrust controll force
-	command_thrust(throttle, dt) {
+	command_thrust(throttle) {
 		if (this.fuel <= 0) {
 			return;
 		}
@@ -164,7 +164,7 @@ class Fighter extends GameObject {
 
 	// Spawn a bullet
 	// Return if success
-	fire(dt, objects) {
+	fire() {
 		// Munition or cannon not recharged
 		if (this.munitions <= 0 || this.cannon_cooldown > 0) {
 			return false;
