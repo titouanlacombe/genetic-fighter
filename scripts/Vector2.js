@@ -101,7 +101,7 @@ class Vector2
 	}
 	
 	// Return a new vector wich is the difference between 2 vectors
-	static dist(v1, v2) {
+	static diff(v1, v2) {
 		let d = v1.clone();
 		return d.sub(v2);
 	}
