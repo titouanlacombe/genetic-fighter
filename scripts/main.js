@@ -1,15 +1,16 @@
 let width, height; // Dimentions of the canvas
 let global_objects; // State of the simulation
 let running = true; // If false stops the loops
+let last_request_id; // Last request of requestAnimationFrame
 let frames = 0; // Number of the current frame
 let time = 0;
 
 // Init and launch the loop
-function _init() {
+function init() {
 	running = true;
 	update_canvas_size();
-	global_objects = init();
-	loop(0);
+	global_objects = initing();
+	last_request_id = window.requestAnimationFrame(loop);
 }
 
 // Retrieve the drawing context
@@ -36,11 +37,16 @@ function loop(new_time) {
 	// console.log(frames);
 
 	if (running) {
-		window.requestAnimationFrame(loop); // Comment to stop at frame 1 (debug tool)
+		last_request_id = window.requestAnimationFrame(loop); // Comment to stop at frame 1 (debug tool)
 	}
 	else {
-		exit();
+		exiting();
 	}
+}
+
+function exit() {
+	window.cancelAnimationFrame(last_request_id);
+	running = false;
 }
 
 // Callback to update the canvas size
@@ -60,4 +66,4 @@ function update_canvas_size() {
 window.addEventListener('resize', update_canvas_size);
 
 // Wait for the window to be fully loaded before launching the game
-window.requestAnimationFrame(_init);
+last_request_id = window.requestAnimationFrame(init);

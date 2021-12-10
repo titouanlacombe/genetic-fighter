@@ -17,7 +17,7 @@ function player_factory(x, y, color, controller) {
 }
 
 // Initialize the game
-function init() {
+function initing() {
 	let objects = []; // Array of game objects
 
 	// Spawns the AIs
@@ -68,7 +68,9 @@ function simulate(dt, objects) {
 	});
 
 	winner = get_winner(objects);
-	running = winner == null && objects.length != 0;
+	if (winner != null || objects.length == 0) {
+		exit();
+	}
 }
 
 function get_winner(objects) {
@@ -82,7 +84,7 @@ function get_winner(objects) {
 	}
 }
 
-function exit() {
+function exiting() {
 	draw(global_objects);
 	if (winner) {
 		console.log("Winner: ", winner);
@@ -96,6 +98,7 @@ function exit() {
 // Reseting the sim
 document.addEventListener('keydown', (e) => {
 	if (e.code == "KeyR") {
-		_init();
+		exit();
+		init();
 	}
 });

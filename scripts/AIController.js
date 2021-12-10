@@ -49,32 +49,36 @@ class AIController extends Controller {
 		return near;
 	}
 
-	control(object, dt, objects) {
-		let near_by_objects = this.get_near_by_objects(object, objects);
-
-		// Manage focus
+	manage_focus(object, near_by_objects) {
+		// Change focus if => too far or dead
 		if (this.focused) {
-			// Change focus if => too far or dead
 			if (!this.focused.alive ||
 				Vector2.dist(this.focused.pos, object.pos).norm() > this.loose_focus_dist) {
 				this.focused = null;
 			}
 		}
 
+		// Try to find new focus
 		if (!this.focused) {
 			this.change_focus(object, near_by_objects);
-
-			// If can't find target: exit
-			if (!this.focused) {
-				// console.log("change_focus failed", object);
-				return;
-			}
 		}
+	}
 
-		let ctx = get_context(); // Debug drawing context
-		ctx.translate(object.pos.x, object.pos.y);
-		ctx.lineWidth = 2;
+	// fire if current aim close enough to targeted aim && cooldown passed
+	control_cannon(object, target, current_aim, dt, objects) {
+		if (this.cannon_cooldown < 0 &&
+			Math.abs(target - current_aim) < this.min_fire_error) {
+			// Try to fire
+			if (object.fire(dt, objects)) {
+				// If success reset cooldown
+				this.cannon_cooldown = this.cannon_fire_cooldown;
+			}
+		} else {
+			this.cannon_cooldown -= dt;
+		}
+	}
 
+	manage_direction(object, dt, objects, near_by_objects) {
 		// vector representing the direction & speed we want to go
 		let target_vel = new Vector2();
 
@@ -122,27 +126,29 @@ class AIController extends Controller {
 
 		// rotate to put target in center
 		// improvement: estimate bullet travel time, aim accordingely, with target current speed
-		let target = Vector2.dist(this.focused.pos, object.pos).angle();
-		// Vector2.fromAngle(target).draw(ctx, Color.cyan, 40);
-		rotation += (target - current_aim) * this.aim_importance;
+		if (this.focused) {
+			let target = Vector2.dist(this.focused.pos, object.pos).angle();
+			this.control_cannon(object, target, current_aim, dt, objects);
+			// Vector2.fromAngle(target).draw(ctx, Color.cyan, 40);
+			rotation += (target - current_aim) * this.aim_importance;
+		}
 
 		// scale rotation force
 		rotation *= this.rotation_sensibility;
 
 		object.command_thrust(thrust, dt);
 		object.command_rotation(rotation);
+	}
 
-		// fire if current aim close enough to targeted aim && cooldown passed
-		if (this.cannon_cooldown < 0 &&
-			Math.abs(target - current_aim) < this.min_fire_error) {
-			// Try to fire
-			if (object.fire(dt, objects)) {
-				// If success reset cooldown
-				this.cannon_cooldown = this.cannon_fire_cooldown;
-			}
-		} else {
-			this.cannon_cooldown -= dt;
-		}
+	control(object, dt, objects) {
+		let near_by_objects = this.get_near_by_objects(object, objects);
+		this.manage_focus(object, near_by_objects);
+
+		let ctx = get_context(); // Debug drawing context
+		ctx.translate(object.pos.x, object.pos.y);
+		ctx.lineWidth = 2;
+
+		this.manage_direction(object, dt, objects, near_by_objects);
 
 		ctx.restore();
 	}

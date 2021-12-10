@@ -1,17 +1,21 @@
 improve AI {
-	3- estimate bullet travel time, aim accordingely, with target current speed
-	states (evading, aiming, suicide)
-	pid for targets
-	when no focus => state search
-	no munitions => suicide
-	no fuel => turret
+	build 3D cylinder intersection engine (distance to intersection)
+	state machine (searching, positioning, aiming, suicide / escaping, turret)
+	
+	improve controller design (currently not able to force call of command functions + not access to dt etc...)
+	{
+		command_object => fighter calls own functions
+		pass object & objects as const
+	}
+	
+	build pid engine for controls
+	test: easiest state first: turret
 }
 
 improve game? {
 	unnable tu turn if vel too low?
 	improve feel
 	add obstacles ?
-	improve controller design (currently not able to force call of command functions + not access to dt etc...)
 }
 
 begin modeling evolution simmulation {
