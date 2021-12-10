@@ -29,7 +29,7 @@ class AIController extends Controller {
 		let min_distance = Infinity;
 		near_by_objects.forEach(potential => {
 			if (potential instanceof Fighter) {
-				let distance = Vector2.dist(object.pos, potential.pos).norm();
+				let distance = Vector2.diff(object.pos, potential.pos).norm();
 				if (distance < min_distance) {
 					this.focused = potential;
 					min_distance = distance;
@@ -42,7 +42,7 @@ class AIController extends Controller {
 		let near = [];
 		objects.forEach(object2 => {
 			if (object != object2 &&
-				Vector2.dist(object.pos, object2.pos).norm() < AIController.vision_range) {
+				Vector2.diff(object.pos, object2.pos).norm() < AIController.vision_range) {
 				near.push(object2);
 			}
 		});
@@ -53,7 +53,7 @@ class AIController extends Controller {
 		// Change focus if => too far or dead
 		if (this.focused) {
 			if (!this.focused.alive ||
-				Vector2.dist(this.focused.pos, object.pos).norm() > this.loose_focus_dist) {
+				Vector2.diff(this.focused.pos, object.pos).norm() > this.loose_focus_dist) {
 				this.focused = null;
 			}
 		}
@@ -83,7 +83,7 @@ class AIController extends Controller {
 		let target_vel = new Vector2();
 
 		near_by_objects.forEach(threat => {
-			let distance_v = Vector2.dist(object.pos, threat.pos);
+			let distance_v = Vector2.diff(object.pos, threat.pos);
 			let distance = distance_v.norm();
 			
 			if (distance != 0) {
@@ -115,7 +115,7 @@ class AIController extends Controller {
 		// target_vel.draw(ctx, Color.red, 100);
 		target_vel.normalize(this.target_speed);
 		// object.vel.draw(ctx, Color.green, 20);
-		let vel_change = Vector2.dist(target_vel, object.vel);
+		let vel_change = Vector2.diff(target_vel, object.vel);
 		// vel_change.draw(ctx, Color.yellow, 10);
 
 		// thrust if we are pointing in the direction we want to go
@@ -129,7 +129,7 @@ class AIController extends Controller {
 		// rotate to put target in center
 		// improvement: estimate bullet travel time, aim accordingely, with target current speed
 		if (this.focused) {
-			let target = Vector2.dist(this.focused.pos, object.pos).angle();
+			let target = Vector2.diff(this.focused.pos, object.pos).angle();
 			this.control_cannon(object, target, current_aim);
 			// Vector2.fromAngle(target).draw(ctx, Color.cyan, 40);
 			rotation += (target - current_aim) * this.aim_importance;

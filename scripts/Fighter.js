@@ -69,8 +69,8 @@ class Fighter extends GameObject {
 
 		// Draw thrusters
 		ctx.strokeStyle = this.get_color(this.fuel, 0, Fighter.max_fuel);
-		this.draw_thruster(ctx, 1);
-		this.draw_thruster(ctx, -1);
+		this.draw_thruster(1);
+		this.draw_thruster(-1);
 
 		// Draw the body
 		ctx.fillStyle = this.get_color(this.life, 0, Fighter.max_life);
