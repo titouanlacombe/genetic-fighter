@@ -1,5 +1,5 @@
 improve AI {
-	build 3D cylinder intersection engine (distance to intersection)
+	build 3D cylinder intersection engine (distance to intersection, evade point in space-time)
 	state machine (searching, positioning, aiming, suicide / escaping, turret)
 	
 	improve controller design (currently not able to force call of command functions + not access to dt etc...)

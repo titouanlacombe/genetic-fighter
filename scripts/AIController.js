@@ -120,7 +120,9 @@ class AIController extends Controller {
 
 		// thrust if we are pointing in the direction we want to go
 		let thrust = vel_change.scalar(current_direction);
-		thrust += this.min_thrust;
+		if (thrust < this.min_thrust) {
+			thrust = this.min_thrust;
+		}
 		// rotate to go where we want
 		let rotation = (vel_change.angle() - current_aim) * this.direction_importance;
 
@@ -144,7 +146,7 @@ class AIController extends Controller {
 		let near_by_objects = this.get_near_by_objects(object);
 		this.manage_focus(object, near_by_objects);
 
-		let ctx = get_context(); // Debug drawing context
+		ctx.save();
 		ctx.translate(object.pos.x, object.pos.y);
 		ctx.lineWidth = 2;
 

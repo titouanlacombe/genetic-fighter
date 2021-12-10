@@ -8,6 +8,7 @@ let frames = 0; // Number of the current frame
 let time = 0; // Time since the start
 let dt = 0; // Delta time between last frames
 let ctx; // 2D drawing context
+let fixed_dt = 1 // fix delta time to a constant (debug tool)
 
 // Init and launch the loop
 function init() {
@@ -15,14 +16,6 @@ function init() {
 	update_canvas_size();
 	initing();
 	last_request_id = window.requestAnimationFrame(loop);
-}
-
-// Retrieve the canvas drawing context
-function get_context() {
-	let canvas = document.getElementById('canvas');
-	let ctx = canvas.getContext('2d');
-	ctx.save();
-	return ctx;
 }
 
 function fps() {
@@ -35,9 +28,11 @@ function loop(new_time) {
 	time = new_time;
 
 	dt *= 1 / 128; // Correction so that dt is close to 1 on 60 fps
-	// dt = 1; // fix delta time to a constant (debug tool)
+	if (fixed_dt) dt = fixed_dt;
 
-	ctx = get_context();
+	let canvas = document.getElementById('canvas');
+	ctx = canvas.getContext('2d');
+
 	draw();
 	simulate();
 

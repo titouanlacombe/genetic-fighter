@@ -55,13 +55,17 @@ function simulate() {
 		object._simulate();
 	});
 
-	// Remove objects when dead
-	objects.forEach((object, index, array) => {
-		if (!object.alive) {
+	// Keep alive objects
+	let alive = [];
+	objects.forEach((object) => {
+		if (object.alive) {
+			alive.push(object);
+		}
+		else {
 			object.die();
-			array.splice(index, 1);
 		}
 	});
+	objects = alive;
 
 	winner = get_winner(objects);
 	if (winner != null || objects.length == 0) {
