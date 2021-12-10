@@ -10,13 +10,13 @@ class AIController extends Controller {
 		this.min_fire_error = 0.05;
 		this.loose_focus_dist = 500;
 		this.direction_importance = 1;
-		this.aim_importance = 2;
+		this.aim_importance = 0.9;
 		this.target_speed = 2;
 		this.avoid_fighter_k = 0.5;
 		this.wanted_fighter_dist = 200;
 		this.avoid_bullet_k = 3;
 		this.min_bullet_dist = 40;
-		this.min_thrust = 0.1;
+		this.min_thrust = 0;
 
 		// Variables
 		this.focused = null;
@@ -93,7 +93,7 @@ class AIController extends Controller {
 					let avoidance_v = distance_v.normalize(this.avoid_fighter_k * norm);
 					target_vel.add(avoidance_v);
 
-					avoidance_v.draw(ctx, Color.cyan, 100);
+					// avoidance_v.draw(ctx, Color.cyan, 100);
 				}
 				// avoid near by bullets
 				else if (threat instanceof Bullet) {
@@ -101,7 +101,7 @@ class AIController extends Controller {
 					let avoidance_v = distance_v.normalize(this.avoid_bullet_k * norm);
 					target_vel.add(avoidance_v);
 
-					avoidance_v.draw(ctx, Color.magenta, 100);
+					// avoidance_v.draw(ctx, Color.magenta, 100);
 				}
 			}
 		});
@@ -112,11 +112,11 @@ class AIController extends Controller {
 		let current_direction = Vector2.fromAngle(current_aim); // current direction vector
 		
 		// correct to desired speed
-		target_vel.draw(ctx, Color.red, 100);
+		// target_vel.draw(ctx, Color.red, 100);
 		target_vel.normalize(this.target_speed);
-		object.vel.draw(ctx, Color.green, 20);
+		// object.vel.draw(ctx, Color.green, 20);
 		let vel_change = Vector2.dist(target_vel, object.vel);
-		vel_change.draw(ctx, Color.yellow, 10);
+		// vel_change.draw(ctx, Color.yellow, 10);
 
 		// thrust if we are pointing in the direction we want to go
 		let thrust = vel_change.scalar(current_direction);

@@ -31,5 +31,10 @@ ai evolution mode {
 }
 
 add interesting mechanics {
+	parent choissisent partenaire le plus proche (pour éviter des mélanges de stratégies infructueux, element de random quand meme pour éviter de stuck)
+	need a lot of random in each generation (comment garder en vie? systeme de lignées?)
 	damage proportional to kinetic energy
+	mutation rate dynamic
+	ignore explored zones (DB needed ?)
+	comparer temp de convergence (fitness score reached)
 }
