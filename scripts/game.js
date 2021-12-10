@@ -85,7 +85,12 @@ function get_winner(objects) {
 }
 
 function exit() {
-	console.log("Winner: ", winner);
+	if (winner) {
+		console.log("Winner: ", winner);
+	}
+	else {
+		console.log("No winner");
+	}
 }
 
 // Key shortcuts
