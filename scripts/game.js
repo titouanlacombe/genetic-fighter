@@ -1,4 +1,5 @@
 let players = [];
+let winner;
 
 function player_factory(x, y, color, controller) {
 	let player = new Fighter(x, y, color, controller);
@@ -67,4 +68,30 @@ function simulate(dt, objects) {
 			array.splice(index, 1);
 		}
 	});
+
+	winner = get_winner(objects);
+	running = winner == null;
 }
+
+function get_winner(objects) {
+	let is_last_fighter = objects.length == 1 && objects[0] instanceof Fighter;
+
+	if (is_last_fighter) {
+		return objects[0];
+	}
+	else {
+		return null;
+	}
+}
+
+function exit() {
+	console.log("exiting !");
+}
+
+// Key shortcuts
+// Reseting the sim
+document.addEventListener('keydown', (e) => {
+	if (e.code == "KeyR") {
+		global_objects = init();
+	}
+});

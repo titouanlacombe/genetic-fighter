@@ -6,7 +6,7 @@ class AIController extends Controller {
 
 		// DNA
 		this.rotation_sensibility = 0.5;
-		this.cannon_fire_cooldown = 3;
+		this.cannon_fire_cooldown = 4;
 		this.min_fire_error = 0.05;
 		this.loose_focus_dist = 500;
 		this.direction_importance = 0;
