@@ -70,7 +70,7 @@ function simulate(dt, objects) {
 	});
 
 	winner = get_winner(objects);
-	running = winner == null;
+	running = winner == null || objects.length == 0;
 }
 
 function get_winner(objects) {
@@ -85,7 +85,7 @@ function get_winner(objects) {
 }
 
 function exit() {
-	console.log("exiting !");
+	console.log("Winner: ", winner);
 }
 
 // Key shortcuts
