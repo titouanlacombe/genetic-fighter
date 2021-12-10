@@ -50,6 +50,7 @@ class AIController extends Controller {
 	control(object, dt, objects) {
 		let near_by_objects = this.get_near_by_objects(object, objects);
 
+		// Manage focus
 		if (this.focused) {
 			// Change focus if => too far or dead
 			if (!this.focused.alive ||
@@ -67,6 +68,10 @@ class AIController extends Controller {
 				return;
 			}
 		}
+
+		let ctx = object.apply_transform_ctx(get_context()); // Debug drawing context
+		ctx.strokeStyle = Color.red;
+		ctx.lineWidth = 3;
 
 		// vector representing the direction & speed we want to go
 		let target_vel = new Vector2();
@@ -96,6 +101,7 @@ class AIController extends Controller {
 		
 		// correct to desired speed
 		target_vel.normalize(this.target_speed);
+		target_vel.clone().mul(10).draw(ctx);
 		let vel_change = Vector2.dist(object.vel, target_vel);
 
 		// thrust if we are pointing in the direction we want to go
@@ -117,11 +123,15 @@ class AIController extends Controller {
 		// fire if current aim close enough to targeted aim && cooldown passed
 		if (this.cannon_cooldown < 0 &&
 			Math.abs(target - current_aim) < this.min_fire_error) {
+			// Try to fire
 			if (object.fire(dt, objects)) {
+				// If success reset cooldown
 				this.cannon_cooldown = this.cannon_fire_cooldown;
 			}
 		} else {
 			this.cannon_cooldown -= dt;
 		}
+
+		ctx.restore();
 	}
 }

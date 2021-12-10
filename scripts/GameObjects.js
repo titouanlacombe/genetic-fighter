@@ -22,15 +22,17 @@ class GameObject {
 		// Empty
 	}
 
-	_draw(ctx) {
-		ctx.save();
-
-		// Translate & rotate to the object
+	// Translate & rotate to the object
+	apply_transform_ctx(ctx) {
 		ctx.translate(this.pos.x, this.pos.y);
 		ctx.rotate(this.rot);
+		return ctx;
+	}
 
+	_draw(ctx) {
+		ctx.save();
+		this.apply_transform_ctx(ctx);
 		this.draw(ctx);
-
 		// reseting ctx transformations by restoring saved state
 		ctx.restore();
 	}

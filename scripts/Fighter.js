@@ -31,6 +31,8 @@ class Fighter extends GameObject {
 		this.pos.set(x, y);
 		this.vel.set();
 
+		this.rot = Math.random() * 2 * Math.PI;
+
 		this.controller = controller;
 
 		this.color = color;

@@ -14,8 +14,10 @@ function _init() {
 
 // Retrieve the drawing context
 function get_context() {
-	var canvas = document.getElementById('canvas');
-	return canvas.getContext('2d');
+	let canvas = document.getElementById('canvas');
+	let ctx = canvas.getContext('2d');
+	ctx.save();
+	return ctx;
 }
 
 function loop(new_time) {
@@ -24,8 +26,8 @@ function loop(new_time) {
 	
 	// console.log("fps: ", 1000 / dt);
 
-	dt /= 16; // Correction so that dt is close to 1 on 60 fps
-	dt = 1; // fix delta time to a constant (debug tool)
+	dt *= 1 / 64; // Correction so that dt is close to 1 on 60 fps
+	// dt = 1; // fix delta time to a constant (debug tool)
 
 	simulate(dt, global_objects);
 	draw(global_objects);

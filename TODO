@@ -1,11 +1,6 @@
 improve AI {
-	1- avoid near by fighter
-	2- avoid near by bullets
 	3- estimate bullet travel time, aim accordingely, with target current speed
-	
-	maintain speed
 	states (evading, aiming, suicide)
-
 	pid for targets
 }
 
@@ -22,6 +17,10 @@ begin modeling evolution simmulation {
 	evolution sim loop does a generation by frames
 	then display the results
 	evolution game object
+}
+
+ai evolution mode {
+	???
 }
 
 add interesting mechanics {
