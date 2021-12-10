@@ -70,7 +70,7 @@ function simulate(dt, objects) {
 	});
 
 	winner = get_winner(objects);
-	running = winner == null || objects.length == 0;
+	running = winner == null && objects.length != 0;
 }
 
 function get_winner(objects) {
