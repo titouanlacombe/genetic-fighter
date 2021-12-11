@@ -1,5 +1,6 @@
 class AIController extends Controller {
 	static vision_range = 1000;
+	static starting_state = null;
 
 	constructor() {
 		super();
@@ -21,6 +22,11 @@ class AIController extends Controller {
 		// Variables
 		this.focused = null;
 		this.cannon_cooldown = 0;
+		this.state = AIController.starting_state;
+	}
+
+	static init() {
+		AIController.starting_state = new State();
 	}
 
 	// Choose closest fighter

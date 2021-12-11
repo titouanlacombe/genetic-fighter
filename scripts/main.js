@@ -8,7 +8,7 @@ let frames = 0; // Number of the current frame
 let time = 0; // Time since the start
 let dt = 0; // Delta time between last frames
 let ctx; // 2D drawing context
-let fixed_dt = 1 // fix delta time to a constant (debug tool)
+let fixed_dt = 1; // fix delta time to a constant (debug tool)
 
 // Init and launch the loop
 function init() {
