@@ -87,17 +87,8 @@ class AIController extends Controller {
 	}
 
 	// fire if current aim close enough to targeted aim && cooldown passed
-	control_cannon(target, current_aim) {
-		if (this.cannon_cooldown < 0 &&
-			Math.abs(target - current_aim) < this.min_fire_error) {
-			// Try to fire
-			if (object.fire()) {
-				// If success reset cooldown
-				this.cannon_cooldown = this.cannon_fire_cooldown;
-			}
-		} else {
-			this.cannon_cooldown -= dt;
-		}
+	do_fire(target, current_aim) {
+		return Math.abs(target - current_aim) < this.min_fire_error;
 	}
 	
 	searching(object, near_by_objects) {
@@ -120,7 +111,9 @@ class AIController extends Controller {
 		return {};
 	}
 
-	control(object) {
+	control(_object) {
+		const object = _object;
+
 		ctx.save();
 		ctx.translate(object.pos.x, object.pos.y);
 		ctx.lineWidth = 2;

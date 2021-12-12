@@ -171,7 +171,7 @@ class Fighter extends GameObject {
 		if (!bool) {
 			return;
 		}
-		
+
 		// Munition or cannon not recharged
 		if (this.munitions <= 0 || this.cannon_cooldown > 0) {
 			return false;
