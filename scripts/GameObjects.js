@@ -46,13 +46,13 @@ class GameObject {
 	// Apply euler integration to the object properties
 	euler() {
 		// Translation
-		this.vel.add(this.frc.mul(dt));
-		this.pos.add(this.vel.clone().mul(dt));
+		this.vel.add(this.frc.mul(sim_dt));
+		this.pos.add(this.vel.clone().mul(sim_dt));
 		this.frc.set();
 
 		// Rotation
-		this.rotvel += this.rotfrc * dt;
-		this.rot += this.rotvel * dt;
+		this.rotvel += this.rotfrc * sim_dt;
+		this.rot += this.rotvel * sim_dt;
 		this.rotfrc = 0;
 	}
 

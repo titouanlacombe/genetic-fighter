@@ -6,7 +6,8 @@ let running; // If false stops the loops
 let width, height; // Dimentions of the canvas
 let frames = 0; // Number of the current frame
 let time = 0; // Time since the start
-let dt = 0; // Delta time between last frames
+let real_dt = 0; // Delta time between last 2 frames
+let sim_dt = 0; // Delta time between last 2 sim steps
 let ctx; // 2D drawing context
 let fixed_dt = 1; // fix delta time to a constant (debug tool)
 
@@ -19,16 +20,16 @@ function init() {
 }
 
 function fps() {
-	return 1000 / dt;
+	return 1000 / real_dt;
 }
 
 function loop(new_time) {
-	dt = (new_time - time);
+	real_dt = (new_time - time);
 	// console.log("fps: ", fps());
 	time = new_time;
 
-	dt *= 1 / 128; // Correction so that dt is close to 1 on 60 fps
-	if (fixed_dt) dt = fixed_dt;
+	sim_dt = real_dt * 1 / 16; // Correction so that sim_dt is close to 1 on 60 fps
+	if (fixed_dt) sim_dt = fixed_dt;
 
 	let canvas = document.getElementById('canvas');
 	ctx = canvas.getContext('2d');

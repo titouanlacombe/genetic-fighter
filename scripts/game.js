@@ -30,6 +30,8 @@ function initing() {
 	// Spawns Players
 	objects.push(player_factory(100, height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
 	// objects.push(player_factory(width - 100, height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
+
+	CollisionManager.build_distances_cache(objects);
 }
 
 // Draw new frame
@@ -46,6 +48,8 @@ function draw() {
 
 // Simulate a step
 function simulate() {
+	CollisionManager.update_distances_cache(objects);
+
 	// Handle collisions & out of bounds
 	CollisionManager.object_to_bounds(objects, 0, width, 0, height, true);
 	CollisionManager.object_to_object(objects);
@@ -67,14 +71,14 @@ function simulate() {
 	});
 	objects = alive;
 
-	winner = get_winner(objects);
+	winner = get_winner();
 	if (winner != null || objects.length == 0) {
 		exiting();
 		exit();
 	}
 }
 
-function get_winner(objects) {
+function get_winner() {
 	let is_last_fighter = objects.length == 1 && objects[0] instanceof Fighter;
 
 	if (is_last_fighter) {
@@ -86,7 +90,7 @@ function get_winner(objects) {
 }
 
 function exiting() {
-	draw(objects);
+	draw();
 	
 	if (winner) {
 		console.log("Winner: ", winner);

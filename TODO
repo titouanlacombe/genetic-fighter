@@ -8,6 +8,8 @@ improve AI {
 		then substract the radiuses
 	}
 
+	simulation class ? what for ?
+
 	build pid engine for controls
 	test: easiest state first: turret
 }

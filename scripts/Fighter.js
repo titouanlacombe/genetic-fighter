@@ -90,7 +90,7 @@ class Fighter extends GameObject {
 		}
 
 		// Cannon cooldown
-		this.cannon_cooldown -= dt;
+		this.cannon_cooldown -= sim_dt;
 
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Fighter.friction));
@@ -144,7 +144,7 @@ class Fighter extends GameObject {
 		}
 		
 		throttle = this.command_validator(throttle, 0, 1);
-		this.fuel -= throttle * Fighter.fuel_consumption * dt;
+		this.fuel -= throttle * Fighter.fuel_consumption * sim_dt;
 
 		let thrustForce = new Vector2(0, -throttle * Fighter.thrust_command_authority);
 		thrustForce.rotate(this.rot);

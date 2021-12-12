@@ -45,17 +45,6 @@ class AIController extends Controller {
 		this.state = searching;
 	}
 
-	get_near_by_objects(object) {
-		let near = [];
-		objects.forEach(object2 => {
-			if (object != object2 &&
-				object.dist_to(object2) < AIController.vision_range) {
-				near.push(object2);
-			}
-		});
-		return near;
-	}
-
 	// Choose closest fighter
 	// Bias via ones in front (TODO)
 	find_focus(object, near_by_objects) {
@@ -141,7 +130,7 @@ class AIController extends Controller {
 		ctx.lineWidth = 2;
 
 		// Manage focus
-		let near_by_objects = this.get_near_by_objects(object);
+		let near_by_objects = CollisionManager.get_near_objects(object, AIController.vision_range, "space");
 		this.manage_focus(object, near_by_objects);
 
 		// Manage state

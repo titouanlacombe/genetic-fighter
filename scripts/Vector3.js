@@ -2,8 +2,8 @@
 class Vector3 extends Vector2
 {
 	constructor(x = 0, y = 0, z = 0) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
+		
 		this.z = z;
 	}
 
