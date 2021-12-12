@@ -13,6 +13,10 @@ class GameObject {
 		this.alive = true;
 	}
 
+	dist_to(object) {
+		return this.pos.clone().sub(object.pos).norm();
+	}
+
 	_simulate() {
 		this.euler();
 		this.simulate();

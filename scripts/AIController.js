@@ -5,8 +5,6 @@ class AIController extends Controller {
 		super();
 
 		// DNA
-		this.loose_focus_dist = 500;
-
 		this.min_fighter_dist = 100;
 		this.max_fighter_dist = 300;
 		
@@ -29,7 +27,7 @@ class AIController extends Controller {
 		searching.add_exit(positionning, (object) => { return object.controller.focused != null; });
 
 		positionning.add_exit(aiming, (object) => {
-			let d = Vector2.dist(object.controller.focused.pos, object.pos).norm();
+			let d = object.controller.focused.dist_to(object);
 			return d < this.max_fighter_dist && d > this.min_fighter_dist;
 		});
 
@@ -49,7 +47,7 @@ class AIController extends Controller {
 		let near = [];
 		objects.forEach(object2 => {
 			if (object != object2 &&
-				Vector2.diff(object.pos, object2.pos).norm() < AIController.vision_range) {
+				object.dist_to(object2) < AIController.vision_range) {
 				near.push(object2);
 			}
 		});
@@ -62,7 +60,7 @@ class AIController extends Controller {
 		let min_distance = Infinity;
 		near_by_objects.forEach(potential => {
 			if (potential instanceof Fighter) {
-				let distance = Vector2.diff(object.pos, potential.pos).norm();
+				let distance = object.dist_to(potential);
 				if (distance < min_distance) {
 					this.focused = potential;
 					min_distance = distance;
@@ -75,7 +73,7 @@ class AIController extends Controller {
 		// Change focus if => too far or dead
 		if (this.focused) {
 			if (!this.focused.alive ||
-				Vector2.diff(this.focused.pos, object.pos).norm() > this.loose_focus_dist) {
+				this.focused.dist_to(object) > this.loose_focus_dist) {
 				this.focused = null;
 			}
 		}
@@ -92,23 +90,39 @@ class AIController extends Controller {
 	}
 	
 	searching(object, near_by_objects) {
-		return {};
+		return {
+			"thrust": 0,
+			"rotation": 0,
+		};
 	}
 
 	positionning(object, near_by_objects) {
-		return {};
+		return {
+			"thrust": 0,
+			"rotation": 0,
+		};
 	}
 
 	aiming(object, near_by_objects) {
-		return {};
+		return {
+			"thrust": 0, // Min thrust ?
+			"rotation": 0,
+			"fire": this.do_fire(tagret, current_aim),
+		};
 	}
 
 	turret(object, near_by_objects) {
-		return {};
+		return {
+			"rotation": 0,
+			"fire": this.do_fire(tagret, current_aim),
+		};
 	}
 
 	fleeing(object, near_by_objects) {
-		return {};
+		return {
+			"thrust": 0,
+			"rotation": 0,
+		};
 	}
 
 	control(_object) {

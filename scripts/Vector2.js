@@ -100,12 +100,6 @@ class Vector2
 		ctx.stroke();
 	}
 	
-	// Return a new vector wich is the difference between 2 vectors
-	static diff(v1, v2) {
-		let d = v1.clone();
-		return d.sub(v2);
-	}
-
 	// Create a unit vector from an angle
 	static fromAngle(angle) {
 		return new Vector2(Math.cos(angle), Math.sin(angle));
