@@ -164,10 +164,6 @@ class AIController extends Controller {
 
 		ctx.restore();
 
-		return {
-			"thrust": command.thrust ?? 0,
-			"rotation": command.rotation ?? 0,
-			"fire": command.fire ?? false,
-		}
+		return command;
 	}
 }

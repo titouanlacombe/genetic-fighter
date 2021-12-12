@@ -8,14 +8,6 @@ improve AI {
 		then substract the radiuses
 	}
 
-	state machine (searching, positioning, aiming, suicide / escaping, turret)
-	
-	improve controller design (currently not able to force call of command functions + not access to dt etc...)
-	{
-		command_object => fighter calls own functions
-		pass object & objects as const
-	}
-	
 	build pid engine for controls
 	test: easiest state first: turret
 }

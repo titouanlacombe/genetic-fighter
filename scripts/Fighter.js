@@ -83,7 +83,10 @@ class Fighter extends GameObject {
 	simulate() {
 		// Controller
 		if (this.controller) {
-			this.controller.control(this);
+			let command = this.controller.control(this);
+			this.command_rotation(command.rotation ?? 0);
+			this.command_thrust(command.thrust ?? 0);
+			this.command_fire(command.fire ?? false);
 		}
 
 		// Cannon cooldown
@@ -164,7 +167,11 @@ class Fighter extends GameObject {
 
 	// Spawn a bullet
 	// Return if success
-	fire() {
+	command_fire(bool) {
+		if (!bool) {
+			return;
+		}
+		
 		// Munition or cannon not recharged
 		if (this.munitions <= 0 || this.cannon_cooldown > 0) {
 			return false;
