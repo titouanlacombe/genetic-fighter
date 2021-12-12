@@ -10,6 +10,7 @@ let real_dt = 0; // Delta time between last 2 frames
 let sim_dt = 0; // Delta time between last 2 sim steps
 let ctx; // 2D drawing context
 let fixed_dt = 1; // fix delta time to a constant (debug tool)
+let average_fps = 0;
 
 // Init and launch the loop
 function init() {
@@ -38,6 +39,7 @@ function loop(new_time) {
 	simulate();
 
 	frames++;
+	average_fps += (fps() - average_fps) / frames;
 	// console.log(frames);
 
 	if (running) {

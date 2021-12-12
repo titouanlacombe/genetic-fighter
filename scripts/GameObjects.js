@@ -17,26 +17,15 @@ class GameObject {
 		return this.pos.clone().sub(object.pos).norm();
 	}
 
-	_simulate() {
-		this.euler();
-		this.simulate();
-	}
-
 	simulate() {
 		// Empty
 	}
 
-	// Translate & rotate to the object
-	apply_transform_ctx() {
+	_draw() {
 		ctx.translate(this.pos.x, this.pos.y);
 		ctx.rotate(this.rot);
-	}
-
-	_draw() {
-		ctx.save();
-		this.apply_transform_ctx();
 		this.draw();
-		ctx.restore(); // reseting ctx transformations by restoring saved state
+		ctx.resetTransform(); // reseting ctx transformations by restoring saved state
 	}
 
 	draw() {

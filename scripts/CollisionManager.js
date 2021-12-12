@@ -1,31 +1,26 @@
 class CollisionManager {
 	static distances_cache;
 	
-	static build_distances_cache(objects) {
+	static update_distances_cache(objects) {
 		this.distances_cache = new Map();
 
 		objects.forEach(obj1 => {
 			let distances = [];
 
 			objects.forEach(obj2 => {
-				if (obj1 != obj2) {
-					let dist = obj2.dist_to(obj1);
-					distances.push({
-						"object": obj2,
-						"dist": dist,
-						"space": dist - obj1.radius - obj2.radius,
-					});
-				}
+				let dist = obj2.dist_to(obj1);
+				distances.push({
+					"object": obj2,
+					"dist": dist,
+					"space": dist - obj1.radius - obj2.radius,
+				});
 			});
 
 			distances.sort((a, b) => { return a.space - b.space; });
+			distances.splice(distances.find((e) => { return e.object == obj1; }), 1); // Remove obj1 from it's array
 
 			this.distances_cache.set(obj1, distances);
 		});
-	}
-
-	static update_distances_cache(objects) {
-		this.build_distances_cache(objects);
 	}
 
 	// mode can be "dist" or "space"

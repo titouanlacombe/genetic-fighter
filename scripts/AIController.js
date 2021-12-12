@@ -125,7 +125,6 @@ class AIController extends Controller {
 		const object = _object;
 
 		// Debug drawing context
-		ctx.save();
 		ctx.translate(object.pos.x, object.pos.y);
 		ctx.lineWidth = 2;
 
@@ -163,7 +162,7 @@ class AIController extends Controller {
 				break;
 		}
 
-		ctx.restore();
+		ctx.resetTransform();
 
 		return command;
 	}

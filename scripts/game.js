@@ -30,8 +30,6 @@ function initing() {
 	// Spawns Players
 	objects.push(player_factory(100, height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
 	// objects.push(player_factory(width - 100, height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
-
-	CollisionManager.build_distances_cache(objects);
 }
 
 // Draw new frame
@@ -48,6 +46,11 @@ function draw() {
 
 // Simulate a step
 function simulate() {
+	// Move the objects
+	objects.forEach(object => {
+		object.euler();
+	});
+
 	CollisionManager.update_distances_cache(objects);
 
 	// Handle collisions & out of bounds
@@ -56,7 +59,7 @@ function simulate() {
 
 	// Simulate the objects
 	objects.forEach(object => {
-		object._simulate();
+		object.simulate();
 	});
 
 	// Keep alive objects
