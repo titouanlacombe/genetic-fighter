@@ -20,9 +20,6 @@ function player_factory(x, y, color, controller) {
 function initing() {
 	objects = []; // Array of game objects
 
-	// init AI
-	AIController.init();
-
 	// Spawns AIs
 	for (let i = 0; i < 1000; i++) {
 		let f = new Fighter();

@@ -1,12 +1,13 @@
 class State {
-    constructor() {
+    constructor(code) {
+        this.code = code;
         this.exits = [];
     }
 
-    add_exit(condition, state) {
+    add_exit(state, condition) {
         this.exits.push({
-            "condition": condition,
             "state": state,
+            "condition": condition,
         });
     }
 

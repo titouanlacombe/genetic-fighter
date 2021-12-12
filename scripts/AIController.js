@@ -1,32 +1,59 @@
 class AIController extends Controller {
 	static vision_range = 1000;
-	static starting_state = null;
 
 	constructor() {
 		super();
 
 		// DNA
-		this.rotation_sensibility = 0.5;
-		this.cannon_fire_cooldown = 4;
-		this.min_fire_error = 0.05;
 		this.loose_focus_dist = 500;
-		this.direction_importance = 1;
-		this.aim_importance = 0.9;
-		this.target_speed = 2;
-		this.avoid_fighter_k = 0.5;
-		this.wanted_fighter_dist = 200;
-		this.avoid_bullet_k = 3;
-		this.min_bullet_dist = 40;
-		this.min_thrust = 0;
+
+		this.min_fighter_dist = 100;
+		this.max_fighter_dist = 300;
+		
+		this.min_fire_error = 0.05;
 
 		// Variables
 		this.focused = null;
-		this.cannon_cooldown = 0;
-		this.state = AIController.starting_state;
+		this.init_states();
 	}
 
-	static init() {
-		AIController.starting_state = new State();
+	// Can't be static cause the exit condition changes depending on AI DNA
+	init_states() {
+		// let suicide = new State("suicide");
+		let fleeing = new State("fleeing");
+		let turret = new State("turret");
+		let aiming = new State("aiming");
+		let positionning = new State("positionning");
+		let searching = new State("searching");
+
+		searching.add_exit(positionning, (object) => { return object.controller.focused != null; });
+
+		positionning.add_exit(aiming, (object) => {
+			let d = Vector2.dist(object.controller.focused.pos, object.pos).norm();
+			return d < this.max_fighter_dist && d > this.min_fighter_dist;
+		});
+
+		positionning.add_exit(searching, (object) => { return object.controller.focused == null; });
+		aiming.add_exit(searching, (object) => { return object.controller.focused == null; });
+
+		positionning.add_exit(turret, (object) => { return object.fuel <= 0; });
+		aiming.add_exit(turret, (object) => { return object.fuel <= 0; });
+
+		positionning.add_exit(fleeing, (object) => { return object.munitions <= 0; });
+		aiming.add_exit(fleeing, (object) => { return object.munitions <= 0; });
+
+		this.state = searching;
+	}
+
+	get_near_by_objects(object) {
+		let near = [];
+		objects.forEach(object2 => {
+			if (object != object2 &&
+				Vector2.diff(object.pos, object2.pos).norm() < AIController.vision_range) {
+				near.push(object2);
+			}
+		});
+		return near;
 	}
 
 	// Choose closest fighter
@@ -42,17 +69,6 @@ class AIController extends Controller {
 				}
 			}
 		});
-	}
-
-	get_near_by_objects(object) {
-		let near = [];
-		objects.forEach(object2 => {
-			if (object != object2 &&
-				Vector2.diff(object.pos, object2.pos).norm() < AIController.vision_range) {
-				near.push(object2);
-			}
-		});
-		return near;
 	}
 
 	manage_focus(object, near_by_objects) {
@@ -71,7 +87,7 @@ class AIController extends Controller {
 	}
 
 	// fire if current aim close enough to targeted aim && cooldown passed
-	control_cannon(object, target, current_aim) {
+	control_cannon(target, current_aim) {
 		if (this.cannon_cooldown < 0 &&
 			Math.abs(target - current_aim) < this.min_fire_error) {
 			// Try to fire
@@ -83,81 +99,75 @@ class AIController extends Controller {
 			this.cannon_cooldown -= dt;
 		}
 	}
+	
+	searching(object, near_by_objects) {
+		return {};
+	}
 
-	manage_direction(object, near_by_objects) {
-		// vector representing the direction & speed we want to go
-		let target_vel = new Vector2();
+	positionning(object, near_by_objects) {
+		return {};
+	}
 
-		near_by_objects.forEach(threat => {
-			let distance_v = Vector2.diff(object.pos, threat.pos);
-			let distance = distance_v.norm();
-			
-			if (distance != 0) {
-				// avoid near by fighter
-				if (threat instanceof Fighter) {
-					let norm = (this.wanted_fighter_dist / distance) ** 2 - 1;
-					let avoidance_v = distance_v.normalize(this.avoid_fighter_k * norm);
-					target_vel.add(avoidance_v);
+	aiming(object, near_by_objects) {
+		return {};
+	}
 
-					// avoidance_v.draw(ctx, Color.cyan, 100);
-				}
-				// avoid near by bullets
-				else if (threat instanceof Bullet) {
-					let norm = this.min_bullet_dist / (distance ** 2);
-					let avoidance_v = distance_v.normalize(this.avoid_bullet_k * norm);
-					target_vel.add(avoidance_v);
+	turret(object, near_by_objects) {
+		return {};
+	}
 
-					// avoidance_v.draw(ctx, Color.magenta, 100);
-				}
-			}
-		});
-
-		// avoid near by walls
-
-		let current_aim = (object.rot - Math.PI / 2) % (2 * Math.PI); // current aim angle
-		let current_direction = Vector2.fromAngle(current_aim); // current direction vector
-		
-		// correct to desired speed
-		// target_vel.draw(ctx, Color.red, 100);
-		target_vel.normalize(this.target_speed);
-		// object.vel.draw(ctx, Color.green, 20);
-		let vel_change = Vector2.diff(target_vel, object.vel);
-		// vel_change.draw(ctx, Color.yellow, 10);
-
-		// thrust if we are pointing in the direction we want to go
-		let thrust = vel_change.scalar(current_direction);
-		if (thrust < this.min_thrust) {
-			thrust = this.min_thrust;
-		}
-		// rotate to go where we want
-		let rotation = (vel_change.angle() - current_aim) * this.direction_importance;
-
-		// rotate to put target in center
-		// improvement: estimate bullet travel time, aim accordingely, with target current speed
-		if (this.focused) {
-			let target = Vector2.diff(this.focused.pos, object.pos).angle();
-			this.control_cannon(object, target, current_aim);
-			// Vector2.fromAngle(target).draw(ctx, Color.cyan, 40);
-			rotation += (target - current_aim) * this.aim_importance;
-		}
-
-		// scale rotation force
-		rotation *= this.rotation_sensibility;
-
-		object.command_thrust(thrust);
-		object.command_rotation(rotation);
+	fleeing(object, near_by_objects) {
+		return {};
 	}
 
 	control(object) {
-		let near_by_objects = this.get_near_by_objects(object);
-		this.manage_focus(object, near_by_objects);
-
 		ctx.save();
 		ctx.translate(object.pos.x, object.pos.y);
 		ctx.lineWidth = 2;
 
-		this.manage_direction(object, near_by_objects);
+		// Manage focus
+		let near_by_objects = this.get_near_by_objects(object);
+		this.manage_focus(object, near_by_objects);
+
+		// Manage state
+		this.state = this.state.update(object);
+
+		let command = {};
+		switch (this.state.code) {
+			case "searching":
+				command = this.searching(object, near_by_objects);
+				break;
+		
+			case "positionning":
+				command = this.positionning(object, near_by_objects);
+				break;
+	
+			case "aiming":
+				command = this.aiming(object, near_by_objects);
+				break;
+
+			case "turret":
+				command = this.turret(object, near_by_objects);
+				break;
+
+			case "fleeing":
+				command = this.fleeing(object, near_by_objects);
+				break;
+								
+			default:
+				console.log("Unknown state: " + this.state.code);
+				break;
+		}
+
+		let target = this.get_target_angle(object, this.focused);
+		this.command_fire(current_aim, target);
 
 		ctx.restore();
+
+		return {
+			"thrust": command.thrust ?? 0,
+			"rotation": command.rotation ?? 0,
+			"fire": command.fire ?? false,
+		}
 	}
 }
