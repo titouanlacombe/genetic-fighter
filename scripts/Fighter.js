@@ -106,6 +106,7 @@ class Fighter extends GameObject {
 
 	out_of_bound(reason) {
 		this.vel.set(); // Reset vel
+		this.life -= 50;
 
 		if (reason == "min_x") {
 			this.pos.x = this.radius;
@@ -116,8 +117,23 @@ class Fighter extends GameObject {
 		} else if (reason == "max_y") {
 			this.pos.y = height - this.radius;
 		}
+	}
 
-		this.life -= 50;
+	command_validator(value, min, max) {
+		if (isNaN(value)) {
+			console.log("value NaN");
+			return 0;
+		}
+
+		// Anti cheat
+		if (value < min) {
+			value = min;
+		}
+		if (value > max) {
+			value = max;
+		}
+
+		return value;
 	}
 
 	// Functions for controller
@@ -126,20 +142,8 @@ class Fighter extends GameObject {
 		if (this.fuel <= 0) {
 			return;
 		}
-
-		if (isNaN(throttle)) {
-			console.log("thrust throttle NaN");
-			return;
-		}
-
-		// Anti cheat
-		if (throttle < 0) {
-			throttle = 0;
-		}
-		if (throttle > 1) {
-			throttle = 1;
-		}
-
+		
+		throttle = this.command_validator(throttle, 0, 1);
 		this.fuel -= throttle * Fighter.fuel_consumption * dt;
 
 		let thrustForce = new Vector2(0, -throttle * Fighter.thrust_command_authority);
@@ -149,19 +153,7 @@ class Fighter extends GameObject {
 
 	// Apply rotation controll force
 	command_rotation(throttle) {
-		if (isNaN(throttle)) {
-			console.log("rotation throttle NaN");
-			return;
-		}
-
-		// Anti cheat
-		if (throttle < -1) {
-			throttle = -1;
-		}
-		if (throttle > 1) {
-			throttle = 1;
-		}
-
+		throttle = this.command_validator(throttle, -1, 1);
 		this.rotfrc = throttle * Fighter.rot_command_authority;
 	}
 

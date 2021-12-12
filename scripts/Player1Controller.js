@@ -4,16 +4,15 @@ class Player1Controller extends Controller
 	constructor() {
 		super();
 		this.thrust = 0;
-		this.rotate = 0;
+		this.rotation = 0;
 		this.fire = false;
 	}
 
-	control(object) {
-		object.command_rotation(this.rotate);
-		object.command_thrust(this.thrust);
-		if (this.fire) {
-			object.fire();
-			this.fire = false;
+	control() {
+		return {
+			"thrust": this.thrust,
+			"rotation": this.rotation,
+			"fire": this.fire,
 		}
 	}
 
@@ -27,10 +26,10 @@ class Player1Controller extends Controller
 			this.fire = status;
 		}
 		else if (code == "ArrowLeft") {
-			this.rotate = status ? -1 : 0;
+			this.rotation = status ? -1 : 0;
 		}
 		else if (code == "ArrowRight") {
-			this.rotate = status ? 1 : 0;
+			this.rotation = status ? 1 : 0;
 		}
 	}
 }

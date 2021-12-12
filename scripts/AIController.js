@@ -12,10 +12,12 @@ class AIController extends Controller {
 
 		// Variables
 		this.focused = null;
+
+		// Init AI states
 		this.init_states();
 	}
 
-	// Can't be static cause the exit condition changes depending on AI DNA
+	// Can't be static function because the exit condition changes depending on the AI DNA
 	init_states() {
 		// let suicide = new State("suicide");
 		let fleeing = new State("fleeing");
@@ -56,7 +58,7 @@ class AIController extends Controller {
 
 	// Choose closest fighter
 	// Bias via ones in front (TODO)
-	change_focus(object, near_by_objects) {
+	find_focus(object, near_by_objects) {
 		let min_distance = Infinity;
 		near_by_objects.forEach(potential => {
 			if (potential instanceof Fighter) {
@@ -70,18 +72,23 @@ class AIController extends Controller {
 	}
 
 	manage_focus(object, near_by_objects) {
-		// Change focus if => too far or dead
+		// Loose focus if => too far or dead
 		if (this.focused) {
 			if (!this.focused.alive ||
-				this.focused.dist_to(object) > this.loose_focus_dist) {
+				this.focused.dist_to(object) > Fighter.vision_range) {
 				this.focused = null;
 			}
 		}
 
-		// Try to find new focus
+		// If no focus try to find new focus
 		if (!this.focused) {
-			this.change_focus(object, near_by_objects);
+			this.find_focus(object, near_by_objects);
 		}
+	}
+
+	get_target_angle(object) {
+		// Use focus
+		return 0;
 	}
 
 	// fire if current aim close enough to targeted aim && cooldown passed
@@ -128,6 +135,7 @@ class AIController extends Controller {
 	control(_object) {
 		const object = _object;
 
+		// Debug drawing context
 		ctx.save();
 		ctx.translate(object.pos.x, object.pos.y);
 		ctx.lineWidth = 2;
@@ -165,9 +173,6 @@ class AIController extends Controller {
 				console.log("Unknown state: " + this.state.code);
 				break;
 		}
-
-		let target = this.get_target_angle(object, this.focused);
-		this.command_fire(current_aim, target);
 
 		ctx.restore();
 
