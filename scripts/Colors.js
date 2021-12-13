@@ -26,10 +26,10 @@ class Color
 	toHex() {
 		let rgb = this.toRGB();
 		let hex = '#';
-		rgb.forEach(element => {
+		for (const element of rgb) {
 			if (element.toString().length === 1) hex += '0';
 			hex += element.toString(16);
-		});
+		}
 		return hex;
 	}
 

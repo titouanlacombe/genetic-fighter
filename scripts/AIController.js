@@ -49,7 +49,7 @@ class AIController extends Controller {
 	// Bias via ones in front (TODO)
 	find_focus(object, near_by_objects) {
 		let min_distance = Infinity;
-		near_by_objects.forEach(potential => {
+		for (let potential of near_by_objects) {
 			if (potential instanceof Fighter) {
 				let distance = object.dist_to(potential);
 				if (distance < min_distance) {
@@ -57,7 +57,7 @@ class AIController extends Controller {
 					min_distance = distance;
 				}
 			}
-		});
+		}
 	}
 
 	manage_focus(object, near_by_objects) {

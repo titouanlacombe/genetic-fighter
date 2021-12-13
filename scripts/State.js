@@ -12,11 +12,11 @@ class State {
     }
 
     update(object) {
-        this.exits.forEach(exit => {
+        for (const exit of this.exits) {
             if (exit.condition(object)) {
                 return exit.state;
             }
-        });
+        }
         return this;
     }
 }

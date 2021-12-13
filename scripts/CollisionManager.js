@@ -17,46 +17,47 @@ class CollisionManager {
 		let dead_objects = map_objects.filter(value => !objects.includes(value));
 
 		// Delete dead object
-		dead_objects.forEach(obj => {
+		for (const obj of dead_objects) {
 			this.distances_cache.delete(obj);
-		});
+		}
 
 		// Create new objects
-		new_objects.forEach(obj1 => {
+		for (const obj1 of new_objects) {
 			let distances = [];
-			objects.forEach(obj2 => {
+
+			for (const obj2 of objects) {
 				distances.push(this.get_dist_obj(obj1, obj2));
-			});
+			}
 			
 			distances.sort((a, b) => { return a.space - b.space; });
 			distances.splice(distances.find((e) => { return e.object == obj1; }), 1); // Remove obj1 from it's array
 
 			this.distances_cache.set(obj1, distances);
-		});
+		}
 		
 		// Update old objects
-		old_objects.forEach(obj1 => {
+		for (const obj1 of old_objects) {
 			let distances = this.distances_cache.get(obj1);
 
 			// Filter out data of dead objects
 			distances = distances.filter(value => !dead_objects.includes(value.object));
 			
 			// Update distance of old objects
-			distances.forEach(dist_obj => {
+			for (const dist_obj of distances) {
 				let dist = dist_obj.object.dist_to(obj1);
 				dist_obj.dist = dist;
 				dist_obj.space = dist - obj1.radius - dist_obj.object.radius;
-			});
+			}
 
 			// Add distance of new objects
-			new_objects.forEach(obj2 => {
+			for (const obj2 of new_objects) {
 				distances.push(this.get_dist_obj(obj1, obj2));
-			});
+			}
 
 			distances.sort((a, b) => { return a.space - b.space; });
 
 			this.distances_cache.set(obj1, distances);
-		});
+		}
 	}
 
 	// mode can be "dist" or "space"
@@ -80,7 +81,7 @@ class CollisionManager {
 	}
 
 	static object_to_bounds(objects, min_x, max_x, min_y, max_y, include_radius = false) {
-		objects.forEach(object => {
+		for (const object of objects) {
 			let radius = include_radius ? object.radius : 0;
 
 			if (object.pos.x - radius < min_x) {
@@ -94,16 +95,16 @@ class CollisionManager {
 			} else if (object.pos.y + radius > max_y) {
 				object.out_of_bound("max_y");
 			}
-		});
+		}
 	}
 
 	static object_to_object(objects) {
-		objects.forEach(object1 => {
+		for (const object1 of objects) {
 			let near_object = this.get_near_objects(object1, 0, "space");
 
-			near_object.forEach(object2 => {
+			for (const object2 of near_object) {
 				object1.collision(object2);
-			});
-		});
+			}
+		}
 	}
 }

@@ -39,17 +39,17 @@ function draw() {
 	ctx.fillRect(0, 0, width, height);
 
 	// Draw objects
-	objects.forEach(object => {
+	for (const object of objects) {
 		object._draw();
-	});
+	}
 }
 
 // Simulate a step
 function simulate() {
 	// Move the objects
-	objects.forEach(object => {
+	for (const object of objects) {
 		object.euler();
-	});
+	}
 
 	CollisionManager.update_distances_cache(objects);
 
@@ -58,20 +58,20 @@ function simulate() {
 	CollisionManager.object_to_object(objects);
 
 	// Simulate the objects
-	objects.forEach(object => {
+	for (const object of objects) {
 		object.simulate();
-	});
+	}
 
 	// Keep alive objects
 	let alive = [];
-	objects.forEach((object) => {
+	for (const object of objects) {
 		if (object.alive) {
 			alive.push(object);
 		}
 		else {
 			object.die();
 		}
-	});
+	}
 	objects = alive;
 
 	winner = get_winner();
