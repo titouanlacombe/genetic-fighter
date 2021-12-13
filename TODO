@@ -1,7 +1,5 @@
 improve AI {
-	optimize collisions by only updating the map cache {
-		add map for object ? probably & if so the need add sorted dist list with it
-	}
+	replace all foreach by for of
 
 	build 3D cylinder intersection engine (distance to intersection, evade point in space-time) {
 		build 3D lines (xa, ya, za) & (xb, yb, zb)
