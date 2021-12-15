@@ -103,14 +103,14 @@ class AIController extends Controller {
 		return {
 			"thrust": 0, // Min thrust ?
 			"rotation": 0,
-			"fire": this.do_fire(tagret, current_aim),
+			"fire": this.do_fire(0, 0),
 		};
 	}
 
 	turret(object, near_by_objects) {
 		return {
 			"rotation": 0,
-			"fire": this.do_fire(tagret, current_aim),
+			"fire": this.do_fire(0, 0),
 		};
 	}
 
