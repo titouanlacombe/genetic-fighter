@@ -15,4 +15,12 @@ class Vector3 extends Vector
 	clone() {
 		return new Vector3(this.data[0], this.data[1], this.data[2]);
 	}
+
+	cross(v) {
+		return new Vector3(
+			this.data[1] * v.data[2] - this.data[2] * v.data[1],
+			this.data[2] * v.data[0] - this.data[0] * v.data[2],
+			this.data[0] * v.data[1] - this.data[1] * v.data[0],
+		);
+	}
 }
