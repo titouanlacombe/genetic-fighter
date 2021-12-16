@@ -4,16 +4,18 @@ let running; // If false stops the loops
 
 // Public
 let width, height; // Dimentions of the canvas
-let frames = 0; // Number of the current frame
+let frames = 0; // Number of frames displayed since the start
 let time = 0; // Time since the start
-let real_dt = 0; // Delta time between last 2 frames
-let sim_dt = 0; // Delta time between last 2 sim steps
-let ctx; // 2D drawing context
-let fixed_dt = 1; // fix delta time to a constant (debug tool)
+let dt = 0; // Delta time between last 2 frames
 let average_fps = 0;
+let ctx; // 2D drawing context
 
 // Init and launch the loop
 function init() {
+	// let l1 = new Line3(new Vector3(), new Vector3(0, 0, 1));
+	// let l2 = new Line3(new Vector3(1, 1, 0), new Vector3(-1, -1, 1));
+	// console.log(l1.dist_to(l2));
+
 	running = true;
 	update_canvas_size();
 	initing();
@@ -21,25 +23,23 @@ function init() {
 }
 
 function fps() {
-	return 1000 / real_dt;
+	return 1000 / dt;
 }
 
 function loop(new_time) {
-	real_dt = (new_time - time);
-	// console.log("fps: ", fps());
+	dt = (new_time - time);
 	time = new_time;
-
-	sim_dt = real_dt * 1 / 16; // Correction so that sim_dt is close to 1 on 60 fps
-	if (fixed_dt) sim_dt = fixed_dt;
-
+	
 	let canvas = document.getElementById('canvas');
 	ctx = canvas.getContext('2d');
-
-	draw();
+	
 	simulate();
-
+	draw();
+	
 	frames++;
 	average_fps += (fps() - average_fps) / frames;
+
+	// console.log("fps: ", fps());
 	// console.log(frames);
 
 	if (running) {

@@ -2,6 +2,10 @@ let objects; // Objects in the simulation
 let players = [];
 let winner;
 
+let sim_dt = 0; // Delta time between last 2 sim steps
+let sim_time = 0; // Time since the start of the simulation
+let fixed_dt = 1; // fix delta time to a constant (debug tool)
+
 function player_factory(x, y, color, controller) {
 	let player = new Fighter(x, y, color, controller);
 
@@ -46,6 +50,15 @@ function draw() {
 
 // Simulate a step
 function simulate() {
+	if (fixed_dt) {
+		sim_dt = fixed_dt;
+	}
+	else {
+		sim_dt = dt * 1 / 16; // Correction so that sim_dt is close to 1 on 60 fps
+	}
+
+	sim_time += sim_dt;
+
 	// Move the objects
 	for (const object of objects) {
 		object.euler();
