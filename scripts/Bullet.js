@@ -5,8 +5,8 @@ class Bullet extends GameObject {
 	constructor(pos, vel) {
 		super();
 
-		this.pos.set_v(pos);
-		this.vel.set_v(vel);
+		this.pos.setv(pos);
+		this.vel.setv(vel);
 
 		this.radius = Fighter.lineWidth / 2;
 	}

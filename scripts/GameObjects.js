@@ -22,7 +22,7 @@ class GameObject {
 	}
 
 	_draw() {
-		ctx.translate(this.pos.x, this.pos.y);
+		ctx.translate(this.pos.data[0], this.pos.data[1]);
 		ctx.rotate(this.rot);
 		this.draw();
 		ctx.resetTransform(); // reseting ctx transformations by restoring saved state

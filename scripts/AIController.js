@@ -157,7 +157,7 @@ class AIController extends Controller {
 		const object = _object;
 
 		// Debug drawing context
-		ctx.translate(object.pos.x, object.pos.y);
+		ctx.translate(object.pos.data[0], object.pos.data[1]);
 		ctx.lineWidth = 2;
 
 		// Manage target
