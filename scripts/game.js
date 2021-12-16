@@ -94,7 +94,7 @@ function get_winner() {
 
 function exiting() {
 	draw();
-	
+
 	if (winner) {
 		console.log("Winner: ", winner);
 	}
