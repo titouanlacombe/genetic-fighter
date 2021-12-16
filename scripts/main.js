@@ -12,6 +12,10 @@ let ctx; // 2D drawing context
 
 // Init and launch the loop
 function init() {
+	// let l1 = new Line3(new Vector3(), new Vector3(0, 0, 1));
+	// let l2 = new Line3(new Vector3(1, 1, 0), new Vector3(-1, -1, 1));
+	// console.log(l1.dist_to(l2));
+
 	running = true;
 	update_canvas_size();
 	initing();
