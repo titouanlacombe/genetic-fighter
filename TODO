@@ -1,15 +1,4 @@
 improve AI {
-	build 3D cylinder intersection engine (distance to intersection, evade point in space-time) {
-		build 3D lines (xa, ya, za) & (xb, yb, zb)
-		=> calc cross product (xc, yc, zc)
-		find da = - xc * xa - yc * ya - zc * za
-		find db = - xc * xb - yc * yb - zc * zb
-		dist = abs(da - db) / sqrt(xc*xc + yc*yc + zc*zc)
-		then substract the radiuses
-	}
-
-	simulation class ? what for ?
-
 	build pid engine for controls
 	test: easiest state first: turret
 }
