@@ -109,13 +109,13 @@ class Fighter extends GameObject {
 		this.life -= 50;
 
 		if (reason == "min_x") {
-			this.pos.data[0] = this.radius;
+			this.pos.setx(this.radius);
 		} else if (reason == "max_x") {
-			this.pos.data[0] = width - this.radius;
+			this.pos.setx(width - this.radius);
 		} else if (reason == "min_y") {
-			this.pos.data[1] = this.radius;
+			this.pos.sety(this.radius);
 		} else if (reason == "max_y") {
-			this.pos.data[1] = height - this.radius;
+			this.pos.sety(height - this.radius);
 		}
 	}
 

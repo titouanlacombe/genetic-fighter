@@ -4,30 +4,46 @@ class Vector2 extends Vector
 	constructor(x = 0, y = 0) {
 		super([x, y]);
 	}
+	
+	x() {
+		return this.data[0];
+	}
+
+	y() {
+		return this.data[1];
+	}
+
+	setx(v) {
+		this.data[0] = v;
+	}
+
+	sety(v) {
+		this.data[1] = v;
+	}
 
 	set(x = 0, y = 0) {
-		this.data[0] = x;
-		this.data[1] = y;
+		this.setx(x);
+		this.sety(y);
 		return this;
 	}
 
 	clone() {
-		return new Vector2(this.data[0], this.data[1]);
+		return new Vector2(this.x(), this.y());
 	}
 
 	// Rotate vecor by the angle (rad)
 	rotate(angle) {
 		let cs = Math.cos(angle);
 		let sn = Math.sin(angle);
-		let tempX = this.data[0]; // Very important
-		this.data[0] = this.data[0] * cs - this.data[1] * sn;
-		this.data[1] = tempX * sn + this.data[1] * cs;
+		let tempX = this.x(); // Very important
+		this.setx(this.x() * cs - this.y() * sn);
+		this.sety(tempX * sn + this.y() * cs);
 		return this;
 	}
 
 	// angle of the vector (rad)
 	angle() {
-		return Math.atan2(this.data[1], this.data[0]);
+		return Math.atan2(this.y(), this.x());
 	}
 
 	// Draw a debug of the vector at ctx
@@ -37,7 +53,7 @@ class Vector2 extends Vector
 
 		ctx.beginPath();
 		ctx.moveTo(0, 0);
-		ctx.lineTo(v.data[0], v.data[1]);
+		ctx.lineTo(v.x(), v.y());
 		ctx.stroke();
 	}
 	

@@ -84,15 +84,15 @@ class CollisionManager {
 		for (const object of objects) {
 			let radius = include_radius ? object.radius : 0;
 
-			if (object.pos.data[0] - radius < min_x) {
+			if (object.pos.x() - radius < min_x) {
 				object.out_of_bound("min_x");
-			} else if (object.pos.data[0] + radius > max_x) {
+			} else if (object.pos.x() + radius > max_x) {
 				object.out_of_bound("max_x");
 			}
 
-			if (object.pos.data[1] - radius < min_y) {
+			if (object.pos.y() - radius < min_y) {
 				object.out_of_bound("min_y");
-			} else if (object.pos.data[1] + radius > max_y) {
+			} else if (object.pos.y() + radius > max_y) {
 				object.out_of_bound("max_y");
 			}
 		}

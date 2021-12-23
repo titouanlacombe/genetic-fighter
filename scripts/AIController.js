@@ -113,7 +113,7 @@ class AIController extends Controller {
 			return Infinity;
 		}
 
-		let t = - (dv.data[0] * dp.data[0] + dv.data[1] * dp.data[1]) / (dv.data[0] ** 2 + dv.data[1] ** 2);
+		let t = - (dv.x() * dp.x() + dv.y() * dp.y()) / (dv.x() ** 2 + dv.y() ** 2);
 
 		// If ecounter is in the past, there is no next one
 		if (t < 0) {
@@ -203,7 +203,7 @@ class AIController extends Controller {
 		const object = _object;
 
 		// Debug drawing context
-		ctx.translate(object.pos.data[0], object.pos.data[1]);
+		ctx.translate(object.pos.x(), object.pos.y());
 		ctx.lineWidth = 2;
 
 		// Manage target
