@@ -26,8 +26,7 @@ class AIController extends Controller {
 		let searching = new State("searching");
 		let turret = new State("turret");
 
-		// "aiming" state
-
+		// --- "aiming" state ---
 		// Switch to "searching" if has no target
 		aiming.add_exit(searching, (object) => {
 			return object.controller.target == null;
@@ -44,8 +43,7 @@ class AIController extends Controller {
 		});
 
 
-		// "positionning" state
-
+		// --- "positionning" state ---
 		// Switch to "aiming" if target is in range
 		positionning.add_exit(aiming, (object) => {
 			let d = object.controller.target.dist_to(object);
@@ -67,8 +65,7 @@ class AIController extends Controller {
 			return object.munitions <= 0;
 		});
 
-		// "searching" state
-
+		// --- "searching" state ---
 		// Switch to "positionning" when finds a target
 		searching.add_exit(positionning, (object) => {
 			return object.controller.target != null;
@@ -77,52 +74,6 @@ class AIController extends Controller {
 		this.state = searching;
 	}
 	
-	// Return the time to (in sim time) obj1 & obj2 are the closest
-	// this function asumes objects keep their current speed 
-	time_to_ecounter(obj1, obj2) {
-		// --- Math proof ---
-		// Position equation of an object
-		// pi(t) = vi0*t + pi0
-
-		// Distance between object a & b
-		// dist(t) = t*(va0 - vb0) + (pa0 - pb0)
-		// dist(t) = t*dv + dp
-
-		// Norm of the distance
-		// ||dist(t)|| = sqrt((t*dv.x + dp.x)**2 + (t*dv.y + dp.y)**2)
-
-		// Derivative of the norm
-		// d||dist(t)||/dt = (2*dvx*(t*dvx + dpx) + 2*dvy*(t*dvy + dpy)) / (2*sqrt((t*dvx + dpx)**2 + (t*dvy + dpy)**2))
-
-		// Solving eq: d||dist(t)||/dt = 0
-		// 0 = (2*dvx*(t*dvx + dpx) + 2*dvy*(t*dvy + dpy)) / (2*sqrt((t*dvx + dpx)**2 + (t*dvy + dpy)**2))
-		// 0 = 2*dvx*(t*dvx + dpx) + 2*dvy*(t*dvy + dpy)
-		// 0 = dvx*(t*dvx + dpx) + dvy*(t*dvy + dpy)
-		// 0 = t*dvx**2 + dvx*dpx + t*dvy**2 + dvy*dpy
-		// 0 = t*(dvx**2 + dvy**2) + dvx*dpx + dvy*dpy
-		// t*(dvx**2 + dvy**2) = -(dvx*dpx + dvy*dpy)
-		// t = -(dvx*dpx + dvy*dpy) / (dvx**2 + dvy**2)
-
-		// CQFD we have t when dist is at a minimum
-		
-		let dv = obj1.vel.clone().sub(obj2.vel);
-		let dp = obj1.pos.clone().sub(obj2.pos);
-
-		// If objects have the same speed, they have a parallel trajectory and never meet
-		if (dv.norm() == 0) {
-			return Infinity;
-		}
-
-		let t = - (dv.x() * dp.x() + dv.y() * dp.y()) / (dv.x() ** 2 + dv.y() ** 2);
-
-		// If ecounter is in the past, there is no next one
-		if (t < 0) {
-			return Infinity;
-		}
-
-		return t;
-	}
-
 	// Choose closest fighter
 	// Bias via ones in front (TODO)
 	find_target(object, near_by_objects) {
