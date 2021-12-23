@@ -81,9 +81,6 @@ class Fighter extends GameObject {
 
 	// Simulate the object
 	simulate() {
-
-		// console.log(this.controller.state);
-
 		// Controller
 		if (this.controller) {
 			let command = this.controller.control(this);
@@ -163,7 +160,6 @@ class Fighter extends GameObject {
 	// Spawn a bullet
 	// Return if success
 	command_fire(bool) {
-		console.log("Fire : " + bool);
 		if (!bool) {
 			return;
 		}
