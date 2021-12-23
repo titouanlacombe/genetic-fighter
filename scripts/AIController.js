@@ -45,7 +45,6 @@ class AIController extends Controller {
 			return object.munitions <= 0;
 		});
 
-
 		// --- "positionning" state ---
 		// Switch to "aiming" if target is in range
 		positionning.add_exit(aiming, (object) => {
