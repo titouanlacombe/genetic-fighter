@@ -2,7 +2,7 @@ class TrajectoryPredictor
 {
 	// Return the time to (in sim time) obj1 & obj2 are the closest
 	// this function asumes objects keep their current speed 
-	time_to_encounter(obj1, obj2) {
+	static time_to_encounter(obj1, obj2) {
 		// --- Math proof ---
 		// Position equation of an object
 		// pi(t) = vi0*t + pi0
@@ -46,20 +46,20 @@ class TrajectoryPredictor
 		return t;
 	}
 
-    pos_at_time(obj, dt) {
-        return obj.pos.clone().add(obj.vel.clone().mul(dt));
-    }
+	static pos_at_time(obj, dt) {
+		return obj.pos.clone().add(obj.vel.clone().mul(dt));
+	}
 
-    get_encounter(obj1, obj2) {
-        let dt = this.time_to_encounter(obj1, obj2);
+	static get_encounter(obj1, obj2) {
+		let dt = this.time_to_encounter(obj1, obj2);
 
-        let pos1 = this.pos_at_time(obj1, dt);
-        let pos2 = this.pos_at_time(obj2, dt);
+		let pos1 = this.pos_at_time(obj1, dt);
+		let pos2 = this.pos_at_time(obj2, dt);
 
-        return {
-            "dt": dt,
-            "pos1": pos1,
-            "pos2": pos2,
-        };
-    }
+		return {
+			"dt": dt,
+			"pos1": pos1,
+			"pos2": pos2,
+		};
+	}
 }

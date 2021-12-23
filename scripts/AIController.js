@@ -10,6 +10,9 @@ class AIController extends Controller {
 
 		this.min_fire_error = 0.05;
 
+		this.encounter_time_max = 20;
+		this.encounter_dist_max = 5;
+
 		// Variables
 		this.target = null;
 
@@ -112,6 +115,25 @@ class AIController extends Controller {
 	// fire if current aim close enough to targeted aim && cooldown passed
 	do_fire(target, current_aim) {
 		return Math.abs(target - current_aim) < this.min_fire_error;
+	}
+
+	get_evading_vector(object, near_by_objects) {
+		let evading_v = new Vector2();
+
+		for (const obj of near_by_objects) {
+			let encounter = TrajectoryPredictor.get_encounter(object, obj);
+			let dist = encounter.pos1.clone().sub(encounter.pos2);
+
+			if (encounter.dt < this.encounter_time_max
+				&& dist.norm() - obj.radius - object.radius < this.encounter_dist_max)
+			{
+				// Evade
+				let score = 1;
+				evading_v.add(dist.mul(score));
+			}
+		}
+
+		return evading_v;
 	}
 
 	searching(object, near_by_objects) {
