@@ -204,8 +204,6 @@ class AIController extends Controller {
 		// Manage state
 		this.state = this.state.update(object);
 
-
-
 		let command = {};
 		switch (this.state.code) {
 			case "searching":
