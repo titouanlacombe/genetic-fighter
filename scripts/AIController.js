@@ -1,5 +1,5 @@
 class AIController extends Controller {
-	static vision_range = 1000;
+	static vision_range = 500;
 
 	constructor() {
 		super();
@@ -23,10 +23,10 @@ class AIController extends Controller {
 	// Can't be static function because the exit condition changes depending on the AI DNA
 	init_states() {
 		// let suicide = new State("suicide");
+		let searching = new State("searching");
 		let aiming = new State("aiming");
 		let fleeing = new State("fleeing");
 		let positionning = new State("positionning");
-		let searching = new State("searching");
 		let turret = new State("turret");
 
 		// --- "aiming" state ---
@@ -49,6 +49,9 @@ class AIController extends Controller {
 		// --- "positionning" state ---
 		// Switch to "aiming" if target is in range
 		positionning.add_exit(aiming, (object) => {
+			if (!object.controller.target) {
+				return false;
+			}
 			let d = object.controller.target.dist_to(object);
 			return d < this.max_fighter_dist && d > this.min_fighter_dist;
 		});
@@ -96,7 +99,7 @@ class AIController extends Controller {
 		// Loose target if => too far or dead
 		if (this.target) {
 			if (!this.target.alive ||
-				this.target.dist_to(object) > Fighter.vision_range) {
+				this.target.dist_to(object) > AIController.vision_range) {
 				this.target = null;
 			}
 		}
@@ -108,8 +111,15 @@ class AIController extends Controller {
 	}
 
 	get_target_angle(object) {
-		// Use target
-		return 0;
+		let aim;
+
+		aim = (object.rot - this.target.pos.clone().sub(object.pos).angle()) * 180 / Math.PI;
+		// console.log(aim);
+		// console.log("Object : ", object.pos, "\nTarget : ", this.target.pos);
+		ctx.moveTo(object.pos.data[0], object.pos.data[1]);
+		this.target.pos.clone().sub(object.pos).draw(ctx);
+
+		return aim;
 	}
 
 	// fire if current aim close enough to targeted aim && cooldown passed
@@ -144,6 +154,10 @@ class AIController extends Controller {
 	}
 
 	positionning(object, near_by_objects) {
+
+		// get target angle
+		this.get_target_angle(object);
+
 		return {
 			"thrust": 0,
 			"rotation": 0,
@@ -151,6 +165,10 @@ class AIController extends Controller {
 	}
 
 	aiming(object, near_by_objects) {
+
+		// get target angle
+		this.get_target_angle(object);
+
 		return {
 			"thrust": 0, // Min thrust ?
 			"rotation": 0,
@@ -185,6 +203,8 @@ class AIController extends Controller {
 
 		// Manage state
 		this.state = this.state.update(object);
+
+
 
 		let command = {};
 		switch (this.state.code) {

@@ -81,6 +81,9 @@ class Fighter extends GameObject {
 
 	// Simulate the object
 	simulate() {
+
+		// console.log(this.controller.state);
+
 		// Controller
 		if (this.controller) {
 			let command = this.controller.control(this);
@@ -142,7 +145,7 @@ class Fighter extends GameObject {
 		if (this.fuel <= 0) {
 			return;
 		}
-		
+
 		throttle = this.command_validator(throttle, 0, 1);
 		this.fuel -= throttle * Fighter.fuel_consumption * sim_dt;
 
@@ -160,6 +163,7 @@ class Fighter extends GameObject {
 	// Spawn a bullet
 	// Return if success
 	command_fire(bool) {
+		console.log("Fire : " + bool);
 		if (!bool) {
 			return;
 		}

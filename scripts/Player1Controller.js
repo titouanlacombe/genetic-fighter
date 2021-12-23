@@ -1,11 +1,11 @@
 // Control the object via key presses
-class Player1Controller extends Controller
-{
+class Player1Controller extends Controller {
 	constructor() {
 		super();
 		this.thrust = 0;
 		this.rotation = 0;
 		this.fire = false;
+		this.state = "Player has no state"; // debugging purpose
 	}
 
 	control() {
