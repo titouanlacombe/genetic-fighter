@@ -1,7 +1,7 @@
 class TrajectoryPredictor
 {
 	// Return the time to (in sim time) obj1 & obj2 are the closest
-	// this function asumes objects keep their current speed 
+	// This function asumes objects keep their current speed 
 	static time_to_encounter(obj1, obj2) {
 		// --- Math proof ---
 		// Position equation of an object
@@ -83,7 +83,7 @@ class TrajectoryPredictor
 	}
 
 	// Return the angle wich obj need to fire in order to hit target
-	// this function asumes objects keep their current speed 
+	// This function asumes objects keep their current speed 
 	static get_firering_angle(obj, target, fire_vel) {
 		// --- Math proof ---
 		// Expressing vel_cannon
@@ -126,20 +126,20 @@ class TrajectoryPredictor
 
 		let solutions = this.resolve_poly2(A, B, C);
 		
-		// Si pas de solutions
+		// If no solutions
 		if (solutions.length == 0) {
 			return null;
 		}
 		
-		// Tri pour aider au choix
+		// Sort to help in choice
 		solutions.sort();
 
-		// Si max négatif: solutions irréalisables (car dans le passé)
+		// If max negative: solutions invalid (because in the past)
 		if (solutions[solutions.length - 1] < 0) {
 			return null;
 		}
 
-		// Choix du dt: le plus petit possible non négatif
+		// Choice of dt: smalest non negative
 		i = 0;
 		while (solutions[i] < 0) {
 			i++;
