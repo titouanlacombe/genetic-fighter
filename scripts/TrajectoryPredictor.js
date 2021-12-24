@@ -140,7 +140,7 @@ class TrajectoryPredictor
 		}
 
 		// Choice of dt: smalest non negative
-		i = 0;
+		let i = 0;
 		while (solutions[i] < 0) {
 			i++;
 		}
