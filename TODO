@@ -1,4 +1,5 @@
 improve AI {
+	bizzare behaviour: seems if target vel close to 0 get fireing angle behave like an infinity is happening
 	build pid engine for controls
 	test: easiest state first: turret
 }
