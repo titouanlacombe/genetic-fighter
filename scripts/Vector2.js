@@ -15,10 +15,12 @@ class Vector2 extends Vector
 
 	setx(v) {
 		this.data[0] = v;
+		return this;
 	}
 
 	sety(v) {
 		this.data[1] = v;
+		return this;
 	}
 
 	set(x = 0, y = 0) {
@@ -55,6 +57,8 @@ class Vector2 extends Vector
 		ctx.moveTo(0, 0);
 		ctx.lineTo(v.x(), v.y());
 		ctx.stroke();
+		
+		return this;
 	}
 	
 	// Create a unit vector from an angle

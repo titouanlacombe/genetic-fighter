@@ -33,8 +33,8 @@ function loop(new_time) {
 	let canvas = document.getElementById('canvas');
 	ctx = canvas.getContext('2d');
 	
-	simulate();
 	draw();
+	simulate(); // Simulate after because of debug drawing
 	
 	frames++;
 	average_fps += (fps() - average_fps) / frames;

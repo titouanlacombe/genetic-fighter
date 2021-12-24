@@ -120,9 +120,17 @@ class AIController extends Controller {
 
 		if (result != null) {
 			let target_pos = this.target.pos.clone().add(this.target.vel.clone().mul(result.dt));
+			// Relative pos
+			target_pos.sub(object.pos);
 
+			// Draw angle
+			Vector2.fromAngle(result.angle).draw(ctx, Color.red, 30);
+			
+			// console.log(target_pos);
+			// console.log(result.dt);
+			// console.log(result.angle);
+			
 			// draw red point at target x bullet intersection
-			ctx.fillStyle = "red";
 			ctx.beginPath();
 			ctx.arc(target_pos.x, target_pos.y, 5, 0, 2 * Math.PI);
 			ctx.fill();
@@ -163,8 +171,6 @@ class AIController extends Controller {
 	}
 
 	positionning(object, near_by_objects) {
-		let angle = this.get_firering_angle(object);
-
 		return {
 			"thrust": 0,
 			"rotation": 0,
@@ -200,8 +206,10 @@ class AIController extends Controller {
 
 		// Debug drawing context
 		ctx.translate(object.pos.x(), object.pos.y());
+		ctx.strokeStyle = "red";
+		ctx.fillStyle = "red";
 		ctx.lineWidth = 2;
-
+		
 		// Manage target
 		let near_by_objects = CollisionManager.get_near_objects(object, AIController.vision_range, "space");
 		this.manage_target(object, near_by_objects);
