@@ -1,5 +1,4 @@
-class TrajectoryPredictor
-{
+class TrajectoryPredictor {
 	// Return the time to (in sim time) obj1 & obj2 are the closest
 	// This function asumes objects keep their current speed 
 	static time_to_encounter(obj1, obj2) {
@@ -27,7 +26,7 @@ class TrajectoryPredictor
 		// t = -(dvx*dpx + dvy*dpy) / (dvx**2 + dvy**2)
 
 		// CQFD we have t when dist is at a minimum
-		
+
 		let dv = obj1.vel.clone().sub(obj2.vel);
 		let dp = obj1.pos.clone().sub(obj2.pos);
 
@@ -63,8 +62,9 @@ class TrajectoryPredictor
 		};
 	}
 
+	// Solve the polynome: A*x^2 + B*x + C = 0
 	static resolve_poly2(A, B, C) {
-		let delta = B**2 - 4*A*C;
+		let delta = B ** 2 - 4 * A * C;
 
 		if (delta < 0) {
 			// No solutions
@@ -109,12 +109,12 @@ class TrajectoryPredictor
 		// dt^2*A + dt*B + C = 0
 		// Juste solve and find dt
 		// Choose the best dt (return null if imposible)
-		
+
 		// Finding angle
 		// vel_cannon = diff_pos / dt + diff_vel
 		// angle(vel_cannon) = angle(diff_pos / dt + diff_vel)
 		// CQFD
-		
+
 		// --- Code ---
 		// Finding dt
 		let diff_vel = target.vel.clone().sub(obj.vel);
@@ -125,12 +125,12 @@ class TrajectoryPredictor
 		let C = diff_pos.squared_norm();
 
 		let solutions = this.resolve_poly2(A, B, C);
-		
+
 		// If no solutions
 		if (solutions.length == 0) {
 			return null;
 		}
-		
+
 		// Sort to help in choice
 		solutions.sort();
 
