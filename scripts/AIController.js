@@ -30,6 +30,12 @@ class AIController extends Controller {
 		let turret = new State("turret");
 
 		// --- "aiming" state ---
+		// Switch to "positionning" if target not at good distance
+		aiming.add_exit(positionning, (object) => {
+			let d = object.dist_to(this.target);
+			return d < this.min_fighter_dist || d > this.max_fighter_dist;
+		});
+
 		// Switch to "searching" if has no target
 		aiming.add_exit(searching, (object) => {
 			return object.controller.target == null;
@@ -202,6 +208,7 @@ class AIController extends Controller {
 
 		// Manage state
 		this.state = this.state.update(object);
+		console.log(this.state.code);
 
 		let command = {};
 		switch (this.state.code) {
