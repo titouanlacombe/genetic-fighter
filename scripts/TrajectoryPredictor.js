@@ -82,7 +82,9 @@ class TrajectoryPredictor
 		}
 	}
 
-	static get_firering_angle(obj, target) {
+	// Return the angle wich obj need to fire in order to hit target
+	// this function asumes objects keep their current speed 
+	static get_firering_angle(obj, target, fire_vel) {
 		// --- Math proof ---
 		// Expressing vel_cannon
 		// constraining system by collision
@@ -118,7 +120,7 @@ class TrajectoryPredictor
 		let diff_vel = target.vel.clone().sub(obj.vel);
 		let diff_pos = target.pos.clone().sub(obj.pos);
 
-		let A = diff_vel.squared_norm() - Fighter.fire_vel ** 2;
+		let A = diff_vel.squared_norm() - fire_vel ** 2;
 		let B = 2 * diff_pos.scalar(diff_vel);
 		let C = diff_pos.squared_norm();
 
