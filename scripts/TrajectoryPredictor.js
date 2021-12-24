@@ -147,6 +147,9 @@ class TrajectoryPredictor
 		let dt = solutions[i];
 
 		// Finding angle
-		return diff_pos.div(dt).add(diff_vel).angle();
+		return {
+			"angle": diff_pos.div(dt).add(diff_vel).angle(),
+			"dt": dt,
+		};
 	}
 }

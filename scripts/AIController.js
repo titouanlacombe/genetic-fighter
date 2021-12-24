@@ -109,16 +109,20 @@ class AIController extends Controller {
 		}
 	}
 
-	get_target_angle(object) {
-		let aim;
+	get_firering_angle(object) {
+		let result = TrajectoryPredictor.get_firering_angle(object, this.target, Fighter.fire_vel);
 
-		aim = (object.rot - this.target.pos.clone().sub(object.pos).angle()) * 180 / Math.PI;
-		// console.log(aim);
-		// console.log("Object : ", object.pos, "\nTarget : ", this.target.pos);
-		ctx.moveTo(object.pos.data[0], object.pos.data[1]);
-		this.target.pos.clone().sub(object.pos).draw(ctx);
+		if (result != null) {
+			let target_pos = this.target.pos.clone().add(this.target.vel.clone().mul(result.dt));
 
-		return aim;
+			// draw red point at target x bullet intersection
+			ctx.fillStyle = "red";
+			ctx.beginPath();
+			ctx.arc(target_pos.x, target_pos.y, 5, 0, 2 * Math.PI);
+			ctx.fill();
+		}
+
+		return result.angle;
 	}
 
 	// fire if current aim close enough to targeted aim && cooldown passed
@@ -153,9 +157,7 @@ class AIController extends Controller {
 	}
 
 	positionning(object, near_by_objects) {
-
-		// get target angle
-		this.get_target_angle(object);
+		let angle = this.get_firering_angle(object);
 
 		return {
 			"thrust": 0,
@@ -164,9 +166,7 @@ class AIController extends Controller {
 	}
 
 	aiming(object, near_by_objects) {
-
-		// get target angle
-		this.get_target_angle(object);
+		let angle = this.get_firering_angle(object);
 
 		return {
 			"thrust": 0, // Min thrust ?
