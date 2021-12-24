@@ -48,13 +48,18 @@ class Vector
 		return this.mul(1 / s);
 	}
 
-	// norm of the vector
-	norm() {
+	// squared norm of the vector
+	squared_norm() {
 		let sum = 0;
 		for (let value of this.data) {
 			sum += value * value;
 		}
-		return Math.sqrt(sum);
+		return sum;
+	}
+
+	// norm of the vector
+	norm() {
+		return Math.sqrt(this.squared_norm());
 	}
 
 	// Normalize a vector to norm

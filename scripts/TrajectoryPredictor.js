@@ -62,4 +62,89 @@ class TrajectoryPredictor
 			"pos2": pos2,
 		};
 	}
+
+	static resolve_poly2(A, B, C) {
+		let delta = B**2 - 4*A*C;
+
+		if (delta < 0) {
+			// No solutions
+			return [];
+		}
+		else if (delta == 0) {
+			let x1 = - B / (2 * A);
+		}
+		else {
+			let del = Math.sqrt(delta);
+			let x1 = (- B + del) / 2 * A;
+			let x2 = (- B - del) / 2 * A;
+
+			return [x1, x2];
+		}
+	}
+
+	static get_firering_angle(obj, target) {
+		// --- Math proof ---
+		// Expressing vel_cannon
+		// constraining system by collision
+		// pos_bullet(dt) = pos_target(dt)
+		// pos_object(0) + vel_bullet(0) * dt = pos_target(0) + vel_target(0) * dt
+		// vel_bullet(0) * dt = (pos_target(0) - pos_object(0)) + vel_target(0) * dt
+		// (vel_object(0) + vel_cannon) * dt = ||
+		// vel_cannon * dt = (pos_target(0) - pos_object(0)) + (vel_target(0) - vel_object(0)) * dt
+		// vel_cannon = diff_pos / dt + diff_vel
+
+		// Finding dt
+		// Constraining system by norm of the vel
+		// ||vel_cannon|| = ||diff_pos / dt + diff_vel|| = cannon_force
+		// ||diff_pos / dt + diff_vel|| = cannon_force
+		// (diff_pos.x / dt + diff_vel.x)^2 + (diff_pos.y / dt + diff_vel.y)^2 = cannon_force^2
+		// (diff_pos.x / dt)^2 + 2*(diff_pos.x / dt)*diff_vel.x + diff_vel.x^2 + (diff_pos.y / dt)^2 + 2*(diff_pos.y / dt)*diff_vel.y + diff_vel.y^2 = cannon_force^2
+		// dist^2 / dt^2 + dist_vel^2 + 2*(diff_pos.x / dt)*diff_vel.x + 2*(diff_pos.y / dt)*diff_vel.y = cannon_force^2
+		// dist^2 / dt^2 + dist_vel^2 + 2/dt*(diff_pos.x*diff_vel.x + diff_pos.y*diff_vel.y) = cannon_force^2
+		// dist^2 / dt^2 + dist_vel^2 - cannon_force^2 + 2/dt*(diff_pos.x*diff_vel.x + diff_pos.y*diff_vel.y) = 0
+		// dt^2*(dist_vel^2 - cannon_force^2) + dt*2*(diff_pos.x*diff_vel.x + diff_pos.y*diff_vel.y) + dist^2 = 0
+		// dt^2*(dist_vel^2 - cannon_force^2) + dt*2*diff_pos.scalar(diff_vel) + dist^2 = 0
+		// dt^2*A + dt*B + C = 0
+		// Juste solve and find dt
+		// Choose the best dt (return null if imposible)
+		
+		// Finding angle
+		// vel_cannon = diff_pos / dt + diff_vel
+		// angle(vel_cannon) = angle(diff_pos / dt + diff_vel)
+		// CQFD
+		
+		// --- Code ---
+		// Finding dt
+		let diff_vel = target.vel.clone().sub(obj.vel);
+		let diff_pos = target.pos.clone().sub(obj.pos);
+
+		let A = diff_vel.squared_norm() - Fighter.fire_vel ** 2;
+		let B = 2 * diff_pos.scalar(diff_vel);
+		let C = diff_pos.squared_norm();
+
+		let solutions = this.resolve_poly2(A, B, C);
+		
+		// Si pas de solutions
+		if (solutions.length == 0) {
+			return null;
+		}
+		
+		// Tri pour aider au choix
+		solutions.sort();
+
+		// Si max négatif: solutions irréalisables (car dans le passé)
+		if (solutions[solutions.length - 1] < 0) {
+			return null;
+		}
+
+		// Choix du dt: le plus petit possible non négatif
+		i = 0;
+		while (solutions[i] < 0) {
+			i++;
+		}
+		let dt = solutions[i];
+
+		// Finding angle
+		return diff_pos.div(dt).add(diff_vel).angle();
+	}
 }
