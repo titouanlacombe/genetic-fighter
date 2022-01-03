@@ -5,9 +5,9 @@ class GameObject {
 		this.vel = new Vector2();
 		this.frc = new Vector2();
 
-		this.rot = 0;
-		this.rotvel = 0;
-		this.rotfrc = 0;
+		this.angle = 0;
+		this.rotation = 0;
+		this.torque = 0;
 
 		this.radius = 0;
 		this.alive = true;
@@ -23,7 +23,7 @@ class GameObject {
 
 	_draw() {
 		ctx.translate(this.pos.x(), this.pos.y());
-		ctx.rotate(this.rot);
+		ctx.rotate(this.angle);
 		this.draw();
 		ctx.resetTransform(); // reseting ctx transformations by restoring saved state
 	}
@@ -40,9 +40,9 @@ class GameObject {
 		this.frc.set();
 
 		// Rotation
-		this.rotvel += this.rotfrc * sim_dt;
-		this.rot += this.rotvel * sim_dt;
-		this.rotfrc = 0;
+		this.rotation += this.torque * sim_dt;
+		this.angle += this.rotation * sim_dt;
+		this.torque = 0;
 	}
 
 	collision(object) {

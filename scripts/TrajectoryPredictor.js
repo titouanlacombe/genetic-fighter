@@ -1,6 +1,6 @@
 class TrajectoryPredictor {
 	// Return the time to (in sim time) obj1 & obj2 are the closest
-	// This function asumes objects keep their current speed 
+	// This function asumes objects keep their current speed
 	static time_to_encounter(obj1, obj2) {
 		// --- Math proof ---
 		// Position equation of an object
@@ -72,6 +72,7 @@ class TrajectoryPredictor {
 		}
 		else if (delta == 0) {
 			let x1 = - B / (2 * A);
+			return [x1];
 		}
 		else {
 			let del = Math.sqrt(delta);
@@ -87,7 +88,7 @@ class TrajectoryPredictor {
 	static get_firering_angle(obj, target, fire_vel) {
 		// --- Math proof ---
 		// Expressing vel_cannon
-		// constraining system by collision
+		// Constraining system by collision
 		// pos_bullet(dt) = pos_target(dt)
 		// pos_object(0) + vel_bullet(0) * dt = pos_target(0) + vel_target(0) * dt
 		// vel_bullet(0) * dt = (pos_target(0) - pos_object(0)) + vel_target(0) * dt

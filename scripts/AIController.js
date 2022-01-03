@@ -5,8 +5,8 @@ class AIController extends Controller {
 		super();
 
 		// DNA
-		this.min_fighter_dist = 100;
-		this.max_fighter_dist = 300;
+		this.min_fighter_dist = 50;
+		this.max_fighter_dist = 400;
 
 		this.min_fire_error = 0.05;
 
@@ -32,6 +32,10 @@ class AIController extends Controller {
 		// --- "aiming" state ---
 		// Switch to "positionning" if target not at good distance
 		aiming.add_exit(positionning, (object) => {
+			if (!this.target) {
+				return false;
+			}
+
 			let d = object.dist_to(this.target);
 			return d < this.min_fighter_dist || d > this.max_fighter_dist;
 		});
@@ -136,12 +140,12 @@ class AIController extends Controller {
 			ctx.fill();
 		}
 
-		return result.angle;
+		return result.angle + Math.PI / 2; // Why + PI/2 ?
 	}
 
 	// fire if current aim close enough to targeted aim && cooldown passed
-	do_fire(target, current_aim) {
-		return Math.abs(target - current_aim) < this.min_fire_error;
+	do_fire(angle_error) {
+		return Math.abs(angle_error) < this.min_fire_error;
 	}
 
 	get_evading_vector(object, near_by_objects) {
@@ -179,18 +183,19 @@ class AIController extends Controller {
 
 	aiming(object, near_by_objects) {
 		let angle = this.get_firering_angle(object);
+		let angle_error = object.angle - angle;
 
 		return {
 			"thrust": 0, // Min thrust ?
-			"rotation": 0,
-			"fire": this.do_fire(0, 0),
+			"rotation": -angle_error * 0.8,
+			"fire": this.do_fire(angle_error),
 		};
 	}
 
 	turret(object, near_by_objects) {
 		return {
 			"rotation": 0,
-			"fire": this.do_fire(0, 0),
+			"fire": this.do_fire(angle_error),
 		};
 	}
 

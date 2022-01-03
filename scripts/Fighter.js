@@ -31,7 +31,7 @@ class Fighter extends GameObject {
 		this.pos.set(x, y);
 		this.vel.set();
 
-		this.rot = Math.random() * 2 * Math.PI;
+		this.angle = Math.random() * 2 * Math.PI;
 
 		this.controller = controller;
 
@@ -96,7 +96,7 @@ class Fighter extends GameObject {
 		this.frc.add(this.vel.clone().mul(-Fighter.friction));
 
 		// Rotate friction
-		this.rotfrc += this.rotvel * -Fighter.rot_friction;
+		this.torque += this.rotation * -Fighter.rot_friction;
 
 		// dies if life < 0
 		if (this.life <= 0) {
@@ -121,7 +121,7 @@ class Fighter extends GameObject {
 
 	command_validator(value, min, max) {
 		if (isNaN(value)) {
-			console.log("value NaN");
+			console.log("command_validator warning: value NaN");
 			return 0;
 		}
 
@@ -147,14 +147,14 @@ class Fighter extends GameObject {
 		this.fuel -= throttle * Fighter.fuel_consumption * sim_dt;
 
 		let thrustForce = new Vector2(0, -throttle * Fighter.thrust_command_authority);
-		thrustForce.rotate(this.rot);
+		thrustForce.rotate(this.angle);
 		this.frc.add(thrustForce);
 	}
 
 	// Apply rotation controll force
 	command_rotation(throttle) {
 		throttle = this.command_validator(throttle, -1, 1);
-		this.rotfrc = throttle * Fighter.rot_command_authority;
+		this.torque = throttle * Fighter.rot_command_authority;
 	}
 
 	// Spawn a bullet
@@ -176,11 +176,11 @@ class Fighter extends GameObject {
 		let bullet = new Bullet(this.pos, this.vel, this.r);
 		// Add cannon position
 		let added_pos = new Vector2(0, -2.1 * this.radius);
-		added_pos.rotate(this.rot);
+		added_pos.rotate(this.angle);
 		bullet.pos.add(added_pos);
 		// Add my velocity
 		let added_vel = new Vector2(0, -Fighter.fire_vel);
-		added_vel.rotate(this.rot);
+		added_vel.rotate(this.angle);
 		bullet.vel.add(added_vel);
 		// Add to objects
 		objects.push(bullet);

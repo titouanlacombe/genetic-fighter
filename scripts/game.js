@@ -4,7 +4,7 @@ let winner;
 
 let sim_dt = 0; // Delta time between last 2 sim steps
 let sim_time = 0; // Time since the start of the simulation
-let fixed_dt = 1; // fix delta time to a constant (debug tool)
+let fixed_dt = 0.3; // fix delta time to a constant (debug tool)
 
 function player_factory(x, y, color, controller) {
 	let player = new Fighter(x, y, color, controller);
