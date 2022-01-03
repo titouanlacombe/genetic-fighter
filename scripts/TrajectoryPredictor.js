@@ -64,6 +64,7 @@ class TrajectoryPredictor {
 
 	// Solve the polynome: A*x^2 + B*x + C = 0
 	static resolve_poly2(A, B, C) {
+		// TODO preconditions A, B, C
 		let delta = B ** 2 - 4 * A * C;
 
 		if (delta < 0) {
@@ -85,10 +86,10 @@ class TrajectoryPredictor {
 
 	// Return the angle wich obj need to fire in order to hit target
 	// This function asumes objects keep their current speed 
-	static get_firering_angle(obj, target, fire_vel) {
+	static get_firering_angle(obj, target, vel_cannon_norm) {
 		// --- Math proof ---
-		// Expressing vel_cannon
-		// Constraining system by collision
+		// First step: Expressing vel_cannon
+		// Constraining system by collision at some unknown time
 		// pos_bullet(dt) = pos_target(dt)
 		// pos_object(0) + vel_bullet(0) * dt = pos_target(0) + vel_target(0) * dt
 		// vel_bullet(0) * dt = (pos_target(0) - pos_object(0)) + vel_target(0) * dt
@@ -96,36 +97,48 @@ class TrajectoryPredictor {
 		// vel_cannon * dt = (pos_target(0) - pos_object(0)) + (vel_target(0) - vel_object(0)) * dt
 		// vel_cannon = diff_pos / dt + diff_vel
 
-		// Finding dt
+		// Second step: Finding dt
 		// Constraining system by norm of the vel
-		// ||vel_cannon|| = ||diff_pos / dt + diff_vel|| = cannon_force
-		// ||diff_pos / dt + diff_vel|| = cannon_force
-		// (diff_pos.x / dt + diff_vel.x)^2 + (diff_pos.y / dt + diff_vel.y)^2 = cannon_force^2
-		// (diff_pos.x / dt)^2 + 2*(diff_pos.x / dt)*diff_vel.x + diff_vel.x^2 + (diff_pos.y / dt)^2 + 2*(diff_pos.y / dt)*diff_vel.y + diff_vel.y^2 = cannon_force^2
-		// dist^2 / dt^2 + dist_vel^2 + 2*(diff_pos.x / dt)*diff_vel.x + 2*(diff_pos.y / dt)*diff_vel.y = cannon_force^2
-		// dist^2 / dt^2 + dist_vel^2 + 2/dt*(diff_pos.x*diff_vel.x + diff_pos.y*diff_vel.y) = cannon_force^2
-		// dist^2 / dt^2 + dist_vel^2 - cannon_force^2 + 2/dt*(diff_pos.x*diff_vel.x + diff_pos.y*diff_vel.y) = 0
-		// dt^2*(dist_vel^2 - cannon_force^2) + dt*2*(diff_pos.x*diff_vel.x + diff_pos.y*diff_vel.y) + dist^2 = 0
-		// dt^2*(dist_vel^2 - cannon_force^2) + dt*2*diff_pos.scalar(diff_vel) + dist^2 = 0
+		// ||vel_cannon|| = ||diff_pos / dt + diff_vel|| = vel_cannon_norm
+		// ||diff_pos / dt + diff_vel|| = vel_cannon_norm
+		// (diff_pos.x / dt + diff_vel.x)^2 + (diff_pos.y / dt + diff_vel.y)^2 = vel_cannon_norm^2
+		// (diff_pos.x / dt)^2 + 2*(diff_pos.x / dt)*diff_vel.x + diff_vel.x^2 + (diff_pos.y / dt)^2 + 2*(diff_pos.y / dt)*diff_vel.y + diff_vel.y^2 = vel_cannon_norm^2
+		// diff_vel.x^2 + diff_vel.y^2 => dist_vel^2
+		// diff_pos.x^2 / dt^2 + diff_pos.y^2 / dt^2 => dist^2 / dt^2
+		// dist^2 / dt^2 + dist_vel^2 + 2*(diff_pos.x / dt)*diff_vel.x + 2*(diff_pos.y / dt)*diff_vel.y = vel_cannon_norm^2
+		// dist^2 / dt^2 + dist_vel^2 + (2/dt)*(diff_pos.x*diff_vel.x + diff_pos.y*diff_vel.y) = vel_cannon_norm^2
+		// dist^2 / dt^2 + dist_vel^2 - vel_cannon_norm^2 + (2/dt)*(diff_pos.x*diff_vel.x + diff_pos.y*diff_vel.y) = 0
+		// dt^2*(dist_vel^2 - vel_cannon_norm^2) + 2*dt*(diff_pos.x*diff_vel.x + diff_pos.y*diff_vel.y) + dist^2 = 0
+		// dt^2*(dist_vel^2 - vel_cannon_norm^2) + 2*dt*diff_pos.scalar(diff_vel) + dist^2 = 0
 		// dt^2*A + dt*B + C = 0
+		// With:
+		// A = dist_vel^2 - vel_cannon_norm^2
+		// B = 2*diff_pos.scalar(diff_vel)
+		// C = dist^2
+
 		// Juste solve and find dt
 		// Choose the best dt (return null if imposible)
 
-		// Finding angle
+		// Final step: Finding angle
 		// vel_cannon = diff_pos / dt + diff_vel
 		// angle(vel_cannon) = angle(diff_pos / dt + diff_vel)
 		// CQFD
 
 		// --- Code ---
 		// Finding dt
-		let diff_vel = target.vel.clone().sub(obj.vel);
 		let diff_pos = target.pos.clone().sub(obj.pos);
+		let diff_vel = target.vel.clone().sub(obj.vel);
+		diff_vel.draw(ctx, "green", 50);
+		diff_pos.draw(ctx, "blue", 1);
 
-		let A = diff_vel.squared_norm() - fire_vel ** 2;
+
+		let A = diff_vel.squared_norm() - vel_cannon_norm ** 2;
 		let B = 2 * diff_pos.scalar(diff_vel);
 		let C = diff_pos.squared_norm();
+		console.log("A: " + A, "B: " + B, "C: " + C);
 
 		let solutions = this.resolve_poly2(A, B, C);
+		console.log(solutions);
 
 		// If no solutions
 		if (solutions.length == 0) {
@@ -146,10 +159,14 @@ class TrajectoryPredictor {
 			i++;
 		}
 		let dt = solutions[i];
+		// console.log(dt);
 
-		// Finding angle
+		// Finding vel_cannon
+		let vel_cannon = diff_pos.div(dt).add(diff_vel);
+		console.log(vel_cannon.norm(), vel_cannon_norm);
+
 		return {
-			"angle": diff_pos.div(dt).add(diff_vel).angle(),
+			"angle": vel_cannon.angle(),
 			"dt": dt,
 		};
 	}
