@@ -7,11 +7,15 @@ class AIController extends Controller {
 		// --- DNA ---
 		this.min_fighter_dist = 50;
 		this.max_fighter_dist = 400;
+		this.wanted_target_dist = 150;
 
 		this.min_fire_error = 0.05;
 
 		this.encounter_time_max = 20;
 		this.encounter_dist_max = 5;
+
+		this.positionning_K = 1;
+		this.searching_K = 1;
 
 		// PID settings
 		this.angle_Kp = 0.3;
@@ -102,6 +106,10 @@ class AIController extends Controller {
 
 		this.state = searching;
 	}
+
+	get_angle(object) {
+		return object.angle - Math.PI / 2;
+	}
 	
 	// Choose closest fighter
 	// Bias via ones in front (TODO)
@@ -148,13 +156,13 @@ class AIController extends Controller {
 			// console.log(result.dt);
 			// console.log(result.angle);
 			
-			// draw red point at target x bullet intersection
+			// Draw red point at target x bullet intersection
 			ctx.beginPath();
 			ctx.arc(target_pos.x, target_pos.y, 5, 0, 2 * Math.PI);
 			ctx.fill();
 		}
 
-		return result.angle + Math.PI / 2; // Why + PI/2 ?
+		return result.angle;
 	}
 
 	// fire if current aim close enough to targeted aim && cooldown passed
@@ -182,46 +190,73 @@ class AIController extends Controller {
 	}
 
 	control_from_vector(object, speed_target) {
+		let object_angle = this.get_angle(object);
+
 		let target_angle = speed_target.angle();
-		let target_vel = Vector2.fromAngle(object.angle).scalar(speed_target);
+		let target_vel = Vector2.fromAngle(object_angle).scalar(speed_target);
+
+		// Vector2.fromAngle(target_angle).normalize(target_vel).draw(ctx, "blue", 1);
 
 		return {
 			"thrust": this.vel_pid.control(object.vel.norm(), target_vel, dt),
-			"rotation": this.angle_pid.control(object.angle, target_angle, dt),
+			"rotation": this.angle_pid.control(object_angle, target_angle, dt),
 		};
 	}
 
 	searching(object, near_by_objects) {
 		let speed_target = new Vector2();
+
+		// Go to center
+		let center = new Vector2(width / 2, height / 2);
+		let diff_pos = center.sub(object.pos);
+		speed_target.add(diff_pos.mul(this.searching_K));
+		speed_target.add(this.get_evading_vector(object, near_by_objects));
+
 		return this.control_from_vector(object, speed_target);
 	}
 
 	positionning(object, near_by_objects) {
 		let speed_target = new Vector2();
+		
+		// Constrain target distance to object
+		let diff_pos = this.target.pos.clone().sub(object.pos);
+		let target_pos = diff_pos.clone().normalize(this.wanted_target_dist);
+		let error = diff_pos.sub(target_pos);
+		// error.draw(ctx, "red", 1);
+
+		speed_target.add(error.mul(this.positionning_K));
+
+		speed_target.add(this.get_evading_vector(object, near_by_objects));
+		
 		return this.control_from_vector(object, speed_target);
 	}
 
 	aiming(object, near_by_objects) {
 		let target_angle = this.get_firering_angle(object);
+		let object_angle = this.get_angle(object);
 
 		return {
-			"thrust": 1, // Min thrust ?
-			"rotation": this.angle_pid.control(object.angle, target_angle, dt),
-			"fire": this.do_fire(object.angle, target_angle),
+			"thrust": 1, // Min thrust
+			"rotation": this.angle_pid.control(object_angle, target_angle, dt),
+			"fire": this.do_fire(object_angle, target_angle),
 		};
 	}
 
 	turret(object, near_by_objects) {
 		let target_angle = this.get_firering_angle(object);
+		let object_angle = this.get_angle(object);
 
 		return {
-			"rotation": this.angle_pid.control(object.angle, target_angle, dt),
-			"fire": this.do_fire(object.angle, target_angle),
+			"rotation": this.angle_pid.control(object_angle, target_angle, dt),
+			"fire": this.do_fire(object_angle, target_angle),
 		};
 	}
 
 	fleeing(object, near_by_objects) {
 		let speed_target = new Vector2();
+
+		speed_target.add(this.get_evading_vector(object, near_by_objects));
+
 		return this.control_from_vector(object, speed_target);
 	}
 
