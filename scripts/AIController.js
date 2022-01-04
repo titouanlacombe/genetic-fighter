@@ -216,6 +216,15 @@ class AIController extends Controller {
 		};
 	}
 
+	change_state(new_state) {
+		console.log("Changing state to: " + this.state.code);
+
+		this.state = new_state;
+
+		// Resets the pid
+		this.angle_pid.reset_prev();
+	}
+
 	control(_object) {
 		const object = _object;
 
@@ -230,8 +239,10 @@ class AIController extends Controller {
 		this.manage_target(object, near_by_objects);
 
 		// Manage state
-		this.state = this.state.update(object);
-		// console.log(this.state.code);
+		let new_state = this.state.update(object);
+		if (new_state != this.state) {
+			this.change_state(new_state);
+		}
 
 		let command = {};
 		switch (this.state.code) {
