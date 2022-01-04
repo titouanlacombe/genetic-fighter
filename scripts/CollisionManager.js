@@ -30,7 +30,13 @@ class CollisionManager {
 			}
 			
 			distances.sort((a, b) => { return a.space - b.space; });
-			distances.splice(distances.find((e) => { return e.object == obj1; }), 1); // Remove obj1 from it's array
+
+			// Remove obj1 from it's array
+			let i = 0;
+			while (distances[i].object != obj1) {
+				i++;
+			}
+			distances.splice(i, 1);
 
 			this.distances_cache.set(obj1, distances);
 		}
