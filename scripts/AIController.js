@@ -17,10 +17,15 @@ class AIController extends Controller {
 		this.angle_Kp = 0.3;
 		this.angle_Ki = 0.5;
 		this.angle_Kd = 0.3;
+		
+		this.vel_Kp = 0.3;
+		this.vel_Ki = 0.5;
+		this.vel_Kd = 0.3;
 
 		// --- non DNA ---
 		// PID
 		this.angle_pid = new PIDController(this.angle_Kp, this.angle_Ki, this.angle_Kd);
+		this.vel_pid = new PIDController(this.vel_Kp, this.vel_Ki, this.vel_Kd);
 
 		// Variables
 		this.target = null;
@@ -176,25 +181,31 @@ class AIController extends Controller {
 		return evading_v;
 	}
 
-	searching(object, near_by_objects) {
+	control_from_vector(object, speed_target) {
+		let target_angle = speed_target.angle();
+		let target_vel = Vector2.fromAngle(object.angle).scalar(speed_target);
+
 		return {
-			"thrust": 0,
-			"rotation": 0,
+			"thrust": this.vel_pid.control(object.vel.norm(), target_vel, dt),
+			"rotation": this.angle_pid.control(object.angle, target_angle, dt),
 		};
 	}
 
+	searching(object, near_by_objects) {
+		let speed_target = new Vector2();
+		return this.control_from_vector(object, speed_target);
+	}
+
 	positionning(object, near_by_objects) {
-		return {
-			"thrust": 0,
-			"rotation": 0,
-		};
+		let speed_target = new Vector2();
+		return this.control_from_vector(object, speed_target);
 	}
 
 	aiming(object, near_by_objects) {
 		let target_angle = this.get_firering_angle(object);
 
 		return {
-			"thrust": 0, // Min thrust ?
+			"thrust": 1, // Min thrust ?
 			"rotation": this.angle_pid.control(object.angle, target_angle, dt),
 			"fire": this.do_fire(object.angle, target_angle),
 		};
@@ -210,14 +221,12 @@ class AIController extends Controller {
 	}
 
 	fleeing(object, near_by_objects) {
-		return {
-			"thrust": 0,
-			"rotation": 0,
-		};
+		let speed_target = new Vector2();
+		return this.control_from_vector(object, speed_target);
 	}
 
 	change_state(new_state) {
-		console.log("Changing state to: " + this.state.code);
+		// console.log("Changing state to: " + this.state.code);
 
 		this.state = new_state;
 
