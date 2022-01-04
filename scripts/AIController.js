@@ -150,7 +150,7 @@ class AIController extends Controller {
 			target_pos.sub(object.pos);
 
 			// Draw angle
-			Vector2.fromAngle(result.angle).draw(ctx, Color.red, 30);
+			// Vector2.fromAngle(result.angle).draw(ctx, Color.red, 30);
 			
 			// console.log(target_pos);
 			// console.log(result.dt);

@@ -1,8 +1,3 @@
-improve AI {
-	build pid engine for controls
-	test: easiest state first: turret
-}
-
 improve game? {
 	unnable tu turn if vel too low?
 	improve feel

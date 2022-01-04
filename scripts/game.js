@@ -25,14 +25,14 @@ function initing() {
 	objects = []; // Array of game objects
 
 	// Spawns AIs
-	for (let i = 0; i < 1; i++) {
+	for (let i = 0; i < 300; i++) {
 		let f = new Fighter();
 		f.controller = new AIController();
 		objects.push(f);
 	}
 
 	// Spawns Players
-	objects.push(player_factory(100, height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
+	// objects.push(player_factory(100, height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
 	// objects.push(player_factory(width - 100, height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
 }
 
