@@ -77,8 +77,8 @@ class TrajectoryPredictor {
 		}
 		else {
 			let del = Math.sqrt(delta);
-			let x1 = (- B + del) / 2 * A;
-			let x2 = (- B - del) / 2 * A;
+			let x1 = (- B + del) / (2 * A);
+			let x2 = (- B - del) / (2 * A);
 
 			return [x1, x2];
 		}
@@ -147,6 +147,7 @@ class TrajectoryPredictor {
 
 		// Sort to help in choice
 		solutions.sort();
+		console.log(solutions);
 
 		// If max negative: solutions invalid (because in the past)
 		if (solutions[solutions.length - 1] < 0) {
