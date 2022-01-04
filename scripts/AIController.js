@@ -14,9 +14,9 @@ class AIController extends Controller {
 		this.encounter_dist_max = 5;
 
 		// PID settings
-		this.angle_Kp = 0.5;
+		this.angle_Kp = 0.3;
 		this.angle_Ki = 0.5;
-		this.angle_Kd = 0.1;
+		this.angle_Kd = 0.3;
 
 		// --- non DNA ---
 		// PID
