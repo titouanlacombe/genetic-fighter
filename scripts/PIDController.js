@@ -6,7 +6,6 @@ class PIDController
         this.Ki = i;
         this.Kd = d;
 
-        this.integral = 0;
         this.prev_error = null;
     }
 
@@ -15,18 +14,22 @@ class PIDController
     {
         let error = target - current;
 
-        // Integral
-        this.integral += error * dt;
+        // Proportional
+        let proportional = error;
 
-        // Derivative
+        let integral = 0;
         let derivative = 0;
         if (this.prev_error) {
+            // Integral
+            integral = ((error + this.prev_error) / 2) * dt;
+
+            // Derivative
             derivative = (error - this.prev_error) / dt;
         }
         this.prev_error = error;
 
-        return error * this.Kp
-            + this.integral * this.Ki
+        return proportional * this.Kp
+            + integral * this.Ki
             + derivative * this.Kd;
     }
 }

@@ -128,17 +128,12 @@ class TrajectoryPredictor {
 		// Finding dt
 		let diff_pos = target.pos.clone().sub(obj.pos);
 		let diff_vel = target.vel.clone().sub(obj.vel);
-		diff_vel.draw(ctx, "green", 50);
-		diff_pos.draw(ctx, "blue", 1);
-
 
 		let A = diff_vel.squared_norm() - vel_cannon_norm ** 2;
 		let B = 2 * diff_pos.scalar(diff_vel);
 		let C = diff_pos.squared_norm();
-		console.log("A: " + A, "B: " + B, "C: " + C);
 
 		let solutions = this.resolve_poly2(A, B, C);
-		console.log(solutions);
 
 		// If no solutions
 		if (solutions.length == 0) {
@@ -147,7 +142,6 @@ class TrajectoryPredictor {
 
 		// Sort to help in choice
 		solutions.sort();
-		console.log(solutions);
 
 		// If max negative: solutions invalid (because in the past)
 		if (solutions[solutions.length - 1] < 0) {
@@ -164,7 +158,6 @@ class TrajectoryPredictor {
 
 		// Finding vel_cannon
 		let vel_cannon = diff_pos.div(dt).add(diff_vel);
-		console.log(vel_cannon.norm(), vel_cannon_norm);
 
 		return {
 			"angle": vel_cannon.angle(),

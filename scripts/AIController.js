@@ -4,7 +4,7 @@ class AIController extends Controller {
 	constructor() {
 		super();
 
-		// DNA
+		// --- DNA ---
 		this.min_fighter_dist = 50;
 		this.max_fighter_dist = 400;
 
@@ -12,6 +12,15 @@ class AIController extends Controller {
 
 		this.encounter_time_max = 20;
 		this.encounter_dist_max = 5;
+
+		// PID settings
+		this.angle_Kp = 0.5;
+		this.angle_Ki = 0.5;
+		this.angle_Kd = 0.1;
+
+		// --- non DNA ---
+		// PID
+		this.angle_pid = new PIDController(this.angle_Kp, this.angle_Ki, this.angle_Kd);
 
 		// Variables
 		this.target = null;
@@ -144,8 +153,8 @@ class AIController extends Controller {
 	}
 
 	// fire if current aim close enough to targeted aim && cooldown passed
-	do_fire(angle_error) {
-		return Math.abs(angle_error) < this.min_fire_error;
+	do_fire(current_angle, target_angle) {
+		return Math.abs(current_angle - target_angle) < this.min_fire_error;
 	}
 
 	get_evading_vector(object, near_by_objects) {
@@ -182,20 +191,21 @@ class AIController extends Controller {
 	}
 
 	aiming(object, near_by_objects) {
-		let angle = this.get_firering_angle(object);
-		let angle_error = object.angle - angle;
+		let target_angle = this.get_firering_angle(object);
 
 		return {
 			"thrust": 0, // Min thrust ?
-			"rotation": -angle_error * 0.8,
-			"fire": this.do_fire(angle_error),
+			"rotation": this.angle_pid.control(object.angle, target_angle, dt),
+			"fire": this.do_fire(object.angle, target_angle),
 		};
 	}
 
 	turret(object, near_by_objects) {
+		let target_angle = this.get_firering_angle(object);
+
 		return {
-			"rotation": 0,
-			"fire": this.do_fire(angle_error),
+			"rotation": this.angle_pid.control(object.angle, target_angle, dt),
+			"fire": this.do_fire(object.angle, target_angle),
 		};
 	}
 
@@ -221,7 +231,7 @@ class AIController extends Controller {
 
 		// Manage state
 		this.state = this.state.update(object);
-		console.log(this.state.code);
+		// console.log(this.state.code);
 
 		let command = {};
 		switch (this.state.code) {
