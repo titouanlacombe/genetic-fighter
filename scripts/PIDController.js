@@ -7,6 +7,7 @@ class PIDController
         this.Kd = d;
 
         this.prev_error = null;
+        this.I = 0;
     }
 
     reset_prev()
@@ -20,21 +21,22 @@ class PIDController
         let error = target - current;
 
         // Proportional
-        let proportional = error;
+        let P = this.Kp * error;
 
-        let integral = 0;
-        let derivative = 0;
+        let D = 0;
         if (this.prev_error !== null) {
             // Integral
-            integral = ((error + this.prev_error) / 2) * dt;
+            this.I += this.Ki * error * dt;
 
             // Derivative
-            derivative = (error - this.prev_error) / dt;
+            D = this.Kd * (error - this.prev_error) / dt;
         }
+
+        // Update previous error
         this.prev_error = error;
 
-        return proportional * this.Kp
-            + integral * this.Ki
-            + derivative * this.Kd;
+        // console.log("P: " + P + ", I: " + this.I + ", D: " + D);
+
+        return P + this.I + D;
     }
 }

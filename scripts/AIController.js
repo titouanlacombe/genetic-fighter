@@ -19,14 +19,16 @@ class AIController extends Controller
 		this.positionning_K = 1;
 		this.searching_K = 1;
 
-		// PID settings
-		this.angle_Kp = 0.3;
-		this.angle_Ki = 1;
-		this.angle_Kd = 0.3;
+		this.min_thrust = 0.5;
 
-		this.vel_Kp = 0.3;
-		this.vel_Ki = 0.5;
-		this.vel_Kd = 0.3;
+		// PID settings
+		this.angle_Kp = 20;
+		this.angle_Ki = 0;
+		this.angle_Kd = 0;
+
+		this.vel_Kp = 20;
+		this.vel_Ki = 0;
+		this.vel_Kd = 0;
 
 		// --- non DNA ---
 		// PID
@@ -260,7 +262,7 @@ class AIController extends Controller
 		let evade_control = this.control_from_vector(object, speed_target);
 
 		return {
-			"thrust": constrain_value(evade_control.thrust, 0.2, 1),
+			"thrust": constrain_value(evade_control.thrust, this.min_thrust, 1),
 			"rotation": this.angle_pid.control(object_angle, target_angle, dt),
 			"fire": this.do_fire(object_angle, target_angle),
 		};

@@ -6,14 +6,17 @@ let sim_dt = 0; // Delta time between last 2 sim steps
 let sim_time = 0; // Time since the start of the simulation
 let fixed_dt = 0.3; // fix delta time to a constant (debug tool)
 
-function player_factory(x, y, color, controller) {
+function player_factory(x, y, color, controller)
+{
 	let player = new Fighter(x, y, color, controller);
 
 	// User input linking
-	document.addEventListener('keydown', (e) => {
+	document.addEventListener('keydown', (e) =>
+	{
 		controller.input(e.code, true);
 	});
-	document.addEventListener('keyup', (e) => {
+	document.addEventListener('keyup', (e) =>
+	{
 		controller.input(e.code, false);
 	});
 
@@ -21,7 +24,8 @@ function player_factory(x, y, color, controller) {
 }
 
 // Initialize game
-function initing() {
+function initing()
+{
 	objects = []; // Array of game objects
 
 	// Spawns AIs
@@ -37,7 +41,8 @@ function initing() {
 }
 
 // Draw new frame
-function draw() {
+function draw()
+{
 	// Clear canvas
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, width, height);
@@ -49,7 +54,8 @@ function draw() {
 }
 
 // Simulate a step
-function simulate() {
+function simulate()
+{
 	if (fixed_dt) {
 		sim_dt = fixed_dt;
 	}
@@ -94,7 +100,8 @@ function simulate() {
 	}
 }
 
-function get_winner() {
+function get_winner()
+{
 	let is_last_fighter = objects.length == 1 && objects[0] instanceof Fighter;
 
 	if (is_last_fighter) {
@@ -105,7 +112,8 @@ function get_winner() {
 	}
 }
 
-function exiting() {
+function exiting()
+{
 	draw();
 
 	if (winner) {
@@ -118,7 +126,8 @@ function exiting() {
 
 // Key shortcuts
 // Reseting the sim
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', (e) =>
+{
 	if (e.code == "KeyR") {
 		exit();
 		init();
