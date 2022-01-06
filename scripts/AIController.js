@@ -19,6 +19,8 @@ class AIController extends Controller
 		this.positionning_K = 1;
 		this.searching_K = 1;
 
+		this.wall_K = 2;
+
 		this.min_thrust = 0.5;
 
 		// PID settings
@@ -193,6 +195,7 @@ class AIController extends Controller
 	{
 		let evading_v = new Vector2();
 
+		// Objects
 		for (const obj of near_by_objects) {
 			let encounter = TrajectoryPredictor.get_encounter(object, obj);
 			let dist = encounter.pos1.clone().sub(encounter.pos2);
@@ -203,6 +206,13 @@ class AIController extends Controller
 				let score = 1 / (encounter.dt + dist.norm() + 1);
 				evading_v.add(dist.mul(score));
 			}
+		}
+
+		// Walls
+		let dists = CollisionManager.get_dists_to_bounds(object, 0, width, 0, height);
+		for (let dist of dists) {
+			let score = this.wall_K / (dist.norm() + 1);
+			evading_v.add(dist.mul(score));
 		}
 
 		return evading_v;

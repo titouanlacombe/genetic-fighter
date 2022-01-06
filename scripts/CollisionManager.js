@@ -1,7 +1,9 @@
-class CollisionManager {
+class CollisionManager
+{
 	static distances_cache = new Map();
 
-	static get_dist_obj(obj1, obj2) {
+	static get_dist_obj(obj1, obj2)
+	{
 		let dist = obj2.dist_to(obj1);
 		return {
 			"object": obj2,
@@ -10,7 +12,8 @@ class CollisionManager {
 		};
 	}
 
-	static update_distances_cache(objects) {
+	static update_distances_cache(objects)
+	{
 		let map_objects = Array.from(this.distances_cache.keys());
 		let new_objects = objects.filter(value => !map_objects.includes(value));
 		let old_objects = objects.filter(value => map_objects.includes(value));
@@ -28,7 +31,7 @@ class CollisionManager {
 			for (const obj2 of objects) {
 				distances.push(this.get_dist_obj(obj1, obj2));
 			}
-			
+
 			distances.sort((a, b) => { return a.space - b.space; });
 
 			// Remove obj1 from it's array
@@ -40,14 +43,14 @@ class CollisionManager {
 
 			this.distances_cache.set(obj1, distances);
 		}
-		
+
 		// Update old objects
 		for (const obj1 of old_objects) {
 			let distances = this.distances_cache.get(obj1);
 
 			// Filter out data of dead objects
 			distances = distances.filter(value => !dead_objects.includes(value.object));
-			
+
 			// Update distance of old objects
 			for (const dist_obj of distances) {
 				let dist = dist_obj.object.dist_to(obj1);
@@ -67,14 +70,15 @@ class CollisionManager {
 	}
 
 	// mode can be "dist" or "space"
-	static get_near_objects(object, max_dist, mode = "space") {
+	static get_near_objects(object, max_dist, mode = "space")
+	{
 		let distances = this.distances_cache.get(object);
-		
+
 		if (!distances) {
 			// console.log("can't find object: ", object);
 			return [];
 		}
-		
+
 		let distances_it = distances.values();
 		let data = distances_it.next();
 		let results = [];
@@ -82,11 +86,27 @@ class CollisionManager {
 			results.push(data.value["object"]);
 			data = distances_it.next();
 		}
-		
+
 		return results;
 	}
 
-	static object_to_bounds(objects, min_x, max_x, min_y, max_y, include_radius = false) {
+	static get_dists_to_bounds(object, min_x, max_x, min_y, max_y)
+	{
+		let x = object.pos.x();
+		let y = object.pos.y();
+
+		let dists = [];
+
+		dists.push(new Vector2(max_x - x, min_y - y));
+		dists.push(new Vector2(max_x - x, max_y - y));
+		dists.push(new Vector2(min_x - x, min_y - y));
+		dists.push(new Vector2(min_x - x, max_y - y));
+
+		return dists;
+	}
+
+	static object_to_bounds(objects, min_x, max_x, min_y, max_y, include_radius = false)
+	{
 		for (const object of objects) {
 			let radius = include_radius ? object.radius : 0;
 
@@ -104,7 +124,8 @@ class CollisionManager {
 		}
 	}
 
-	static object_to_object(objects) {
+	static object_to_object(objects)
+	{
 		for (const object1 of objects) {
 			let near_object = this.get_near_objects(object1, 0, "space");
 
