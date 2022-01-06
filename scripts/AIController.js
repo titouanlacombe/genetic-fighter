@@ -21,7 +21,7 @@ class AIController extends Controller
 
 		// PID settings
 		this.angle_Kp = 0.3;
-		this.angle_Ki = 0.5;
+		this.angle_Ki = 1;
 		this.angle_Kd = 0.3;
 
 		this.vel_Kp = 0.3;
@@ -162,22 +162,20 @@ class AIController extends Controller
 
 		if (result != null) {
 			let target_pos = this.target.pos.clone().add(this.target.vel.clone().mul(result.dt));
-			// Relative pos
-			target_pos.sub(object.pos);
 
 			// Draw angle
-			// Vector2.fromAngle(result.angle).draw(ctx, Color.red, 30);
+			Vector2.fromAngle(result.angle).draw(ctx, Color.red, 30);
 
 			// console.log(target_pos);
 			// console.log(result.dt);
 			// console.log(result.angle);
 
 			// Draw red point at target x bullet intersection
-			ctx.beginPath();
-			ctx.arc(target_pos.x, target_pos.y, 5, 0, 2 * Math.PI);
-			ctx.fill();
-		} else {
-			console.log("Warning: no fireing angle solutions found");
+			target_pos.sub(object.pos);
+			draw_point(ctx, target_pos.x(), target_pos.y(), 2, "red");
+		}
+		else {
+			console.log("Warning: no firing angle solutions found");
 		}
 
 		return result.angle;
@@ -215,6 +213,7 @@ class AIController extends Controller
 		let target_angle = speed_target.angle();
 		let target_vel = Vector2.fromAngle(object_angle).scalar(speed_target);
 
+		// speed_target.draw(ctx, "green", 1);
 		// Vector2.fromAngle(target_angle).normalize(target_vel).draw(ctx, "blue", 1);
 
 		return {
