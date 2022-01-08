@@ -65,7 +65,7 @@ class Game
 
 		// Draw objects
 		for (let object of this.objects) {
-			object._draw(renderer);
+			object.draw_wrapper(renderer);
 		}
 	}
 

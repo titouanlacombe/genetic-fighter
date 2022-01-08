@@ -310,10 +310,8 @@ class AIController extends Controller
 		this.angle_pid.reset_prev();
 	}
 
-	control(_object)
+	control(object)
 	{
-		const object = _object;
-
 		// Debug drawing translate to object
 		let renderer = framework.get_renderer();
 		renderer.translate(object.pos.x(), object.pos.y());

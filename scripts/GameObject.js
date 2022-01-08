@@ -25,7 +25,7 @@ class GameObject
 		// Empty
 	}
 
-	_draw(renderer)
+	draw_wrapper(renderer)
 	{
 		// Setting transforms to object state
 		renderer.translate(this.pos.x(), this.pos.y());
