@@ -1,26 +1,31 @@
 class Vector
 {
-	constructor(data) {
+	constructor(data)
+	{
 		this.data = data;
 	}
 
-	set() {
+	set()
+	{
 		throw new Error();
 	}
 
 	// Set same as vector
-	setv(v) {
+	setv(v)
+	{
 		this.data = v.data.slice();
 		return this;
 	}
 
 	// Return a copy
-	clone() {
+	clone()
+	{
 		return new Vector(this.data);
 	}
 
 	// Add
-	add(v) {
+	add(v)
+	{
 		for (let i = 0; i < this.data.length; i++) {
 			this.data[i] += v.data[i];
 		}
@@ -28,7 +33,8 @@ class Vector
 	}
 
 	// Substract
-	sub(v) {
+	sub(v)
+	{
 		for (let i = 0; i < this.data.length; i++) {
 			this.data[i] -= v.data[i];
 		}
@@ -36,20 +42,23 @@ class Vector
 	}
 
 	// Multiply
-	mul(s) {
+	mul(s)
+	{
 		for (let i = 0; i < this.data.length; i++) {
 			this.data[i] *= s;
 		}
 		return this;
 	}
-	
+
 	// Divide
-	div(s) {
+	div(s)
+	{
 		return this.mul(1 / s);
 	}
 
 	// squared norm of the vector
-	squared_norm() {
+	squared_norm()
+	{
 		let sum = 0;
 		for (let value of this.data) {
 			sum += value * value;
@@ -58,14 +67,16 @@ class Vector
 	}
 
 	// norm of the vector
-	norm() {
+	norm()
+	{
 		return Math.sqrt(this.squared_norm());
 	}
 
 	// Normalize a vector to norm
-	normalize(norm = 1) {
+	normalize(norm = 1)
+	{
 		let current_norm = this.norm();
-		
+
 		if (current_norm == 0) {
 			// Do nothing
 			return this;
@@ -76,17 +87,20 @@ class Vector
 	}
 
 	// Rotate vecor by the angle (rad)
-	rotate(angle) {
+	rotate(angle)
+	{
 		throw new Error();
 	}
 
 	// angle of the vector (rad)
-	angle() {
+	angle()
+	{
 		throw new Error();
 	}
 
 	// Scalar multiplication
-	scalar(v) {
+	scalar(v)
+	{
 		let sum = 0;
 		for (let i = 0; i < this.data.length; i++) {
 			sum += this.data[i] * v.data[i];
@@ -94,13 +108,15 @@ class Vector
 		return sum;
 	}
 
-	// Draw a debug of the vector at ctx
-	draw() {
+	// Draw a debug of the vector
+	draw()
+	{
 		throw new Error();
 	}
-	
+
 	// Create a unit vector from an angle
-	static fromAngle(angle) {
+	static fromAngle(angle)
+	{
 		throw new Error();
 	}
 }

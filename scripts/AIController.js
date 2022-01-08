@@ -162,13 +162,15 @@ class AIController extends Controller
 
 	get_firering_angle(object)
 	{
+		let renderer = framework.get_renderer();
+
 		let result = TrajectoryPredictor.get_firering_angle(object, this.target, Fighter.fire_vel);
 
 		if (result != null) {
 			let target_pos = this.target.pos.clone().add(this.target.vel.clone().mul(result.dt));
 
 			// Draw angle
-			Vector2.fromAngle(result.angle).draw(ctx, Color.red, 30);
+			Vector2.fromAngle(result.angle).draw(Color.red, 30);
 
 			// console.log(target_pos);
 			// console.log(result.dt);
@@ -176,7 +178,7 @@ class AIController extends Controller
 
 			// Draw red point at target x bullet intersection
 			target_pos.sub(object.pos);
-			draw_point(ctx, target_pos.x(), target_pos.y(), 2, "red");
+			draw_point(renderer, target_pos.x(), target_pos.y(), 2, "red");
 		}
 		else {
 			console.log("Warning: no firing angle solutions found");
@@ -209,7 +211,7 @@ class AIController extends Controller
 		}
 
 		// Walls
-		let dists = CollisionManager.get_dists_to_bounds(object, 0, width, 0, height);
+		let dists = CollisionManager.get_dists_to_bounds(object, 0, framework.width, 0, framework.height);
 		for (let dist of dists) {
 			let score = this.wall_K / (dist.norm() + 1);
 			evading_v.add(dist.mul(score));
@@ -225,12 +227,12 @@ class AIController extends Controller
 		let target_angle = speed_target.angle();
 		let target_vel = Vector2.fromAngle(object_angle).scalar(speed_target);
 
-		// speed_target.draw(ctx, "green", 1);
-		// Vector2.fromAngle(target_angle).normalize(target_vel).draw(ctx, "blue", 1);
+		// speed_target.draw("green", 1);
+		// Vector2.fromAngle(target_angle).normalize(target_vel).draw("blue", 1);
 
 		return {
-			"thrust": this.vel_pid.control(object.vel.norm(), target_vel, dt),
-			"rotation": this.angle_pid.control(object_angle, target_angle, dt),
+			"thrust": this.vel_pid.control(object.vel.norm(), target_vel, framework.app.sim_dt),
+			"rotation": this.angle_pid.control(object_angle, target_angle, framework.app.sim_dt),
 		};
 	}
 
@@ -239,7 +241,7 @@ class AIController extends Controller
 		let speed_target = new Vector2();
 
 		// Go to center
-		let center = new Vector2(width / 2, height / 2);
+		let center = new Vector2(framework.width / 2, framework.height / 2);
 		let diff_pos = center.sub(object.pos);
 		speed_target.add(diff_pos.mul(this.searching_K));
 		speed_target.add(this.get_evading_vector(object, near_by_objects));
@@ -273,7 +275,7 @@ class AIController extends Controller
 
 		return {
 			"thrust": constrain_value(evade_control.thrust, this.min_thrust, 1),
-			"rotation": this.angle_pid.control(object_angle, target_angle, dt),
+			"rotation": this.angle_pid.control(object_angle, target_angle, framework.app.sim_dt),
 			"fire": this.do_fire(object_angle, target_angle),
 		};
 	}
@@ -284,7 +286,7 @@ class AIController extends Controller
 		let object_angle = this.get_angle(object);
 
 		return {
-			"rotation": this.angle_pid.control(object_angle, target_angle, dt),
+			"rotation": this.angle_pid.control(object_angle, target_angle, framework.app.sim_dt),
 			"fire": this.do_fire(object_angle, target_angle),
 		};
 	}
@@ -312,11 +314,9 @@ class AIController extends Controller
 	{
 		const object = _object;
 
-		// Debug drawing context
-		ctx.translate(object.pos.x(), object.pos.y());
-		ctx.strokeStyle = "red";
-		ctx.fillStyle = "red";
-		ctx.lineWidth = 2;
+		// Debug drawing translate to object
+		let renderer = framework.get_renderer();
+		renderer.translate(object.pos.x(), object.pos.y());
 
 		// Manage target
 		let near_by_objects = CollisionManager.get_near_objects(object, AIController.vision_range, "space");
@@ -336,11 +336,10 @@ class AIController extends Controller
 		}
 		catch (error) {
 			console.log(error);
-			console.log("Unknown state: " + this.state.code);
 		}
 
 		// Reset debug drawing context
-		ctx.resetTransform();
+		renderer.resetTransform();
 
 		return command;
 	}

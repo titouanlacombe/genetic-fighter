@@ -7,35 +7,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Genetic FighterZ</title>
 
+	<!-- Style -->
 	<link rel="stylesheet" href="style.css">
 
-	<script src="scripts/abstract_error.js"></script>
-	<script src="scripts/map_value.js"></script>
-	<script src="scripts/constrain_value.js"></script>
-	<script src="scripts/draw_point.js"></script>
+	<!-- Framework -->
+	<script src="scripts/FrameworkUtilities.js"></script>
+	<script src="scripts/Framework.js"></script>
+
+	<!-- Usefull -->
 	<script src="scripts/Colors.js"></script>
 	<script src="scripts/Vector.js"></script>
 	<script src="scripts/Vector2.js"></script>
 
-	<script src="scripts/GameObjects.js"></script>
-	<script src="scripts/PIDController.js"></script>
-	<script src="scripts/Controller.js"></script>
-	<script src="scripts/State.js"></script>
-	<script src="scripts/CollisionManager.js"></script>
-	<script src="scripts/TrajectoryPredictor.js"></script>
-
-	<script src="scripts/Player1Controller.js"></script>
-	<script src="scripts/Player2Controller.js"></script>
-	<script src="scripts/AIController.js"></script>
-
+	<!-- GameObjects -->
+	<script src="scripts/GameObject.js"></script>
 	<script src="scripts/Bullet.js"></script>
 	<script src="scripts/Fighter.js"></script>
 
-	<script src="scripts/game.js"></script>
-	<script src="scripts/main.js"></script>
+	<!-- Controllers -->
+	<script src="scripts/Controller.js"></script>
+	<script src="scripts/Player1Controller.js"></script>
+	<script src="scripts/Player2Controller.js"></script>
+
+	<!-- AI Controllers -->
+	<script src="scripts/TrajectoryPredictor.js"></script>
+	<script src="scripts/PIDController.js"></script>
+	<script src="scripts/State.js"></script>
+	<script src="scripts/AIController.js"></script>
+
+	<!-- Game -->
+	<script src="scripts/CollisionManager.js"></script>
+	<script src="scripts/Game.js"></script>
 </head>
 
 <body>
+	<!-- App Canvas -->
 	<canvas id="canvas"></canvas>
 </body>
 

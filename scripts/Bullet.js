@@ -1,8 +1,10 @@
 // Bullet
-class Bullet extends GameObject {
+class Bullet extends GameObject
+{
 	static friction = 0.005;
 
-	constructor(pos, vel) {
+	constructor(pos, vel)
+	{
 		super();
 
 		this.pos.setv(pos);
@@ -12,16 +14,19 @@ class Bullet extends GameObject {
 	}
 
 	// Draw the object
-	draw() {
+	draw()
+	{
 		// Draw the body
-		ctx.beginPath();
-		ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
-		ctx.fillStyle = "white";
-		ctx.fill();
+		let renderer = framework.get_renderer();
+		renderer.beginPath();
+		renderer.arc(0, 0, this.radius, 0, 2 * Math.PI);
+		renderer.fillStyle = "white";
+		renderer.fill();
 	}
 
 	// Simulate the object
-	simulate() {
+	simulate()
+	{
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Bullet.friction));
 
@@ -31,14 +36,16 @@ class Bullet extends GameObject {
 		}
 	}
 
-	collision(object) {
+	collision(object)
+	{
 		if (object instanceof Bullet) {
 			// les Bullets s'annulent
 			this.alive = false;
 		}
 	}
 
-	out_of_bound(reason) {
+	out_of_bound(reason)
+	{
 		this.alive = false;
 	}
 }
