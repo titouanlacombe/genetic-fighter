@@ -1,4 +1,5 @@
 switch to typescript?
+better aiming controller?
 
 improve game? {
 	test adding ability for the cannon to turn on its own
@@ -8,6 +9,7 @@ improve game? {
 }
 
 begin modeling evolution simmulation {
+	create ai dna object
 	being able to visualize evolution
 	if no munitions left in objects => winner max life
 	evolution sim loop does a generation by frames

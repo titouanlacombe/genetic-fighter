@@ -31,8 +31,10 @@ class Game
 	// Initialize game
 	initing()
 	{
+		this.objects = []; // Objects in the simulation
+
 		// Spawns AIs
-		for (let i = 0; i < 300; i++) {
+		for (let i = 0; i < 3; i++) {
 			let f = new Fighter();
 			f.controller = new AIController();
 			this.objects.push(f);
