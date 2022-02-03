@@ -1,0 +1,12 @@
+- Init :
+N objects with random DNA 
+
+Classe pour gérer les objets de la population
+
+
+- Evaluation ?
+    - Fitness function ?
+
+- Evolution 
+    - Mutations 
+    - Crossover
