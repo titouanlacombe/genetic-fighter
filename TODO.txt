@@ -9,12 +9,12 @@ improve game? {
 }
 
 begin modeling evolution simmulation {
-	create ai dna object
-	being able to visualize evolution
+	- create ai dna object
+	- being able to visualize evolution
 	if no munitions left in objects => winner max life
 	evolution sim loop does a generation by frames
 	then display the results
-	evolution game object
+	- evolution game object
 }
 
 ai evolution mode {
