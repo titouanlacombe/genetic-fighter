@@ -1,5 +1,10 @@
-class Color
-{
+/**
+ * Usefull class to manipulate colors
+ */
+class Color {
+	/**
+	 * Static vars of common colors
+	 */
 	static white = new Color(255, 255, 255);
 	static black = new Color(0, 0, 0);
 	static red = new Color(255, 0, 0);
@@ -9,20 +14,38 @@ class Color
 	static magenta = new Color(255, 0, 255);
 	static cyan = new Color(0, 255, 255);
 
+	/**
+	 * @constructor
+	 * @param {Number} r red 
+	 * @param {Number} g green 
+	 * @param {Number} b blue
+	 */
 	constructor(r, g, b) {
 		this.r = r;
 		this.g = g;
 		this.b = b;
 	}
 
+	/**
+	 * Return color in string format
+	 * @returns {String} rgb(r,g,b)
+	 */
 	toString() {
 		return "rgb(" + this.r + "," + this.g + "," + this.b + ")";
 	}
 
+	/**
+	 * Return color in array format
+	 * @returns {Array} [r, g, b]
+	 */
 	toRGB() {
 		return [this.r, this.g, this.b];
 	}
 
+	/**
+	 * Return color in hex format
+	 * @returns {String} #rrggbb
+	 */
 	toHex() {
 		let rgb = this.toRGB();
 		let hex = '#';
@@ -33,7 +56,13 @@ class Color
 		return hex;
 	}
 
-	// Create a color between color1 & color2, with ratio between 0 & 1
+	/**
+	 * Blend the source & the target colors according to ratio to create a new color between them
+	 * @param {Color} color1 Source
+	 * @param {Color} color2 Target
+	 * @param {Number} ratio between 0 & 1
+	 * @returns {Color}
+	 */
 	static lerp(color1, color2, ratio) {
 		let reverse_ratio = 1 - ratio;
 
@@ -43,7 +72,12 @@ class Color
 			color1.b * ratio + color2.b * reverse_ratio
 		);
 	}
-	
+
+	/**
+	 * Create a color from a hex string
+	 * @param {String} hex 
+	 * @returns 
+	 */
 	static fromHex(hex) {
 		let c;
 		if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {

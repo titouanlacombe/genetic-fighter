@@ -1,7 +1,9 @@
-class Framework
-{
-	constructor()
-	{
+/**
+ * Framework of the application
+ * Is the bridge between the application and the HTML/JS environement
+ */
+class Framework {
+	constructor() {
 		// Private
 		this.last_request_id = 0; // Last request of requestAnimationFrame
 		this.running = false; // If false stops the loops
@@ -20,8 +22,7 @@ class Framework
 
 		// Key shortcuts
 		// Reseting the app
-		this.link_event('keydown', (e) =>
-		{
+		this.link_event('keydown', (e) => {
 			if (e.code == "KeyR") {
 				this.stop();
 				this.launch();
@@ -32,8 +33,7 @@ class Framework
 		window.addEventListener('resize', this.app_resize);
 	}
 
-	start(app)
-	{
+	start(app) {
 		this.app = app;
 
 		// Wait for the window to be fully loaded and launch the app
@@ -41,8 +41,7 @@ class Framework
 	}
 
 	// Init & Launch the app
-	launch()
-	{
+	launch() {
 		// Init framework
 		this.running = true;
 		this.app_resize();
@@ -54,16 +53,14 @@ class Framework
 		this.last_request_id = window.requestAnimationFrame((_new_time) => { this.loop(_new_time); });
 	}
 
-	stop()
-	{
+	stop() {
 		window.cancelAnimationFrame(this.last_request_id);
 		this.running = false;
 
 		this.app.exiting();
 	}
 
-	loop(new_time)
-	{
+	loop(new_time) {
 		// Update some vars
 		this.dt = (new_time - this.time);
 		this.time = new_time;
@@ -83,24 +80,20 @@ class Framework
 		}
 	}
 
-	fps()
-	{
+	fps() {
 		return 1000 / this.dt;
 	}
 
-	get_renderer()
-	{
+	get_renderer() {
 		return document.getElementById('canvas').getContext('2d');
 	}
 
-	link_event(event, callback)
-	{
+	link_event(event, callback) {
 		document.addEventListener(event, callback);
 	}
 
 	// Callback to update the canvas size
-	app_resize()
-	{
+	app_resize() {
 		let canvas = document.getElementById('canvas');
 
 		// Update the canvas size
