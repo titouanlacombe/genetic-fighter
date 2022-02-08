@@ -1,7 +1,7 @@
 .PHONY: doc
 
 setup:
-	apt-get install npm
+	# apt-get install npm
 	npm install jsdoc
 	npm install clean-jsdoc-theme
 
