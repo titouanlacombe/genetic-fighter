@@ -15,8 +15,7 @@ function abstract_error()
  * @param {Number} max 
  * @returns {Number}
  */
-function constrain_value(value, min = 0, max = 1)
-{
+function constrain_value(value, min = 0, max = 1) {
     if (value < min) {
         return min;
     }
@@ -84,4 +83,8 @@ function draw_line(renderer, xa, ya, xb, yb, width = 2, style = "red")
     renderer.moveTo(xa, ya);
     renderer.lineTo(xb, yb);
     renderer.stroke();
+}
+
+function randval(min = 0, max = 100) {
+    return Math.random() * (max - min) + min;
 }

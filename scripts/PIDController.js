@@ -37,6 +37,7 @@ class PIDController
     control(current, target, dt)
     {
         let error = target - current;
+        // console.log('error? ' + error);
 
         // Proportional
         let P = this.Kp * error;

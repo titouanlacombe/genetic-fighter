@@ -141,5 +141,3 @@ class Framework {
 		// console.log(this.width, this.height);
 	}
 }
-
-let framework = new Framework();
