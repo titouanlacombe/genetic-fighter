@@ -7,6 +7,8 @@ class Game extends Application {
 	 * @constructor
 	 */
 	constructor() {
+		super();
+		
 		/** Objects in the simulation */
 		this.objects = [];
 		this.winner = null;
@@ -158,6 +160,3 @@ class Game extends Application {
 		}
 	}
 }
-
-// Launch application
-framework.start(new Game());
