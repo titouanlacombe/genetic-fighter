@@ -1,9 +1,21 @@
-class CollisionManager
-{
+/**
+ * Collision manager manage collision between game objects
+ */
+class CollisionManager {
+	/**
+	 * Cache wich store the distance info of each object relative to each other
+	 */
 	static distances_cache = new Map();
 
-	static get_dist_obj(obj1, obj2)
-	{
+	/**
+	 * Returns the distance between the two objects
+	 * With and without their radiuses
+	 * 
+	 * @param {GameObject} obj1 
+	 * @param {GameObject} obj2 
+	 * @returns {DistanceObject} See the code
+	 */
+	static get_dist_obj(obj1, obj2) {
 		let dist = obj2.dist_to(obj1);
 		return {
 			"object": obj2,
@@ -12,8 +24,12 @@ class CollisionManager
 		};
 	}
 
-	static update_distances_cache(objects)
-	{
+	/**
+	 * Update the cache with the array of game objects
+	 * 
+	 * @param {Array} objects array of GameObjects
+	 */
+	static update_distances_cache(objects) {
 		let map_objects = Array.from(this.distances_cache.keys());
 		let new_objects = objects.filter(value => !map_objects.includes(value));
 		let old_objects = objects.filter(value => map_objects.includes(value));
@@ -69,9 +85,15 @@ class CollisionManager
 		}
 	}
 
-	// mode can be "dist" or "space"
-	static get_near_objects(object, max_dist, mode = "space")
-	{
+	/**
+	 * Returns the array of objects near object
+	 * 
+	 * @param {GameObject} object Target object
+	 * @param {Number} max_dist radius of research, wont return any objects beyond that
+	 * @param {String} mode either "space" to take radiuses into account or "dist" if you don't want to
+	 * @returns {Array} 
+	 */
+	static get_near_objects(object, max_dist, mode = "space") {
 		let distances = this.distances_cache.get(object);
 
 		if (!distances) {
@@ -90,8 +112,17 @@ class CollisionManager
 		return results;
 	}
 
-	static get_dists_to_bounds(object, min_x, max_x, min_y, max_y)
-	{
+	/**
+	 * Return the closest distance you are from the bound box
+	 * 
+	 * @param {GameObject} object 
+	 * @param {Number} min_x min x of the box bounds
+	 * @param {Number} max_x max x of the box bounds
+	 * @param {Number} min_y min y of the box bounds
+	 * @param {Number} max_y max y of the box bounds
+	 * @returns {Number} minimum distance
+	 */
+	static get_dists_to_bounds(object, min_x, max_x, min_y, max_y) {
 		let x = object.pos.x();
 		let y = object.pos.y();
 
@@ -105,8 +136,19 @@ class CollisionManager
 		return dists;
 	}
 
-	static object_to_bounds(objects, min_x, max_x, min_y, max_y, include_radius = false)
-	{
+	/**
+	 * Manage OOB collisions of objects
+	 * Calls their out_of_bound method if they leave the area
+	 * 
+	 * @param {Array} objects 
+	 * @param {Number} min_x min x of the box bounds
+	 * @param {Number} max_x max x of the box bounds
+	 * @param {Number} min_y min y of the box bounds
+	 * @param {Number} max_y max y of the box bounds
+	 * @param {Boolean} include_radius include radius in distance
+	 * @returns {Number} minimum distance
+	 */
+	static object_to_bounds(objects, min_x, max_x, min_y, max_y, include_radius = false) {
 		for (const object of objects) {
 			let radius = include_radius ? object.radius : 0;
 
@@ -124,8 +166,13 @@ class CollisionManager
 		}
 	}
 
-	static object_to_object(objects)
-	{
+	/**
+	 * Manage Object to Objects collisions
+	 * Calls their collision method if they collide with an object
+	 * 
+	 * @param {Array} objects 
+	 */
+	static object_to_object(objects) {
 		for (const object1 of objects) {
 			let near_object = this.get_near_objects(object1, 0, "space");
 

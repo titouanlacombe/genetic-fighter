@@ -1,13 +1,24 @@
-// Control the object via key presses
+/**
+ * Controller of Player1
+ * Control object with the keyboard arrows
+ * @extends Controller
+ */
 class Player1Controller extends Controller {
+	/**
+	 * @constructor
+	 */
 	constructor() {
 		super();
 		this.thrust = 0;
 		this.rotation = 0;
 		this.fire = false;
-		this.state = "Player has no state"; // debugging purpose
+		this.state = "Player"; // hack, because AI controller have a state but not players
 	}
 
+	/**
+	 * Return the last user inputs to control the object
+	 * @returns {CommandObject}
+	 */
 	control() {
 		return {
 			"thrust": this.thrust,
@@ -16,6 +27,11 @@ class Player1Controller extends Controller {
 		}
 	}
 
+	/**
+	 * Procces Keyboard inputs
+	 * @param {String} code KeyCode
+	 * @param {Boolean} status true: keyup, false: keydown
+	 */
 	input(code, status) {
 		// console.log(code, status);
 

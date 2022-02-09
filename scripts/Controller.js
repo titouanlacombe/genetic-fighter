@@ -1,15 +1,20 @@
-// Abstract class Control a game object
-class Controller
-{
+/**
+ * Interface controller, control the game object
+ * @interface
+ */
+class Controller {
+    /**
+     * @constructor
+     */
     constructor() {
         // Empty
     }
 
-    control() {
-        abstract_error();
-    }
-
-    input() {
+    /**
+     * Control the object
+     * @param {GameObject} object 
+     */
+    control(object) {
         // Empty
     }
 }
