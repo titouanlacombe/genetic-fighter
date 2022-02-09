@@ -191,7 +191,6 @@ class Fighter extends GameObject {
 	/**
 	 * Execute the thrust command
 	 * @param {Number} throttle 
-	 * @returns 
 	 */
 	command_thrust(throttle) {
 		if (this.fuel <= 0) {
@@ -209,7 +208,6 @@ class Fighter extends GameObject {
 	/**
 	 * Execute the rotation command
 	 * @param {Number} throttle 
-	 * @returns 
 	 */
 	command_rotation(throttle) {
 		throttle = this.command_validator(throttle, -1, 1);
@@ -219,11 +217,11 @@ class Fighter extends GameObject {
 	/**
 	 * Execute the fire command
 	 * @param {Boolean} bool Only fire if this is true
-	 * @returns 
+	 * @returns {Boolean} If success
 	 */
 	command_fire(bool) {
 		if (!bool) {
-			return;
+			return false;
 		}
 
 		// Munition or cannon not recharged

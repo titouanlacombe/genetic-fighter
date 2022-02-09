@@ -71,7 +71,7 @@ class TrajectoryPredictor {
 	 * An encounter is the moment in time where two objects are the closest together
 	 * @param {GameObject} obj1 
 	 * @param {GameObject} obj2 
-	 * @returns 
+	 * @returns {EncounterObject}
 	 */
 	static get_encounter(obj1, obj2) {
 		let dt = this.time_to_encounter(obj1, obj2);

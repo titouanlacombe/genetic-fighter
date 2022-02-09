@@ -76,7 +76,7 @@ class Color {
 	/**
 	 * Create a color from a hex string
 	 * @param {String} hex 
-	 * @returns 
+	 * @returns {Color}
 	 */
 	static fromHex(hex) {
 		let c;
