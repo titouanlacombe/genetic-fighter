@@ -1,5 +1,7 @@
-class DNA {
-    constructor() {
+class DNA
+{
+    constructor()
+    {
 
         // genes 
 

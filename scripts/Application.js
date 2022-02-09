@@ -2,29 +2,34 @@
  * Interface Application, launched by framework
  * @interface
  */
-class Application {
-    /**
-     * @constructor
-     */
-    constructor() {
-        // Empty
-    }
+class Application
+{
+	/**
+	 * @constructor
+	 */
+	constructor()
+	{
+		// Empty
+	}
 
 	/**
 	 * Called on init
 	 */
-	initing() {
+	initing()
+	{
 	}
 
 	/**
 	 * Called on exit
 	 */
-	exiting() {
+	exiting()
+	{
 	}
 
 	/**
 	 * Called at each animation frame
 	 */
-	update() {
+	update()
+	{
 	}
 }

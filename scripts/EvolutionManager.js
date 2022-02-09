@@ -1,6 +1,8 @@
-class EvolutionManager {
+class EvolutionManager
+{
 
-    constructor(mut_k, size) {
+    constructor(mut_k, size)
+    {
 
         this.population;
         this.pool;
@@ -18,7 +20,8 @@ class EvolutionManager {
         console.log(this.population);
     }
 
-    calculate_fitness() {
+    calculate_fitness()
+    {
 
         for (let i = 0; i < this.population.length; i++) {
             this.population[i].controller.calculate_fitness();
@@ -26,7 +29,8 @@ class EvolutionManager {
 
     }
 
-    natural_selection() {
+    natural_selection()
+    {
         // reset le pool
         this.pool = [];
 
@@ -49,7 +53,8 @@ class EvolutionManager {
     }
 
     // new generation
-    generate() {
+    generate()
+    {
 
         for (let i = 0; i < this.population.length; i++) {
             let a = Math.floor(Math.random() * this.pool.length);
@@ -69,7 +74,8 @@ class EvolutionManager {
 
     }
 
-    find_best() {
+    find_best()
+    {
         let best = 0;
         let index = 0;
 
@@ -84,11 +90,13 @@ class EvolutionManager {
 
     // getters
 
-    get_best() {
+    get_best()
+    {
         return this.find_best();
     }
 
-    get_generation() {
+    get_generation()
+    {
         return this.generations;
     }
 }

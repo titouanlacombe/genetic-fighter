@@ -2,11 +2,13 @@
  * Framework of the application
  * Is the bridge between the application and the HTML/JS environement
  */
-class Framework {
+class Framework
+{
 	/**
 	 * @constructor
 	 */
-	constructor() {
+	constructor()
+	{
 		// Private
 		/** Last request of requestAnimationFrame */
 		this.last_request_id = 0;
@@ -29,7 +31,8 @@ class Framework {
 		this.app = null;
 
 		// Key shortcut to reset the app
-		this.link_event('keydown', (e) => {
+		this.link_event('keydown', (e) =>
+		{
 			if (e.code == "KeyR") {
 				this.stop();
 				this.launch();
@@ -44,7 +47,8 @@ class Framework {
 	 * Start an application
 	 * @param {Application} app 
 	 */
-	start(app) {
+	start(app)
+	{
 		this.app = app;
 
 		// Wait for the window to be fully loaded and launch the app
@@ -55,7 +59,8 @@ class Framework {
 	 * Init the framework, the application & enters the app loop
 	 * @param {Application} app 
 	 */
-	launch() {
+	launch()
+	{
 		// Init framework
 		this.running = true;
 		this.app_resize();
@@ -70,7 +75,8 @@ class Framework {
 	/**
 	 * Stops the app, the framework
 	 */
-	stop() {
+	stop()
+	{
 		window.cancelAnimationFrame(this.last_request_id);
 		this.running = false;
 
@@ -83,7 +89,8 @@ class Framework {
 	 * Then call the app loop
 	 * @param {Number} new_time 
 	 */
-	loop(new_time) {
+	loop(new_time)
+	{
 		// Update some vars
 		this.dt = (new_time - this.time);
 		this.time = new_time;
@@ -107,7 +114,8 @@ class Framework {
 	 * Returns the current frame fps
 	 * @returns {Number} Current fps
 	 */
-	fps() {
+	fps()
+	{
 		return 1000 / this.dt;
 	}
 
@@ -115,7 +123,8 @@ class Framework {
 	 * Return the JS/HTML context renderer
 	 * @returns {Renderer}
 	 */
-	get_renderer() {
+	get_renderer()
+	{
 		return document.getElementById('canvas').getContext('2d');
 	}
 
@@ -124,14 +133,16 @@ class Framework {
 	 * @param {String} event 
 	 * @param {CallableFunction} callback 
 	 */
-	link_event(event, callback) {
+	link_event(event, callback)
+	{
 		document.addEventListener(event, callback);
 	}
 
 	/**
 	 * Update the app size vars with the new HTML canvas size
 	 */
-	app_resize() {
+	app_resize()
+	{
 		let canvas = document.getElementById('canvas');
 
 		// Update the canvas size
@@ -141,3 +152,5 @@ class Framework {
 		// console.log(this.width, this.height);
 	}
 }
+
+let framework = new Framework();

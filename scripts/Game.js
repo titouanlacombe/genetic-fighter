@@ -2,13 +2,15 @@
  * Sandbox application to dev & test the game
  * @extends Application
  */
-class Game extends Application {
+class Game extends Application
+{
 	/**
 	 * @constructor
 	 */
-	constructor() {
+	constructor()
+	{
 		super();
-		
+
 		/** Objects in the simulation */
 		this.objects = [];
 		this.winner = null;
@@ -30,15 +32,18 @@ class Game extends Application {
 	 * @param {Player1Controller} controller
 	 * @returns {Fighter} New player
 	 */
-	static player_factory(x, y, color, controller) {
+	static player_factory(x, y, color, controller)
+	{
 		let player = new Fighter(x, y, color, controller);
 
 		// User input linking
-		framework.link_event('keydown', (e) => {
+		framework.link_event('keydown', (e) =>
+		{
 			controller.input(e.code, true);
 		});
 
-		framework.link_event('keyup', (e) => {
+		framework.link_event('keyup', (e) =>
+		{
 			controller.input(e.code, false);
 		});
 
@@ -48,7 +53,8 @@ class Game extends Application {
 	/**
 	 * Spawn players & AIs
 	 */
-	initing() {
+	initing()
+	{
 		this.objects = []; // Objects in the simulation
 
 		// Spawns AIs
@@ -66,7 +72,8 @@ class Game extends Application {
 	/**
 	 * Draw last frame & display winner
 	 */
-	exiting() {
+	exiting()
+	{
 		this.draw();
 
 		if (this.winner) {
@@ -80,7 +87,8 @@ class Game extends Application {
 	/**
 	 * Draw new frame
 	 */
-	draw() {
+	draw()
+	{
 		// Clear canvas
 		let renderer = framework.get_renderer();
 		renderer.fillStyle = "black";
@@ -101,7 +109,8 @@ class Game extends Application {
 	 * - Delete dead
 	 * - If stop condition reached stop the game
 	 */
-	update() {
+	update()
+	{
 		// Update time variables
 		// 1/16 is a correction so that this.sim_dt is close to 1 when 60 fps
 		this.sim_dt = this.fixed_dt ?? framework.dt * 1 / 16;
@@ -149,7 +158,8 @@ class Game extends Application {
 	 * Try to get the winner
 	 * null if no winner
 	 */
-	get_winner() {
+	get_winner()
+	{
 		let is_last_fighter = this.objects.length == 1 && this.objects[0] instanceof Fighter;
 
 		if (is_last_fighter) {

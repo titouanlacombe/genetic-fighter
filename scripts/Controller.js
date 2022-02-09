@@ -2,11 +2,13 @@
  * Interface controller, control the game object
  * @interface
  */
-class Controller {
+class Controller
+{
     /**
      * @constructor
      */
-    constructor() {
+    constructor()
+    {
         // Empty
     }
 
@@ -14,7 +16,8 @@ class Controller {
      * Control the object
      * @param {GameObject} object 
      */
-    control(object) {
+    control(object)
+    {
         // Empty
     }
 }

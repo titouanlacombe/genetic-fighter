@@ -3,13 +3,15 @@
  * 
  * @extends Controller
  */
-class AIController extends Controller {
+class AIController extends Controller
+{
 	static vision_range = 500;
 
 	/**
 	 * @constructor
 	 */
-	constructor() {
+	constructor()
+	{
 		super();
 
 		// --- DNA ---
@@ -54,7 +56,8 @@ class AIController extends Controller {
 	 * Initialize the state machine part of the AI
 	 * Can't be static function because the exit condition changes depending on the AI DNA
 	 */
-	init_states() {
+	init_states()
+	{
 		// let suicide = new State("suicide");
 		let searching = new State("searching");
 		let aiming = new State("aiming");
@@ -64,7 +67,8 @@ class AIController extends Controller {
 
 		// --- "aiming" state ---
 		// Switch to "positionning" if target not at good distance
-		aiming.add_exit(positionning, (object) => {
+		aiming.add_exit(positionning, (object) =>
+		{
 			if (!this.target) {
 				return false;
 			}
@@ -74,23 +78,27 @@ class AIController extends Controller {
 		});
 
 		// Switch to "searching" if has no target
-		aiming.add_exit(searching, (object) => {
+		aiming.add_exit(searching, (object) =>
+		{
 			return this.target == null;
 		});
 
 		// Switch to "turret" if has no fuel
-		aiming.add_exit(turret, (object) => {
+		aiming.add_exit(turret, (object) =>
+		{
 			return object.fuel <= 0;
 		});
 
 		// Switch to "fleeing" if has no munitions
-		aiming.add_exit(fleeing, (object) => {
+		aiming.add_exit(fleeing, (object) =>
+		{
 			return object.munitions <= 0;
 		});
 
 		// --- "positionning" state ---
 		// Switch to "aiming" if target is in range
-		positionning.add_exit(aiming, (object) => {
+		positionning.add_exit(aiming, (object) =>
+		{
 			if (!this.target) {
 				return false;
 			}
@@ -99,23 +107,27 @@ class AIController extends Controller {
 		});
 
 		//	Switch to "searching" if has no target
-		positionning.add_exit(searching, (object) => {
+		positionning.add_exit(searching, (object) =>
+		{
 			return this.target == null;
 		});
 
 		// Switch to "turret" if has no fuel
-		positionning.add_exit(turret, (object) => {
+		positionning.add_exit(turret, (object) =>
+		{
 			return object.fuel <= 0;
 		});
 
 		// Switch to "fleeing" if has no munitions
-		positionning.add_exit(fleeing, (object) => {
+		positionning.add_exit(fleeing, (object) =>
+		{
 			return object.munitions <= 0;
 		});
 
 		// --- "searching" state ---
 		// Switch to "positionning" when finds a target
-		searching.add_exit(positionning, (object) => {
+		searching.add_exit(positionning, (object) =>
+		{
 			return this.target != null;
 		});
 
@@ -128,7 +140,8 @@ class AIController extends Controller {
 	 * @param {GameObject} object
 	 * @returns {Number}
 	 */
-	get_angle(object) {
+	get_angle(object)
+	{
 		return object.angle - Math.PI / 2;
 	}
 
@@ -138,7 +151,8 @@ class AIController extends Controller {
 	 * @param {GameObject} object 
 	 * @param {Array} near_by_objects
 	 */
-	find_target(object, near_by_objects) {
+	find_target(object, near_by_objects)
+	{
 		let min_distance = Infinity;
 		for (let potential of near_by_objects) {
 			if (potential instanceof Fighter) {
@@ -159,7 +173,8 @@ class AIController extends Controller {
 	 * @param {GameObject} object 
 	 * @param {Array} near_by_objects
 	 */
-	manage_target(object, near_by_objects) {
+	manage_target(object, near_by_objects)
+	{
 		// Loose target if => too far or dead
 		if (this.target) {
 			if (!this.target.alive ||
@@ -180,7 +195,8 @@ class AIController extends Controller {
 	 * @param {GameObject} object 
 	 * @returns {Number}
 	 */
-	get_firering_angle(object) {
+	get_firering_angle(object)
+	{
 		let renderer = framework.get_renderer();
 
 		let result = TrajectoryPredictor.get_firering_angle(object, this.target, Fighter.fire_vel);
@@ -213,7 +229,8 @@ class AIController extends Controller {
 	 * @param {Number} target_angle 
 	 * @returns {Boolean} If we should try to fire
 	 */
-	do_fire(current_angle, target_angle) {
+	do_fire(current_angle, target_angle)
+	{
 		return Math.abs(current_angle - target_angle) < this.min_fire_error;
 	}
 
@@ -224,7 +241,8 @@ class AIController extends Controller {
 	 * @param {Array} near_by_objects
 	 * @returns {Vector2}
 	 */
-	get_evading_vector(object, near_by_objects) {
+	get_evading_vector(object, near_by_objects)
+	{
 		let evading_v = new Vector2();
 
 		// Objects
@@ -257,7 +275,8 @@ class AIController extends Controller {
 	 * @param {Vector2} speed_target The speed we want to control the object to
 	 * @returns {Command}
 	 */
-	control_from_vector(object, speed_target) {
+	control_from_vector(object, speed_target)
+	{
 		let object_angle = this.get_angle(object);
 
 		let target_angle = speed_target.angle();
@@ -280,7 +299,8 @@ class AIController extends Controller {
 	 * @param {Array} near_by_objects
 	 * @returns {Command}
 	 */
-	searching(object, near_by_objects) {
+	searching(object, near_by_objects)
+	{
 		let speed_target = new Vector2();
 
 		// Go to center
@@ -300,7 +320,8 @@ class AIController extends Controller {
 	 * @param {Array} near_by_objects
 	 * @returns {Command}
 	 */
-	positionning(object, near_by_objects) {
+	positionning(object, near_by_objects)
+	{
 		let speed_target = new Vector2();
 
 		// Constrain target distance to object
@@ -322,7 +343,8 @@ class AIController extends Controller {
 	 * @param {Array} near_by_objects
 	 * @returns {Command}
 	 */
-	aiming(object, near_by_objects) {
+	aiming(object, near_by_objects)
+	{
 		let target_angle = this.get_firering_angle(object);
 		let object_angle = this.get_angle(object);
 
@@ -345,7 +367,8 @@ class AIController extends Controller {
 	 * @param {Array} near_by_objects
 	 * @returns {Command}
 	 */
-	turret(object, near_by_objects) {
+	turret(object, near_by_objects)
+	{
 		let target_angle = this.get_firering_angle(object);
 		let object_angle = this.get_angle(object);
 
@@ -363,7 +386,8 @@ class AIController extends Controller {
 	 * @param {Array} near_by_objects
 	 * @returns {Command}
 	 */
-	fleeing(object, near_by_objects) {
+	fleeing(object, near_by_objects)
+	{
 		let speed_target = new Vector2();
 
 		speed_target.add(this.get_evading_vector(object, near_by_objects));
@@ -376,7 +400,8 @@ class AIController extends Controller {
 	 * 
 	 * @param {State} new_state 
 	 */
-	change_state(new_state) {
+	change_state(new_state)
+	{
 		// console.log("Changing state to: " + new_state.code);
 
 		this.state = new_state;
@@ -391,7 +416,8 @@ class AIController extends Controller {
 	 * 
 	 * @param {GameObject} object 
 	 */
-	control(object) {
+	control(object)
+	{
 		// Debug drawing translate to object
 		let renderer = framework.get_renderer();
 		renderer.translate(object.pos.x(), object.pos.y());

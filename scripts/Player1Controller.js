@@ -3,11 +3,13 @@
  * Control object with the keyboard arrows
  * @extends Controller
  */
-class Player1Controller extends Controller {
+class Player1Controller extends Controller
+{
 	/**
 	 * @constructor
 	 */
-	constructor() {
+	constructor()
+	{
 		super();
 		this.thrust = 0;
 		this.rotation = 0;
@@ -19,12 +21,13 @@ class Player1Controller extends Controller {
 	 * Return the last user inputs to control the object
 	 * @returns {CommandObject}
 	 */
-	control() {
+	control()
+	{
 		return {
 			"thrust": this.thrust,
 			"rotation": this.rotation,
 			"fire": this.fire,
-		}
+		};
 	}
 
 	/**
@@ -32,7 +35,8 @@ class Player1Controller extends Controller {
 	 * @param {String} code KeyCode
 	 * @param {Boolean} status true: keyup, false: keydown
 	 */
-	input(code, status) {
+	input(code, status)
+	{
 		// console.log(code, status);
 
 		if (code == "ArrowUp") {
