@@ -1,29 +1,52 @@
+/**
+ * Generic Vector class
+ */
 class Vector
 {
+	/**
+	 * Create a generic vector
+	 * @param {Array} data Array of length dimension
+	 */
 	constructor(data)
 	{
 		this.data = data;
 	}
 
-	set()
+	/**
+	 * Set Vector data
+	 * @returns {Vector} this
+	 */
+	set(data)
 	{
-		throw new Error();
+		this.data = data;
+		return this;
 	}
 
-	// Set same as vector
+	/**
+	 * Copy from another vector
+	 * @param {Vector} v vector to copy
+	 * @returns {Vector} this
+	 */
 	setv(v)
 	{
 		this.data = v.data.slice();
 		return this;
 	}
 
-	// Return a copy
+	/**
+	 * Return a copy of this vector
+	 * @returns {Vector} copy
+	 */
 	clone()
 	{
 		return new Vector(this.data);
 	}
 
-	// Add
+	/**
+	 * Add v to this
+	 * @param {Vector} v 
+	 * @returns {Vector} this
+	 */
 	add(v)
 	{
 		for (let i = 0; i < this.data.length; i++) {
@@ -32,7 +55,11 @@ class Vector
 		return this;
 	}
 
-	// Substract
+	/**
+	 * Substract v from this
+	 * @param {Vector} v 
+	 * @returns {Vector} this
+	 */
 	sub(v)
 	{
 		for (let i = 0; i < this.data.length; i++) {
@@ -41,7 +68,11 @@ class Vector
 		return this;
 	}
 
-	// Multiply
+	/**
+	 * Multiply this by s
+	 * @param {Number} s
+	 * @returns {Vector} this
+	 */
 	mul(s)
 	{
 		for (let i = 0; i < this.data.length; i++) {
@@ -50,13 +81,20 @@ class Vector
 		return this;
 	}
 
-	// Divide
+	/**
+	 * Divide this by s
+	 * @param {Number} s
+	 * @returns {Vector} this
+	 */
 	div(s)
 	{
 		return this.mul(1 / s);
 	}
 
-	// squared norm of the vector
+	/**
+	 * Return the squared norm of the vector (faster than the norm)
+	 * @returns {Number} squared vector norm
+	 */
 	squared_norm()
 	{
 		let sum = 0;
@@ -66,13 +104,19 @@ class Vector
 		return sum;
 	}
 
-	// norm of the vector
+	/**
+	 * Return the norm of the vector (slow because of sqrt)
+	 * @returns {Number} vector norm
+	 */
 	norm()
 	{
 		return Math.sqrt(this.squared_norm());
 	}
 
-	// Normalize a vector to norm
+	/**
+	 * Normalize the vector to norm
+	 * @returns {Vector} this
+	 */
 	normalize(norm = 1)
 	{
 		let current_norm = this.norm();
@@ -86,19 +130,10 @@ class Vector
 		return this;
 	}
 
-	// Rotate vecor by the angle (rad)
-	rotate(angle)
-	{
-		throw new Error();
-	}
-
-	// angle of the vector (rad)
-	angle()
-	{
-		throw new Error();
-	}
-
-	// Scalar multiplication
+	/**
+	 * Return the scalar multiplication of this & v
+	 * @returns {Number} scalar
+	 */
 	scalar(v)
 	{
 		let sum = 0;
@@ -106,17 +141,5 @@ class Vector
 			sum += this.data[i] * v.data[i];
 		}
 		return sum;
-	}
-
-	// Draw a debug of the vector
-	draw()
-	{
-		throw new Error();
-	}
-
-	// Create a unit vector from an angle
-	static fromAngle(angle)
-	{
-		throw new Error();
 	}
 }
