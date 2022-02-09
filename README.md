@@ -1,7 +1,24 @@
-# genetic-fighter
+# Genetic Fighter
 
-If you haven't installed npm: apt-get install npm
+## Project Dependencies
 
-Setup: make setup
+* npm
 
-Generate docs: make docs
+## Setup
+```
+make setup
+```
+
+If you are having trouble making npm work in wsl consider removing the npm proxy:
+```
+make npm-rm-proxy
+```
+
+## Generating the documentation
+```
+make doc
+```
+
+## Launching the app
+Just open index.html in your browser
+or [Click here](./index.html)

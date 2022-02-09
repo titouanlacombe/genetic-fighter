@@ -1,5 +1,10 @@
 .PHONY: doc
 
+# If npm is having trouble in wsl
+npm-rm-proxy:
+	npm config rm proxy
+	npm config rm https-proxy
+
 setup:
 	npm install jsdoc
 	npm install clean-jsdoc-theme
