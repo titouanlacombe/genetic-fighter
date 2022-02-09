@@ -3,25 +3,32 @@
  * Is the bridge between the application and the HTML/JS environement
  */
 class Framework {
+	/**
+	 * @constructor
+	 */
 	constructor() {
 		// Private
-		this.last_request_id = 0; // Last request of requestAnimationFrame
-		this.running = false; // If false stops the loops
+		/** Last request of requestAnimationFrame */
+		this.last_request_id = 0;
+		/** Tells the app loop if it should keep running */
+		this.running = false;
 
 		// Public
-		// Dimentions of the canvas
-		this.width = 0;
-		this.height = 0;
-		this.frames = 0; // Number of frames displayed since the start
-		this.time = 0; // Time since the start
-		this.dt = 0; // Delta time between last 2 frames
+		/** Dimentions of the canvas */
+		this.width = 0; this.height = 0;
+		/** Number of frames displayed since the start */
+		this.frames = 0;
+		/** Seconds since the start */
+		this.time = 0;
+		/** Seconds between last 2 frames */
+		this.dt = 0;
+		/** Average frames per seconds */
 		this.average_fps = 0;
 
-		// App
+		/** Application */
 		this.app = null;
 
-		// Key shortcuts
-		// Reseting the app
+		// Key shortcut to reset the app
 		this.link_event('keydown', (e) => {
 			if (e.code == "KeyR") {
 				this.stop();
@@ -29,10 +36,14 @@ class Framework {
 			}
 		});
 
-		// Link canvas resize
+		// Link canvas resize event
 		window.addEventListener('resize', this.app_resize);
 	}
 
+	/**
+	 * Start an application
+	 * @param {Application} app 
+	 */
 	start(app) {
 		this.app = app;
 
@@ -40,7 +51,10 @@ class Framework {
 		window.requestAnimationFrame(() => { this.launch(); });
 	}
 
-	// Init & Launch the app
+	/**
+	 * Init the framework, the application & enters the app loop
+	 * @param {Application} app 
+	 */
 	launch() {
 		// Init framework
 		this.running = true;
@@ -53,6 +67,9 @@ class Framework {
 		this.last_request_id = window.requestAnimationFrame((_new_time) => { this.loop(_new_time); });
 	}
 
+	/**
+	 * Stops the app, the framework
+	 */
 	stop() {
 		window.cancelAnimationFrame(this.last_request_id);
 		this.running = false;
@@ -60,6 +77,12 @@ class Framework {
 		this.app.exiting();
 	}
 
+	/**
+	 * Framework loop
+	 * Proccess time & frames variables
+	 * Then call the app loop
+	 * @param {Number} new_time 
+	 */
 	loop(new_time) {
 		// Update some vars
 		this.dt = (new_time - this.time);
@@ -80,19 +103,34 @@ class Framework {
 		}
 	}
 
+	/**
+	 * Returns the current frame fps
+	 * @returns {Number} Current fps
+	 */
 	fps() {
 		return 1000 / this.dt;
 	}
 
+	/**
+	 * Return the JS/HTML context renderer
+	 * @returns {Renderer}
+	 */
 	get_renderer() {
 		return document.getElementById('canvas').getContext('2d');
 	}
 
+	/**
+	 * Provide a language agnostic function to link to a event
+	 * @param {String} event 
+	 * @param {CallableFunction} callback 
+	 */
 	link_event(event, callback) {
 		document.addEventListener(event, callback);
 	}
 
-	// Callback to update the canvas size
+	/**
+	 * Update the app size vars with the new HTML canvas size
+	 */
 	app_resize() {
 		let canvas = document.getElementById('canvas');
 

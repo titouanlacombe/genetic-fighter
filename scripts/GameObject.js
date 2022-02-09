@@ -1,6 +1,13 @@
-// Abstract class GameObject
+/**
+ * GameObject
+ * Handle basic simulation & drawing
+ * @abstract
+ */
 class GameObject
 {
+	/**
+	 * @constructor
+	 */
 	constructor()
 	{
 		this.pos = new Vector2();
@@ -15,16 +22,28 @@ class GameObject
 		this.alive = true;
 	}
 
+	/**
+	 * Return the distance from this to object
+	 * @param {GameObject} object 
+	 * @returns {Number}
+	 */
 	dist_to(object)
 	{
 		return this.pos.clone().sub(object.pos).norm();
 	}
 
+	/**
+	 * Simulate the object
+	 */
 	simulate()
 	{
 		// Empty
 	}
 
+	/**
+	 * Tells the renderer to go to the objects position & rotation before drawing
+	 * @param {Renderer} renderer 
+	 */
 	draw_wrapper(renderer)
 	{
 		// Setting transforms to object state
@@ -38,12 +57,17 @@ class GameObject
 		renderer.resetTransform();
 	}
 
+	/**
+	 * Draw the object
+	 */
 	draw()
 	{
 		// Empty
 	}
 
-	// Apply euler integration to the object properties
+	/**
+	 * Move the object according to Euler inegration
+	 */
 	euler()
 	{
 		// Translation
@@ -57,16 +81,26 @@ class GameObject
 		this.torque = 0;
 	}
 
+	/**
+	 * Called if object enters in collision with annother
+	 * @param {GameObject} object Collided with
+	 */
 	collision(object)
 	{
 		// Empty
 	}
 
+	/**
+	 * Called if object exit sim boundaries
+	 */
 	out_of_bound()
 	{
 		// Empty
 	}
 
+	/**
+	 * Called when object is removed from objects list
+	 */
 	die()
 	{
 		// Empty

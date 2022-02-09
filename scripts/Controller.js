@@ -17,14 +17,4 @@ class Controller {
     control(object) {
         // Empty
     }
-
-    /**
-     * Proccess users inputs
-     * 
-     * @param {String} code 
-     * @param {Number} status 
-     */
-    input(code, status) {
-        // Empty
-    }
 }

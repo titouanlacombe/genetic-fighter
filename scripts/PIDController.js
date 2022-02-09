@@ -1,5 +1,14 @@
+/**
+ * Implement PID controller
+ */
 class PIDController
 {
+	/**
+	 * @constructor
+	 * @param {Number} p Proportional factor
+	 * @param {Number} i Integral factor
+	 * @param {Number} d Derivative factor
+	 */
     constructor(p, i, d)
     {
         this.Kp = p;
@@ -10,12 +19,21 @@ class PIDController
         this.I = 0;
     }
 
+	/**
+	 * Reset PID state
+	 */
     reset_prev()
     {
         this.prev_error = null;
     }
 
-    // Takes current value, target value, dt and returns the control force to apply
+	/**
+	 * Return the output value of the PID controller
+	 * @param {Number} current Current value
+	 * @param {Number} target  Target value
+	 * @param {Number} dt Time between last control call
+	 * @returns {Number}
+	 */
     control(current, target, dt)
     {
         let error = target - current;
