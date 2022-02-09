@@ -1,7 +1,7 @@
-class PIDController
-{
-    constructor(p, i, d)
-    {
+class PIDController {
+    constructor(p, i, d) {
+        // console.log("p " + p + " i " + i + " d " + d);
+
         this.Kp = p;
         this.Ki = i;
         this.Kd = d;
@@ -10,15 +10,15 @@ class PIDController
         this.I = 0;
     }
 
-    reset_prev()
-    {
+    reset_prev() {
         this.prev_error = null;
     }
 
     // Takes current value, target value, dt and returns the control force to apply
-    control(current, target, dt)
-    {
+    control(current, target, dt) {
+        // console.log(current, target);
         let error = target - current;
+        // console.log('error? ' + error);
 
         // Proportional
         let P = this.Kp * error;

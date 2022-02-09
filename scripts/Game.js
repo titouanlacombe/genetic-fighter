@@ -1,122 +1,129 @@
 class Game {
-	constructor() {
-		this.objects = []; // Objects in the simulation
-		this.winner = null;
+    constructor(nb_pop, population = []) {
+        this.objects = []; // Objects in the simulation
+        this.winner = null;
 
-		this.sim_dt = 0; // Delta time between last 2 sim steps
-		this.sim_time = 0; // Time since the start of the simulation
-		this.fixed_dt = 0.3; // fix delta time to a constant (debug tool)
-	}
+        this.sim_dt = 0; // Delta time between last 2 sim steps
+        this.sim_time = 0; // Time since the start of the simulation
+        this.fixed_dt = 0.3; // fix delta time to a constant (debug tool)
 
-	static player_factory(x, y, color, controller) {
-		let player = new Fighter(x, y, color, controller);
+        this.population = population;
+        this.nb_pop = nb_pop;
+    }
 
-		// User input linking
-		framework.link_event('keydown', (e) => {
-			controller.input(e.code, true);
-		});
+    static player_factory(x, y, color, controller) {
+        let player = new Fighter(x, y, color, controller);
 
-		framework.link_event('keyup', (e) => {
-			controller.input(e.code, false);
-		});
+        // User input linking
+        framework.link_event('keydown', (e) => {
+            controller.input(e.code, true);
+        });
 
-		return player;
-	}
+        framework.link_event('keyup', (e) => {
+            controller.input(e.code, false);
+        });
 
-	// Initialize game
-	initing() {
-		this.objects = []; // Objects in the simulation
+        return player;
+    }
 
-		// Spawns AIs
-		for (let i = 0; i < 3; i++) {
-			let f = new Fighter();
-			f.controller = new AIController();
-			this.objects.push(f);
-		}
+    // Initialize game
+    initing() {
+        this.objects = []; // Objects in the simulation
 
-		// Spawns Players
-		this.objects.push(Game.player_factory(100, framework.height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
-		// this.objects.push(this.player_factory(framework.width - 100, framework.height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
-	}
+        // Spawns AIs
+        for (let i = 0; i < this.nb_pop; i++) {
+            let f = new Fighter();
+            f.controller = new AIController();
+            evolve.population.push(f);
+            this.objects.push(f);
+        }
 
-	exiting() {
-		this.draw();
+        console.log(evolve.population);
 
-		if (this.winner) {
-			console.log("Winner: ", this.winner);
-		}
-		else {
-			console.log("No winner");
-		}
-	}
+        // Spawns Players
+        // this.objects.push(Game.player_factory(100, framework.height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
+        // this.objects.push(this.player_factory(framework.width - 100, framework.height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
+    }
 
-	// Draw new frame
-	draw() {
-		// Clear canvas
-		let renderer = framework.get_renderer();
-		renderer.fillStyle = "black";
-		renderer.fillRect(0, 0, framework.width, framework.height);
+    exiting() {
+        this.draw();
 
-		// Draw objects
-		for (let object of this.objects) {
-			object.draw_wrapper(renderer);
-		}
-	}
+        if (this.winner) {
+            console.log("Winner: ", this.winner);
+        }
+        else {
+            console.log("No winner");
+        }
+    }
 
-	update() {
-		// Update time variables
-		// 1/16 is a correction so that this.sim_dt is close to 1 when 60 fps
-		this.sim_dt = this.fixed_dt ?? framework.dt * 1 / 16;
-		this.sim_time += this.sim_dt;
+    // Draw new frame
+    draw() {
+        // Clear canvas
+        let renderer = framework.get_renderer();
+        renderer.fillStyle = "black";
+        renderer.fillRect(0, 0, framework.width, framework.height);
 
-		// Draw the objects
-		this.draw();
+        // Draw objects
+        for (let object of this.objects) {
+            object.draw_wrapper(renderer);
+        }
+    }
 
-		// Move the objects
-		for (let object of this.objects) {
-			object.euler();
-		}
+    update() {
+        // Update time variables
+        // 1/16 is a correction so that this.sim_dt is close to 1 when 60 fps
+        this.sim_dt = this.fixed_dt ?? framework.dt * 1 / 16;
+        this.sim_time += this.sim_dt;
 
-		CollisionManager.update_distances_cache(this.objects);
+        // Draw the objects
+        this.draw();
 
-		// Handle collisions & out of bounds
-		CollisionManager.object_to_bounds(this.objects, 0, framework.width, 0, framework.height, true);
-		CollisionManager.object_to_object(this.objects);
+        // Move the objects
+        for (let object of this.objects) {
+            object.euler();
+        }
 
-		// Simulate the objects
-		for (let object of this.objects) {
-			object.simulate();
-		}
+        CollisionManager.update_distances_cache(this.objects);
 
-		// Only keep alive objects
-		let alive = [];
-		for (let object of this.objects) {
-			if (object.alive) {
-				alive.push(object);
-			}
-			else {
-				object.die();
-			}
-		}
+        // Handle collisions & out of bounds
+        CollisionManager.object_to_bounds(this.objects, 0, framework.width, 0, framework.height, true);
+        CollisionManager.object_to_object(this.objects);
 
-		this.objects = alive;
+        // Simulate the objects
+        for (let object of this.objects) {
+            object.simulate();
+        }
 
-		this.winner = this.get_winner();
-		if (this.winner != null || this.objects.length == 0) {
-			framework.stop();
-		}
-	}
+        // Only keep alive objects
+        let alive = [];
+        for (let object of this.objects) {
+            if (object.alive) {
+                alive.push(object);
+            }
+            else {
+                object.die();
+            }
+        }
 
-	get_winner() {
-		let is_last_fighter = this.objects.length == 1 && this.objects[0] instanceof Fighter;
+        this.objects = alive;
 
-		if (is_last_fighter) {
-			return this.objects[0];
-		}
-		else {
-			return null;
-		}
-	}
+        this.winner = this.get_winner();
+        if (this.winner != null || this.objects.length == 0) {
+            framework.stop();
+        }
+    }
+
+    get_winner() {
+        let is_last_fighter = this.objects.length == 1 && this.objects[0] instanceof Fighter;
+
+        if (is_last_fighter) {
+            return this.objects[0];
+        }
+        else {
+            return null;
+        }
+    }
 }
 
-framework.start(new Game());
+// framework.start(new Game());
+// console.log("New game");
