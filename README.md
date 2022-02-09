@@ -1,5 +1,7 @@
 # genetic-fighter
 
-Setup: sudo make setup
+If you haven't installed npm: apt-get install npm
+
+Setup: make setup
 
 Generate docs: make docs
