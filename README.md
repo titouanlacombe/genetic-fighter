@@ -2,25 +2,26 @@
 
 ## Project Dependencies
 
-* npm (sudo apt-get install npm)
+* npm `sudo apt-get install npm`
 
 ## Setup
-```
+
+To setup the app:
+```sh
 make setup
 ```
 
-If you are having trouble making npm work in wsl consider removing the npm proxy
-```
-make npm-rm-proxy
-```
+If you are having trouble making npm work in wsl consider removing the npm proxy with `make npm-rm-proxy`
 
-## Generating the documentation
-```
+## Launching the app
+
+To launch the app just open `index.html` in your browser
+
+## Documentation
+
+To generate the documentation:
+```sh
 make doc
 ```
 
-## Documentation
-After beeing generated the documentation is in the **doc** folder
-
-## Launching the app
-To launch the app just open **index.html** in your browser
+After beeing generated the documentation will be in the `doc` folder
