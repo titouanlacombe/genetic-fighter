@@ -1,98 +1,68 @@
-class EvolutionManager
-{
+/**
+ * Manage evolution of agents
+ */
+class EvolutionManager {
+	/** Number of childs at the beginning of each generation */
+	static population_size = 10;
 
-    constructor(mut_k, size)
-    {
+	/**
+	 * @constructor
+	 */
+	constructor() {
+		// Current generation number
+		this.generation = 0;
+		this.population = [];
+	}
 
-        this.population;
-        this.pool;
-        this.generations = 0;
-        this.done = false;
+	/**
+	 * TODO: at the end of each generation save this object to saves folder
+	 * TODO: set key shortcut to download last saved generation
+	 * Stringify this & make user download it
+	 */
+	download_generation() {
+		create_download("generation.json", JSON.stringify(this));
+	}
 
-        this.mutation_rate = mut_k;
+	/**
+	 * TODO: load generation if there is data in save
+	 * Load json data to create Evolution manager
+	 * @param {String} data json data
+	 * @returns {EvolutionManager}
+	 */
+	static load_generation(data) {
+		return JSON.parse(data);
+	}
 
-        this.population = [];
+	/**
+	 * Generate new population with previouses fitnesses
+	 */
+	trigger_new_generation() {
+		// New population
+		let tmp = [];
 
-        this.pool = [];
-        this.calculate_fitness();
+		let max_fitness = 0;
+		let total_fitness = 0;
+		let best = null;
+		for (let fighter of this.population) {
+			// Hack: store fitness in fighter for now
+			fighter.fitness = this.fitness_func(fighter)
+			total_fitness += fighter.fitness;
 
-        console.log(this.population);
-    }
+			// Find max
+			if (fighter.fitness > max_fitness) {
+				max_fitness = fighter.fitness;
+				best = fighter;
+			}
+		}
 
-    calculate_fitness()
-    {
+		// Keep best in new generation
+		tmp.push(best);
 
-        for (let i = 0; i < this.population.length; i++) {
-            this.population[i].controller.calculate_fitness();
-        }
+		// The better the fitness the better the chance to go in new generation
+		while (tmp.length < this.population_size) {
+			// Pick new from population
+		}
 
-    }
-
-    natural_selection()
-    {
-        // reset le pool
-        this.pool = [];
-
-        let best_fitness = 0;
-        for (let i = 0; i < this.population.length; i++) {
-            if (this.population[i].controller.fitness > best_fitness) {
-                best_fitness = this.population[i].controller.fitness;
-            }
-        }
-
-        // we want more of the objects with good fitness values
-        for (let i = 0; i < this.population.length; i++) {
-            let repeat = Math.floor(map_value(this.population[i].controller.fitness, 0, best_fitness, 0, 100));
-            for (let j = 0; j < repeat; j++) {
-                this.pool.push(population[i]);
-            }
-
-        }
-
-    }
-
-    // new generation
-    generate()
-    {
-
-        for (let i = 0; i < this.population.length; i++) {
-            let a = Math.floor(Math.random() * this.pool.length);
-            let b = Math.floor(Math.random() * this.pool.length);
-            let partnerA = this.pool[a];
-            let partnerB = this.pool[b];
-            // crossover
-            let child = partnerA.crossover(partnerB);
-            // mutate
-            child.mutate(this.mutationRate);
-            this.population[i].controller = child;
-        }
-        this.generations++;
-
-    }
-
-    find_best()
-    {
-        let best = 0;
-        let index = 0;
-
-        for (let i = 0; i < this.population.length; i++) {
-            if (this.population[i].controller.fitness > best) {
-                index = i;
-                best = this.population[i].controller.fitness;
-            }
-        }
-        return best;
-    }
-
-    // getters
-
-    get_best()
-    {
-        return this.find_best();
-    }
-
-    get_generation()
-    {
-        return this.generations;
-    }
+		this.population = tmp;
+	}
 }
