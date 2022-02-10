@@ -51,15 +51,15 @@ class Game extends Application {
     initing() {
         this.objects = []; // Objects in the simulation
 
-        // // Spawns AIs
+        // Spawns AIs
         for (let i = 0; i < 3; i++) {
             let f = new Fighter();
-            f.controller = new AIController(new DNA());
+            f.controller = new AIController();
             this.objects.push(f);
         }
 
-        // // Spawns Players
-        // this.objects.push(Game.player_factory(100, framework.height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
+        // Spawns Players
+        this.objects.push(Game.player_factory(100, framework.height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
         // this.objects.push(this.player_factory(framework.width - 100, framework.height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
     }
 
@@ -70,7 +70,7 @@ class Game extends Application {
         this.draw();
 
         if (this.winner) {
-            console.log("Winner: ", this.winner, this.winner.controller);
+            console.log("Winner: ", this.winner);
         }
         else {
             console.log("No winner");

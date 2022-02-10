@@ -1,7 +1,8 @@
 /**
  * Usefull class to manipulate colors
  */
-class Color {
+class Color
+{
 	/**
 	 * Static vars of common colors
 	 */
@@ -20,7 +21,8 @@ class Color {
 	 * @param {Number} g green 
 	 * @param {Number} b blue
 	 */
-	constructor(r, g, b) {
+	constructor(r, g, b)
+	{
 		this.r = r;
 		this.g = g;
 		this.b = b;
@@ -30,7 +32,8 @@ class Color {
 	 * Return color in string format
 	 * @returns {String} rgb(r,g,b)
 	 */
-	toString() {
+	toString()
+	{
 		return "rgb(" + this.r + "," + this.g + "," + this.b + ")";
 	}
 
@@ -38,7 +41,8 @@ class Color {
 	 * Return color in array format
 	 * @returns {Array} [r, g, b]
 	 */
-	toRGB() {
+	toRGB()
+	{
 		return [this.r, this.g, this.b];
 	}
 
@@ -46,7 +50,8 @@ class Color {
 	 * Return color in hex format
 	 * @returns {String} #rrggbb
 	 */
-	toHex() {
+	toHex()
+	{
 		let rgb = this.toRGB();
 		let hex = '#';
 		for (const element of rgb) {
@@ -63,7 +68,8 @@ class Color {
 	 * @param {Number} ratio between 0 & 1
 	 * @returns {Color}
 	 */
-	static lerp(color1, color2, ratio) {
+	static lerp(color1, color2, ratio)
+	{
 		let reverse_ratio = 1 - ratio;
 
 		return new Color(
@@ -78,7 +84,8 @@ class Color {
 	 * @param {String} hex 
 	 * @returns {Color}
 	 */
-	static fromHex(hex) {
+	static fromHex(hex)
+	{
 		let c;
 		if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
 			c = hex.substring(1).split('');

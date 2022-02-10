@@ -4,7 +4,8 @@
  * Affected by friction and controller commands
  * @extends GameObject
  */
-class Fighter extends GameObject {
+class Fighter extends GameObject
+{
 	/** Amount of air friction (& rotation) */
 	static friction = 0.05;
 	static rot_friction = 0.1;
@@ -36,7 +37,8 @@ class Fighter extends GameObject {
 	 * @param {Color} color Base color of the object
 	 * @param {Controller} controller Controller of the object
 	 */
-	constructor(x, y, color = Color.white, controller = null) {
+	constructor(x, y, color = Color.white, controller = null)
+	{
 		super();
 
 		// Generate random position if no provided
@@ -69,7 +71,8 @@ class Fighter extends GameObject {
 	 * @param {Renderer} renderer Context renderer
 	 * @param {Number} sign 1 or -1 depending on the side to draw on
 	 */
-	draw_thruster(renderer, sign) {
+	draw_thruster(renderer, sign)
+	{
 		renderer.beginPath();
 		renderer.moveTo(sign * this.radius * 0.8, 0);
 		renderer.lineTo(sign * this.radius * 0.8, this.radius * 1.3);
@@ -84,7 +87,8 @@ class Fighter extends GameObject {
 	 * @param {Number} max 
 	 * @returns {Color}
 	 */
-	get_color(value, min, max) {
+	get_color(value, min, max)
+	{
 		return Color.lerp(this.color, Color.red, map_value(value, min, max)).toString();
 	}
 
@@ -92,7 +96,8 @@ class Fighter extends GameObject {
 	 * Draw the object
 	 * @param {Renderer} renderer 
 	 */
-	draw(renderer) {
+	draw(renderer)
+	{
 		renderer.lineWidth = Fighter.lineWidth;
 
 		// Draw the cannon
@@ -118,7 +123,8 @@ class Fighter extends GameObject {
 	 * Simmulate the object
 	 * Apply the forces
 	 */
-	simulate() {
+	simulate()
+	{
 		// Controller
 		if (this.controller) {
 			let command = this.controller.control(this);
@@ -147,7 +153,8 @@ class Fighter extends GameObject {
 	 * Replace object to a valid position & reset speed
 	 * @param {String} reason ID of the crossed bound
 	 */
-	out_of_bound(reason) {
+	out_of_bound(reason)
+	{
 		this.vel.set(); // Reset vel
 		this.life -= 50;
 
@@ -171,7 +178,8 @@ class Fighter extends GameObject {
 	 * @param {Number} max 
 	 * @returns {Number}
 	 */
-	command_validator(value, min, max) {
+	command_validator(value, min, max)
+	{
 		if (isNaN(value)) {
 			console.log("command_validator warning: value NaN");
 			return 0;
@@ -192,7 +200,8 @@ class Fighter extends GameObject {
 	 * Execute the thrust command
 	 * @param {Number} throttle 
 	 */
-	command_thrust(throttle) {
+	command_thrust(throttle)
+	{
 		if (this.fuel <= 0) {
 			return;
 		}
@@ -209,7 +218,8 @@ class Fighter extends GameObject {
 	 * Execute the rotation command
 	 * @param {Number} throttle 
 	 */
-	command_rotation(throttle) {
+	command_rotation(throttle)
+	{
 		throttle = this.command_validator(throttle, -1, 1);
 		this.torque = throttle * Fighter.rot_command_authority;
 	}
@@ -219,7 +229,8 @@ class Fighter extends GameObject {
 	 * @param {Boolean} bool Only fire if this is true
 	 * @returns {Boolean} If success
 	 */
-	command_fire(bool) {
+	command_fire(bool)
+	{
 		if (!bool) {
 			return false;
 		}
@@ -254,7 +265,8 @@ class Fighter extends GameObject {
 	 * - If it's a fighter we lose a lot of life
 	 * @param {GameObject} object 
 	 */
-	collision(object) {
+	collision(object)
+	{
 		if (object instanceof Bullet) {
 			this.life -= 20;
 			object.alive = false; // Destroy the bullet
@@ -266,7 +278,8 @@ class Fighter extends GameObject {
 	/**
 	 * Just log a message if we are a player
 	 */
-	die() {
+	die()
+	{
 		if (this.controller instanceof Player1Controller) {
 			console.log("Player 1 died");
 		} else if (this.controller instanceof Player2Controller) {

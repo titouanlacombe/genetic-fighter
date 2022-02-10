@@ -1,58 +1,102 @@
+/**
+ * DNA class
+ * Store genes of AI
+ * Usefull methods to generate & mix DNA
+ */
 class DNA {
+    /**
+     * @constructor
+     */
     constructor() {
+        this.min_fighter_dist = null;
+        this.max_fighter_dist = null;
+        this.wanted_target_dist = null;
 
-        // genes 
+        this.min_fire_error = null;
 
-        this.min_fighter_dist = randval(0, 200);
-        this.max_fighter_dist = randval(this.min_fighter_dist, 500);
-        this.wanted_target_dist = randval(this.min_fighter_dist, this.max_fighter_dist);
+        this.encounter_time_max = null;
+        this.encounter_dist_max = null;
 
-        this.min_fire_error = randval(0, 2 * Math.PI);
+        this.positionning_K = null;
+        this.searching_K = null;
+        this.wall_K = null;
 
-        this.encounter_time_max = randval(0, 60);
-        this.encounter_dist_max = randval();
-
-        this.positionning_K = randval();
-        this.searching_K = randval();
-        this.wall_K = randval();
-
-        this.min_thrust = randval(0, 10);
+        this.min_thrust = null;
 
         // PID settings
-        this.angle_Kp = 20;
-        this.angle_Ki = 0;
-        this.angle_Kd = 0;
+        this.angle_Kp = null;
+        this.angle_Ki = null;
+        this.angle_Kd = null;
 
-        this.vel_Kp = 20;
-        this.vel_Ki = 0;
-        this.vel_Kd = 0;
-
-        // Fitness calculation
-        this.fitness = 0;
-        this.birth = Date.now(); // creation date
+        this.vel_Kp = null;
+        this.vel_Ki = null;
+        this.vel_Kd = null;
     }
 
-    // fitness calculation
-    calculate_fitness() {
-        this.fitness = Date.now() - this.birth;
+    /**
+     * Generate and return a random dna sample
+     * @returns {DNA}
+     */
+    static random() {
+        let dna = new this();
+        dna.min_fighter_dist = randval(0, 200);
+        dna.max_fighter_dist = randval(dna.min_fighter_dist, 500);
+        dna.wanted_target_dist = randval(dna.min_fighter_dist, dna.max_fighter_dist);
+        dna.min_fire_error = randval(0, 2 * Math.PI);
+        dna.encounter_time_max = randval(0, 60);
+        dna.encounter_dist_max = randval();
+        dna.positionning_K = randval();
+        dna.searching_K = randval();
+        dna.wall_K = randval();
+        dna.min_thrust = randval(0, 10);
+        dna.angle_Kp = 20;
+        dna.angle_Ki = 0;
+        dna.angle_Kd = 0;
+        dna.vel_Kp = 20;
+        dna.vel_Ki = 0;
+        dna.vel_Kd = 0;
+        return dna;
     }
 
-    a_or_b() {
-        let r = Math.random * 100;
-        return r > 50;
-    }
-
-    crossover(partner) {
-        // new child
-        let child_dna = new DNA();
-
-        for (let gene in Object.keys(this)) {
-            if (a_or_b) {
-                // take parent A genes
-                gene = this
-            }
-
+    /**
+     * Merge two DNA by averaging their values
+     * @param {DNA} dna1 
+     * @param {DNA} dna2 
+     * @returns {DNA}
+     */
+    static merge(dna1, dna2) {
+        let dna = new this();
+        // TODO: add a method to merge by picking random parent genes
+        for (let attribute in this) {
+            dna[attribute] = (dna1[attribute] + dna2[attribute]) / 2;
         }
+        return dna;
+    }
 
+    /** Chance of a mutation to appear on a certain gene */
+    static mutation_chance = 0.01;
+
+    /** Average amount of change brought by a mutation */
+    static mutation_average = 0.05;
+
+    /** Ecart type of random change brought by a mutation */
+    static mutation_ecart_type = 0.02;
+
+    /**
+     * Mutate DNA by using class static parameters
+     */
+    mutate() {
+        for (let attribute in this) {
+            if (random() < this.mutation_chance) {
+                let sign = (random() < 0.5) ? -1 : 1;
+                let change = randval(
+                    // Min
+                    this.mutation_average - this.mutation_ecart_type,
+                    // Max
+                    this.mutation_average + this.mutation_ecart_type
+                );
+                this[attribute] *= 1 + (change * sign);
+            }
+        }
     }
 }

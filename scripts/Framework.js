@@ -46,7 +46,6 @@ class Framework {
      */
     start(app) {
         this.app = app;
-        console.log("App : ", this.app);
 
         // Wait for the window to be fully loaded and launch the app
         window.requestAnimationFrame(() => { this.launch(); });
@@ -142,3 +141,5 @@ class Framework {
         // console.log(this.width, this.height);
     }
 }
+
+let framework = new Framework();

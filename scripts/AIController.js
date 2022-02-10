@@ -3,6 +3,7 @@
  * 
  * @extends Controller
  */
+<<<<<<< HEAD
 class AIController extends Controller {
     static vision_range = 500;
 

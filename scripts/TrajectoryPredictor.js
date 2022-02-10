@@ -1,7 +1,8 @@
 /**
  * Usefull functions to predict trajectory of game objects by assuming no friction
  */
-class TrajectoryPredictor {
+class TrajectoryPredictor
+{
 	/**
 	 * Return the time (in sim time) until obj1 & obj2 are the closest
 	 * This function asumes objects keep their current speed
@@ -9,7 +10,8 @@ class TrajectoryPredictor {
 	 * @param {GameObject} obj2 
 	 * @returns {Number}
 	 */
-	static time_to_encounter(obj1, obj2) {
+	static time_to_encounter(obj1, obj2)
+	{
 		/*
 		--- Math proof ---
 		Position equation of an object
@@ -62,7 +64,8 @@ class TrajectoryPredictor {
 	 * @param {Number} dt 
 	 * @returns {Vector2}
 	 */
-	static pos_at_time(obj, dt) {
+	static pos_at_time(obj, dt)
+	{
 		return obj.pos.clone().add(obj.vel.clone().mul(dt));
 	}
 
@@ -73,7 +76,8 @@ class TrajectoryPredictor {
 	 * @param {GameObject} obj2 
 	 * @returns {EncounterObject}
 	 */
-	static get_encounter(obj1, obj2) {
+	static get_encounter(obj1, obj2)
+	{
 		let dt = this.time_to_encounter(obj1, obj2);
 
 		let pos1 = this.pos_at_time(obj1, dt);
@@ -94,7 +98,8 @@ class TrajectoryPredictor {
 	 * @param {Number} C 
 	 * @returns {Array} Array of solutions
 	 */
-	static resolve_poly2(A, B, C) {
+	static resolve_poly2(A, B, C)
+	{
 		// TODO preconditions A, B, C
 		let delta = B ** 2 - 4 * A * C;
 
@@ -123,7 +128,8 @@ class TrajectoryPredictor {
 	 * @param {Number} vel_cannon_norm The bullets exit velocities
 	 * @returns {Number | null} null if no solutions where found
 	 */
-	static get_firering_angle(obj, target, vel_cannon_norm) {
+	static get_firering_angle(obj, target, vel_cannon_norm)
+	{
 		/*
 		--- Math proof ---
 		First step: Expressing vel_cannon
