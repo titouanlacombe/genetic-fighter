@@ -39,6 +39,12 @@ class EvolutionManager {
 		return 1;
 	}
 
+	/**
+	 * Choose a random object in a weighted array
+	 * Score need to be croissant & be between 0 & 1
+	 * @param {Array} wheighted_array array of object with a score & an object
+	 * @returns 
+	 */
 	choice(wheighted_array) {
 		let score = Math.random();
 		for (let object of wheighted_array) {
