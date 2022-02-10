@@ -78,12 +78,12 @@ class GameApplication extends Application {
 	exiting() {
 		this.draw();
 
-		if (this.winner) {
-			console.log("Winner: ", this.winner);
-		}
-		else {
-			console.log("No winner");
-		}
+		// if (this.winner) {
+		// 	console.log("Winner: ", this.winner);
+		// }
+		// else {
+		// 	console.log("No winner");
+		// }
 	}
 
 	/**

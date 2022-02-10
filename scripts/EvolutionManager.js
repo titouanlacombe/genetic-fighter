@@ -119,11 +119,13 @@ class EvolutionManager {
 		// --- Finding min/max fitnesses ---
 		let max_fitness = -Infinity;
 		let min_fitness = Infinity;
+		let average_fitness = 0;
 		let best = null;
 		for (let fighter of this.population) {
 			let dna = this.get_dna(fighter);
 			// Hack: store fitness in dna for now
 			dna.fitness = this.fitness_func(fighter);
+			average_fitness += dna.fitness;
 
 			// Find max
 			if (dna.fitness > max_fitness) {
@@ -138,6 +140,10 @@ class EvolutionManager {
 
 			dnas.push(dna);
 		}
+		average_fitness /= dnas.length;
+
+		console.log("Best: " + max_fitness);
+		console.log("Average: " + average_fitness);
 
 		// --- Normalizing fitnesses ---
 		// Remaping between 0 & 1
@@ -192,6 +198,8 @@ class EvolutionManager {
 	 * @param {GameApplication} app Game application
 	 */
 	evolve(app) {
+		console.log("Generation: " + this.generation);
+
 		// this.save_generation();
 
 		this.generate_new_generation(app);
