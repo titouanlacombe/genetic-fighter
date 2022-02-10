@@ -18,6 +18,8 @@ class Framework {
 		this.frames = 0;
 		/** Seconds since the start */
 		this.time = 0;
+		/** Last frame time */
+		this.dt = 0;
 		/** Average frames per seconds */
 		this.average_fps = 0;
 
@@ -78,7 +80,7 @@ class Framework {
 	 */
 	loop(new_time) {
 		// Update some vars
-		let dt = (new_time - this.time);
+		this.dt = (new_time - this.time);
 		this.time = new_time;
 
 		this.frames++;
@@ -88,7 +90,7 @@ class Framework {
 		// console.log("frame: ", this.frames);
 
 		// Call the app
-		this.app.update(dt);
+		this.app.update(this.dt);
 
 		// Call next loop if app still running
 		if (this.app.running) {

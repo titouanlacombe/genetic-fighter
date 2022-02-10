@@ -1,2 +1,2 @@
 // Launch application
-framework.start(new EvolveApp());
+framework.start(new EvolutionApplication());

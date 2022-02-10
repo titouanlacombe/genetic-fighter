@@ -3,7 +3,7 @@
  * evolution of the game and the population
  * @extends Application
  */
-class EvolveApp extends Application {
+class EvolutionApplication extends Application {
 	/**
 	 * @constructor
 	 */
@@ -26,7 +26,7 @@ class EvolveApp extends Application {
 			this.evolver = EvolutionManager.load_generation("");
 		}
 
-		this.game.objects.push(...this.evolver.population);
+		this.game.initing(this.evolver.population.slice());
 	}
 
 	update() {

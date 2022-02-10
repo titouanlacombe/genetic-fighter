@@ -3,15 +3,15 @@
  */
 class EvolutionManager {
 	/** Number of childs at the beginning of each generation */
-	static population_size = 10;
+	static population_size = 3;
 
 	/**
 	 * @constructor
 	 */
 	constructor() {
 		// Current generation number
-		this.generation = 1;
-		this.population = [];
+		this.generation = null;
+		this.population = null;
 	}
 
 	/**
@@ -38,16 +38,41 @@ class EvolutionManager {
 	 * @param {GameApplication} app Game application 
 	 */
 	generate_random_pop(app) {
+		this.population = [];
+		this.generation = 1;
 		while (this.population.length < EvolutionManager.population_size) {
 			this.population.push(this.fighter_dna_factory(app));
 		}
 	}
 
 	/**
+	 * Return the list of this population dnas
+	 * @returns {Array}
+	 */
+	get_dnas() {
+		// Recover dnas
+		let dnas = [];
+		for (let fighter of this.population) {
+			dnas.push(this.get_dna(fighter));
+		}
+		return dnas;
+	}
+
+	/**
 	 * Stringify this object & make user download
 	 */
 	save_generation() {
-		create_download(`generation-${this.generation}.json`, JSON.stringify(this));
+		// Recover dnas
+		let dnas = this.get_dnas();
+
+		// Create JSON
+		let json = JSON.stringify({
+			"gen": this.generation,
+			"dnas": dnas,
+		});
+
+		// Create download
+		create_download(`generation-${this.generation}.json`, json);
 	}
 
 	/**
@@ -57,7 +82,8 @@ class EvolutionManager {
 	 * @returns {EvolutionManager}
 	 */
 	static load_generation(data) {
-		return JSON.parse(data);
+		// TODO
+		// return JSON.parse(data);
 	}
 
 	/**
@@ -90,19 +116,21 @@ class EvolutionManager {
 	 * @param {GameApplication} app Game application
 	 */
 	generate_new_generation(app) {
+		let dnas = this.get_dnas();
+
 		// Computing fitness & stats
 		let max_fitness = 0;
 		let total_fitness = 0;
 		let best = null;
-		for (let fighter of this.population) {
-			// Hack: store fitness in fighter for now
-			fighter.fitness = this.fitness_func(fighter);
-			total_fitness += fighter.fitness;
+		for (let dna of dnas) {
+			// Hack: store fitness in dna for now
+			dna.fitness = this.fitness_func(dna);
+			total_fitness += dna.fitness;
 
 			// Find max
-			if (fighter.fitness > max_fitness) {
-				max_fitness = fighter.fitness;
-				best = fighter;
+			if (dna.fitness > max_fitness) {
+				max_fitness = dna.fitness;
+				best = dna;
 			}
 		}
 
@@ -110,28 +138,28 @@ class EvolutionManager {
 		// New population
 		let new_population = [];
 		// Keep best in new generation
-		new_population.push(best);
+		new_population.push(this.fighter_dna_factory(app, best));
 
 		// Building choice array
 		// Normalizing fitnesses
-		for (let fighter of this.population) {
-			fighter.fitness /= total_fitness;
+		for (let dna of dnas) {
+			dna.fitness /= total_fitness;
 		}
 		let choice_array = [];
 		let running_fitness = 0;
-		for (let fighter of this.population) {
-			running_fitness += fighter.fitness;
+		for (let dna of dnas) {
+			running_fitness += dna.fitness;
 
 			choice_array.push({
 				"score": running_fitness,
-				"object": fighter
+				"object": dna
 			});
 		}
 
 		// The better the fitness the better the chance to go in new generation
 		while (new_population.length < EvolutionManager.population_size) {
-			let parent1 = this.get_dna(this.choice(choice_array));
-			let parent2 = this.get_dna(this.choice(choice_array));
+			let parent1 = this.choice(choice_array);
+			let parent2 = this.choice(choice_array);
 
 			let child_dna = DNA.merge(parent1, parent2);
 

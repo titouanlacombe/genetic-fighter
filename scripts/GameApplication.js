@@ -22,7 +22,7 @@ class GameApplication extends Application {
 
 
 	fighter_factory(x, y, color, controller) {
-		return new Fighter(this, x, y, color, controller);
+		return new Fighter(x, y, color, controller);
 	}
 
 	/**
