@@ -1,14 +1,12 @@
 /**
  * Generic Vector class
  */
-class Vector
-{
+class Vector {
 	/**
 	 * Create a generic vector
 	 * @param {Array} data Array of length dimension
 	 */
-	constructor(data)
-	{
+	constructor(data) {
 		this.data = data;
 	}
 
@@ -16,8 +14,7 @@ class Vector
 	 * Set Vector data
 	 * @returns {Vector} this
 	 */
-	set(data)
-	{
+	set(data) {
 		this.data = data;
 		return this;
 	}
@@ -27,8 +24,7 @@ class Vector
 	 * @param {Vector} v vector to copy
 	 * @returns {Vector} this
 	 */
-	setv(v)
-	{
+	setv(v) {
 		this.data = v.data.slice();
 		return this;
 	}
@@ -37,8 +33,7 @@ class Vector
 	 * Return a copy of this vector
 	 * @returns {Vector} copy
 	 */
-	clone()
-	{
+	clone() {
 		return new Vector(this.data);
 	}
 
@@ -47,8 +42,7 @@ class Vector
 	 * @param {Vector} v 
 	 * @returns {Vector} this
 	 */
-	add(v)
-	{
+	add(v) {
 		for (let i = 0; i < this.data.length; i++) {
 			this.data[i] += v.data[i];
 		}
@@ -60,8 +54,7 @@ class Vector
 	 * @param {Vector} v 
 	 * @returns {Vector} this
 	 */
-	sub(v)
-	{
+	sub(v) {
 		for (let i = 0; i < this.data.length; i++) {
 			this.data[i] -= v.data[i];
 		}
@@ -73,8 +66,7 @@ class Vector
 	 * @param {Number} s
 	 * @returns {Vector} this
 	 */
-	mul(s)
-	{
+	mul(s) {
 		for (let i = 0; i < this.data.length; i++) {
 			this.data[i] *= s;
 		}
@@ -86,8 +78,7 @@ class Vector
 	 * @param {Number} s
 	 * @returns {Vector} this
 	 */
-	div(s)
-	{
+	div(s) {
 		return this.mul(1 / s);
 	}
 
@@ -95,8 +86,7 @@ class Vector
 	 * Return the squared norm of the vector (faster than the norm)
 	 * @returns {Number} squared vector norm
 	 */
-	squared_norm()
-	{
+	squared_norm() {
 		let sum = 0;
 		for (let value of this.data) {
 			sum += value * value;
@@ -108,8 +98,7 @@ class Vector
 	 * Return the norm of the vector (slow because of sqrt)
 	 * @returns {Number} vector norm
 	 */
-	norm()
-	{
+	norm() {
 		return Math.sqrt(this.squared_norm());
 	}
 
@@ -117,8 +106,7 @@ class Vector
 	 * Normalize the vector to norm
 	 * @returns {Vector} this
 	 */
-	normalize(norm = 1)
-	{
+	normalize(norm = 1) {
 		let current_norm = this.norm();
 
 		if (current_norm == 0) {
@@ -134,8 +122,7 @@ class Vector
 	 * Return the scalar multiplication of this & v
 	 * @returns {Number} scalar
 	 */
-	scalar(v)
-	{
+	scalar(v) {
 		let sum = 0;
 		for (let i = 0; i < this.data.length; i++) {
 			sum += this.data[i] * v.data[i];

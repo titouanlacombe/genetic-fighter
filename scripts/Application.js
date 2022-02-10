@@ -3,29 +3,29 @@
  * @interface
  */
 class Application {
-    /**
-     * @constructor
-     */
-    constructor() {
-        /** Tells the app loop if it should keep running */
-        this.running = true;
-    }
+	/**
+	 * @constructor
+	 */
+	constructor() {
+		/** Tells the app loop if it should keep running */
+		this.running = true;
+	}
 
-    /**
-     * Called on init
-     */
-    initing() {
-    }
+	/**
+	 * Called on init
+	 */
+	initing() {
+	}
 
-    /**
-     * Called on exit
-     */
-    exiting() {
-    }
+	/**
+	 * Called on exit
+	 */
+	exiting() {
+	}
 
-    /**
-     * Called at each animation frame
-     */
-    update() {
-    }
+	/**
+	 * Called at each animation frame
+	 */
+	update() {
+	}
 }

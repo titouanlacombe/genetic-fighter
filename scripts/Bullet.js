@@ -4,8 +4,7 @@
  * 
  * @extends GameObject
  */
-class Bullet extends GameObject
-{
+class Bullet extends GameObject {
 	/**
 	 * Specify the amount of air friction applied to the bullet
 	 * @static
@@ -16,8 +15,7 @@ class Bullet extends GameObject
 	 * @param {Vector2} pos starting position
 	 * @param {Vector2} vel starting velocity
 	 */
-	constructor(pos, vel)
-	{
+	constructor(pos, vel) {
 		super();
 
 		this.pos.setv(pos);
@@ -30,8 +28,7 @@ class Bullet extends GameObject
 	 * Draw the bullet
 	 * @param {Renderer} renderer 
 	 */
-	draw(renderer)
-	{
+	draw(renderer) {
 		renderer.beginPath();
 		renderer.arc(0, 0, this.radius, 0, 2 * Math.PI);
 		renderer.fillStyle = "white";
@@ -42,8 +39,7 @@ class Bullet extends GameObject
 	 * Simulate the bullet
 	 * Apply forces & Kill if no life left
 	 */
-	simulate()
-	{
+	simulate() {
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Bullet.friction));
 
@@ -56,8 +52,7 @@ class Bullet extends GameObject
 	/**
 	 * If bullet collide with something it becomes dead
 	 */
-	collision(object)
-	{
+	collision(object) {
 		if (object instanceof Bullet) {
 			// les Bullets s'annulent
 			this.alive = false;
@@ -68,8 +63,7 @@ class Bullet extends GameObject
 	 * If bullet leave the simulation area, kills it
 	 * @param {String} reason ID of the crossed bound
 	 */
-	out_of_bound(reason)
-	{
+	out_of_bound(reason) {
 		this.alive = false;
 	}
 }

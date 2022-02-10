@@ -1,14 +1,12 @@
 /**
  * Simple state machine node where exits conditions are functions
  */
-class State
-{
+class State {
 	/**
 	 * @constructor
 	 * @param {String} code To debug in what state we are in
 	 */
-	constructor(code)
-	{
+	constructor(code) {
 		this.code = code;
 		/** Exits */
 		this.exits = [];
@@ -19,8 +17,7 @@ class State
 	 * @param {State} state If exit true got to this state
 	 * @param {CallableFunction} condition Function, return true to exit
 	 */
-	add_exit(state, condition)
-	{
+	add_exit(state, condition) {
 		this.exits.push({
 			"state": state,
 			"condition": condition,
@@ -33,8 +30,7 @@ class State
 	 * @param {UserData} data 
 	 * @returns {State} The new state
 	 */
-	update(data)
-	{
+	update(data) {
 		for (const exit of this.exits) {
 			if (exit.condition(data)) {
 				return exit.state;

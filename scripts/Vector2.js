@@ -2,15 +2,13 @@
  * 2D Vector class
  * @extends Vector
  */
-class Vector2 extends Vector
-{
+class Vector2 extends Vector {
 	/**
 	 * @constructor
 	 * @param {Number} x 
 	 * @param {Number} y 
 	 */
-	constructor(x = 0, y = 0)
-	{
+	constructor(x = 0, y = 0) {
 		super([x, y]);
 	}
 
@@ -18,8 +16,7 @@ class Vector2 extends Vector
 	 * Return the x composant
 	 * @returns {Number} x
 	 */
-	x()
-	{
+	x() {
 		return this.data[0];
 	}
 
@@ -27,8 +24,7 @@ class Vector2 extends Vector
 	 * Return the y composant
 	 * @returns {Number} y
 	 */
-	y()
-	{
+	y() {
 		return this.data[1];
 	}
 
@@ -36,8 +32,7 @@ class Vector2 extends Vector
 	 * Set the x composant
 	 * @returns {Vector2} this
 	 */
-	setx(v)
-	{
+	setx(v) {
 		this.data[0] = v;
 		return this;
 	}
@@ -46,8 +41,7 @@ class Vector2 extends Vector
 	 * Set the y composant
 	 * @returns {Vector2} this
 	 */
-	sety(v)
-	{
+	sety(v) {
 		this.data[1] = v;
 		return this;
 	}
@@ -56,8 +50,7 @@ class Vector2 extends Vector
 	 * Set the vector data
 	 * @returns {Vector2} this
 	 */
-	set(x = 0, y = 0)
-	{
+	set(x = 0, y = 0) {
 		this.setx(x);
 		this.sety(y);
 		return this;
@@ -67,8 +60,7 @@ class Vector2 extends Vector
 	 * Return a copy of this vector
 	 * @returns {Vector} copy
 	 */
-	clone()
-	{
+	clone() {
 		return new Vector2(this.x(), this.y());
 	}
 
@@ -77,8 +69,7 @@ class Vector2 extends Vector
 	 * @param {Number} angle in radians
 	 * @returns {Vector2} this
 	 */
-	rotate(angle)
-	{
+	rotate(angle) {
 		let cs = Math.cos(angle);
 		let sn = Math.sin(angle);
 		let tempX = this.x(); // Very important
@@ -91,8 +82,7 @@ class Vector2 extends Vector
 	 * Return this vector angle
 	 * @returns {Vector2} this
 	 */
-	angle()
-	{
+	angle() {
 		return Math.atan2(this.y(), this.x());
 	}
 
@@ -103,8 +93,7 @@ class Vector2 extends Vector
 	 * @param {Number} scale 
 	 * @returns {Vector2} this
 	 */
-	draw(color = Color.white, scale = 1)
-	{
+	draw(color = Color.white, scale = 1) {
 		let v = this.clone().mul(scale);
 
 		let renderer = framework.get_renderer();
@@ -118,8 +107,7 @@ class Vector2 extends Vector
 	 * @param {Number} angle 
 	 * @returns {Vector2} new vector
 	 */
-	static fromAngle(angle)
-	{
+	static fromAngle(angle) {
 		return new Vector2(Math.cos(angle), Math.sin(angle));
 	}
 }
