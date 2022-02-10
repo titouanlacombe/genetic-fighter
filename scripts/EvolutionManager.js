@@ -15,12 +15,10 @@ class EvolutionManager {
 	}
 
 	/**
-	 * TODO: at the end of each generation save this object to saves folder
-	 * TODO: set key shortcut to download last saved generation
-	 * Stringify this & make user download it
+	 * Stringify this object & make user download
 	 */
-	download_generation() {
-		create_download("generation.json", JSON.stringify(this));
+	save_generation() {
+		create_download(`generation-${this.generation}.json`, JSON.stringify(this));
 	}
 
 	/**
@@ -34,18 +32,53 @@ class EvolutionManager {
 	}
 
 	/**
+	 * Calculate the fitness of a fighter
+	 * @param {Fighter} object 
+	 */
+	fitness_func(object) {
+		return 1;
+	}
+
+	choice(wheighted_array) {
+		let score = Math.random();
+		for (let object of wheighted_array) {
+			if (object.score > score) {
+				return object.object;
+			}
+		}
+		console.log("Warning: choice couldn't find better score: " + score);
+		return null;
+	}
+
+	/**
+	 * Return the DNA of the controller of the fighter
+	 * @param {Fighter} fighter 
+	 * @returns {DNA}
+	 */
+	get_dna(fighter) {
+		return fighter.controller.dna;
+	}
+
+	/**
+	 * Create a new fighter at a random position with AIController and dna
+	 * @param {DNA} dna 
+	 * @returns {Fighter}
+	 */
+	fighter_dna_factory(dna) {
+		return new Fighter(undefined, undefined, Color.white, new AIController(dna));
+	}
+
+	/**
 	 * Generate new population with previouses fitnesses
 	 */
-	trigger_new_generation() {
-		// New population
-		let tmp = [];
-
+	generate_new_generation() {
+		// Computing fitness & stats
 		let max_fitness = 0;
 		let total_fitness = 0;
 		let best = null;
 		for (let fighter of this.population) {
 			// Hack: store fitness in fighter for now
-			fighter.fitness = this.fitness_func(fighter)
+			fighter.fitness = this.fitness_func(fighter);
 			total_fitness += fighter.fitness;
 
 			// Find max
@@ -55,14 +88,48 @@ class EvolutionManager {
 			}
 		}
 
+		// --- Choosing new generation ---
+		// New population
+		let new_population = [];
 		// Keep best in new generation
-		tmp.push(best);
+		new_population.push(best);
 
-		// The better the fitness the better the chance to go in new generation
-		while (tmp.length < this.population_size) {
-			// Pick new from population
+		// Building choice array
+		// Normalizing fitnesses
+		for (let fighter of this.population) {
+			fighter.fitness /= total_fitness;
+		}
+		let choice_array = [];
+		let running_fitness = 0;
+		for (let fighter of this.population) {
+			running_fitness += fighter.fitness;
+
+			choice_array.push({
+				"score": running_fitness,
+				"object": fighter
+			});
 		}
 
-		this.population = tmp;
+		// The better the fitness the better the chance to go in new generation
+		while (new_population.length < this.population_size) {
+			let parent1 = this.get_dna(this.choice(choice_array));
+			let parent2 = this.get_dna(this.choice(choice_array));
+
+			let child_dna = DNA.merge(parent1, parent2);
+
+			new_population.push(this.fighter_dna_factory(child_dna));
+		}
+
+		this.population = new_population;
+	}
+
+	/**
+	 * Save old generation
+	 * Generate new one
+	 */
+	evolve() {
+		this.save_generation();
+
+		this.generate_new_generation();
 	}
 }
