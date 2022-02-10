@@ -9,20 +9,21 @@ class EvolveApp extends Application {
 	 */
 	constructor() {
 		super();
-		this.evolver = new EvolutionManager();
 		this.game = new GameApplication();
+		this.evolver = null;
 	}
 
 	/**
 	 * Spawns objets (AI)
 	 */
 	initing() {
-		this.game.objects = [];
+		this.running = true;
 
-		if (!this.evolver.population.length) {
+		if (/* No save found */ true) {
+			this.evolver = new EvolutionManager();
 			this.evolver.generate_random_pop(this.game);
 		} else {
-			this.evolver.load_generation("");
+			this.evolver = EvolutionManager.load_generation("");
 		}
 
 		this.game.objects.push(...this.evolver.population);
@@ -31,12 +32,16 @@ class EvolveApp extends Application {
 	update() {
 		this.game.update();
 
+		// If game finished
 		if (!this.game.running) {
-			// TODO: generate new pop & reset game
-			this.running = false;
-		}
+			// Generate new pop
+			this.evolver.evolve(this.game);
 
-		// this.running = false;
+			// Reset game
+			this.game.exiting();
+			// Init game with a copy of new pop
+			this.game.initing(this.evolver.population.slice());
+		}
 	}
 
 	/**
@@ -44,5 +49,6 @@ class EvolveApp extends Application {
 	 */
 	exiting() {
 		this.game.exiting();
+		this.evolver = null;
 	}
 }

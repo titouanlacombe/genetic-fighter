@@ -51,20 +51,25 @@ class GameApplication extends Application {
 
 	/**
 	 * Spawn players & AIs
+	 * @param {Array} objects array of initial objects
 	 */
-	initing() {
-		this.objects = []; // Objects in the simulation
+	initing(objects = []) {
+		this.objects = objects;
+		this.running = true;
 
-		// Spawns AIs
-		for (let i = 0; i < 3; i++) {
-			this.objects.push(
-				this.fighter_factory(undefined, undefined, Color.white, new AIController())
-			);
+		// If objects empty
+		if (!objects.length) {
+			// Spawns AIs
+			for (let i = 0; i < 3; i++) {
+				this.objects.push(
+					this.fighter_factory(undefined, undefined, Color.white, new AIController())
+				);
+			}
+
+			// Spawns Players
+			this.objects.push(this.player_factory(100, framework.height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
+			// this.objects.push(this.player_factory(framework.width - 100, framework.height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
 		}
-
-		// Spawns Players
-		this.objects.push(this.player_factory(100, framework.height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
-		// this.objects.push(this.player_factory(framework.width - 100, framework.height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
 	}
 
 	/**

@@ -144,11 +144,12 @@ class EvolutionManager {
 	/**
 	 * Save old generation
 	 * Generate new one
+	 * @param {GameApplication} app Game application
 	 */
-	evolve() {
-		this.save_generation();
+	evolve(app) {
+		// this.save_generation();
 
-		this.generate_new_generation();
+		this.generate_new_generation(app);
 
 		this.generation++;
 	}
