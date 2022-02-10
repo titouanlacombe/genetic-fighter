@@ -5,17 +5,26 @@ class EvolveApp extends Game {
 
     initing() {
         console.log("Initialization");
-        this.evolve = new EvolutionManager();
+        this.evolve = new EvolutionManager(0.1, 5);
         this.objects = [];
 
-        this.evolve.generate();
+        console.log(this.evolve.size);
+
+        for (let i = 0; i < this.evolve.size; i++) {
+            let f = new Fighter();
+            f.controller = new AIController(DNA.random());
+            this.objects.push(f);
+        }
+
+        console.log(this.objects);
     }
 
     update() {
         super.update();
     }
 
-    exit() {
-        // super.exit();
+    exiting() {
+        super.exiting();
+        console.log("Winner in exit (): ", this.winner);
     }
 }

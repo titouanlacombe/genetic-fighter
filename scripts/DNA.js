@@ -87,8 +87,8 @@ class DNA {
      */
     mutate() {
         for (let attribute in this) {
-            if (random() < this.mutation_chance) {
-                let sign = (random() < 0.5) ? -1 : 1;
+            if (Math.random() < this.mutation_chance) {
+                let sign = (Math.random() < 0.5) ? -1 : 1;
                 let change = randval(
                     // Min
                     this.mutation_average - this.mutation_ecart_type,
