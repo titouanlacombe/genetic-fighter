@@ -138,4 +138,4 @@ class Framework {
 	}
 }
 
-let framework = new Framework();
+const framework = new Framework();
