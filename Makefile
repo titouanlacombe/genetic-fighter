@@ -1,4 +1,4 @@
-.PHONY: doc
+.PHONY: doc setup npm-rm-proxy clean
 
 # If npm is having trouble in wsl
 npm-rm-proxy:
