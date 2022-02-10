@@ -17,7 +17,7 @@ class GameApplication extends Application {
 		/** Time since the start of the simulation */
 		this.sim_time = 0;
 		/** Force delta time to be constant (if null use realtime) */
-		this.fixed_dt = 0.3;
+		this.fixed_dt = 0.4;
 	}
 
 
