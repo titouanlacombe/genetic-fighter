@@ -1,4 +1,8 @@
+move resolve poly2 to utilities
 add a time limit to evolution (dmg / dt?)
+add a method to merge by picking random parent genes
+load generation if there is data in save
+implement load_generation
 
 switch to typescript?
 better aiming controller?

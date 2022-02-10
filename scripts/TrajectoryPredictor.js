@@ -86,7 +86,6 @@ class TrajectoryPredictor {
 		};
 	}
 
-	// TODO: move to utilities
 	/**
 	 * Solve the polynome: A*x^2 + B*x + C = 0
 	 * @param {Number} A 

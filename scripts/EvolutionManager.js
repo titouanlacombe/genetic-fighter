@@ -76,13 +76,11 @@ class EvolutionManager {
 	}
 
 	/**
-	 * TODO: load generation if there is data in save
 	 * Load json data to create Evolution manager
 	 * @param {String} data json data
 	 * @returns {EvolutionManager}
 	 */
 	static load_generation(data) {
-		// TODO
 		// return JSON.parse(data);
 	}
 
