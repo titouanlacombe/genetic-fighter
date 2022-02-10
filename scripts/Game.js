@@ -141,7 +141,7 @@ class Game extends Application {
 
         this.winner = this.get_winner();
         if (this.winner != null || this.objects.length == 0) {
-            framework.stop();
+            this.running = false;
         }
     }
 

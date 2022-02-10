@@ -1,54 +1,46 @@
 /**
  * Application to manage initialization and 
  * evolution of the game and the population
- * @extends Game
+ * @extends Application
  */
-class EvolveApp extends Game {
+class EvolveApp extends Application {
     /**
      * @constructor
      */
     constructor() {
         super();
-        this.target_generation = 0;
-        this.evolve = new EvolutionManager();
-        this.target_generation = 0;
-        this.generation_size;
+        this.evolver = new EvolutionManager();
+        this.game = new Game();
     }
 
     /**
      * Spawns objets (AI)
      */
     initing() {
-        console.log("Initialization");
-        this.objects = [];
+        this.game.objects = [];
 
-        console.log(this.generation_size);
-
-        console.log("Population : ", this.evolve.population, "length -> ", this.evolve.population.length);
-
-        if (!this.evolve.population.length) {
-            console.log("Population empty", this.evolve.population);
-            for (let i = 0; i < this.generation_size; i++) {
-                let f = new Fighter();
-                f.controller = new AIController(DNA.random());
-                this.evolve.population.push(f);
-                this.objects.push(f);
-            }
+        if (!this.evolver.population.length) {
+            this.evolver.generate_random_pop();
+        } else {
+            this.evolver.load_generation("");
         }
 
+        this.game.objects.push(...this.evolver.population);
+    }
 
-        // console.log(this.objects);
+    update() {
+        this.game.update();
+
+        if (!this.game.running) {
+            // TODO: generate new pop & reset game
+            this.running = false;
+        }
     }
 
     /**
      * Exit when the is a winner or all objects are dead
-     * Then create a new generation of objects
      */
     exiting() {
-        super.exiting();
-        console.log(this.evolve.population);
-        // this.evolve.trigger_new_generation()
-        // download generation's DNA
-        // start new generation if generation < target_generation
+        this.game.exiting();
     }
 }

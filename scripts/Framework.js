@@ -10,8 +10,6 @@ class Framework {
         // Private
         /** Last request of requestAnimationFrame */
         this.last_request_id = 0;
-        /** Tells the app loop if it should keep running */
-        this.running = false;
 
         // Public
         /** Dimentions of the canvas */
@@ -57,7 +55,6 @@ class Framework {
      */
     launch() {
         // Init framework
-        this.running = true;
         this.app_resize();
 
         // Init the app
@@ -72,8 +69,6 @@ class Framework {
      */
     stop() {
         window.cancelAnimationFrame(this.last_request_id);
-        this.running = false;
-
         this.app.exiting();
     }
 
@@ -97,9 +92,12 @@ class Framework {
         // Call the app
         this.app.update(this.dt);
 
-        // Call next loop if still running
-        if (this.running) {
+        // Call next loop if app still running
+        if (this.app.running) {
             this.last_request_id = window.requestAnimationFrame((_new_time) => { this.loop(_new_time); });
+        }
+        else {
+            this.stop();
         }
     }
 
