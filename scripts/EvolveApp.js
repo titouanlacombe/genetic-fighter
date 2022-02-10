@@ -20,7 +20,7 @@ class EvolveApp extends Application {
 		this.game.objects = [];
 
 		if (!this.evolver.population.length) {
-			this.evolver.generate_random_pop();
+			this.evolver.generate_random_pop(this.game);
 		} else {
 			this.evolver.load_generation("");
 		}

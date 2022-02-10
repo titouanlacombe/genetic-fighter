@@ -10,8 +10,37 @@ class EvolutionManager {
 	 */
 	constructor() {
 		// Current generation number
-		this.generation = 0;
+		this.generation = 1;
 		this.population = [];
+	}
+
+	/**
+	 * Create a new fighter at a random position with AIController and dna
+	 * @param {GameApplication} app 
+	 * @param {DNA} dna 
+	 * @returns {Fighter}
+	 */
+	fighter_dna_factory(app, dna) {
+		return app.fighter_factory(undefined, undefined, Color.white, new AIController(dna));
+	}
+
+	/**
+	 * Return the DNA of the controller of the fighter
+	 * @param {Fighter} fighter 
+	 * @returns {DNA}
+	 */
+	get_dna(fighter) {
+		return fighter.controller.dna;
+	}
+
+	/**
+	 * Generate a fully random population of length EvolutionManager.population_size
+	 * @param {GameApplication} app Game application 
+	 */
+	generate_random_pop(app) {
+		while (this.population.length < EvolutionManager.population_size) {
+			this.population.push(this.fighter_dna_factory(app));
+		}
 	}
 
 	/**
@@ -32,14 +61,6 @@ class EvolutionManager {
 	}
 
 	/**
-	 * Calculate the fitness of a fighter
-	 * @param {Fighter} object 
-	 */
-	fitness_func(object) {
-		return 1;
-	}
-
-	/**
 	 * Choose a random object in a weighted array
 	 * Score need to be croissant & be between 0 & 1
 	 * @param {Array} wheighted_array array of object with a score & an object
@@ -57,22 +78,11 @@ class EvolutionManager {
 	}
 
 	/**
-	 * Return the DNA of the controller of the fighter
-	 * @param {Fighter} fighter 
-	 * @returns {DNA}
+	 * Calculate the fitness of a fighter
+	 * @param {Fighter} object 
 	 */
-	get_dna(fighter) {
-		return fighter.controller.dna;
-	}
-
-	/**
-	 * Create a new fighter at a random position with AIController and dna
-	 * @param {GameApplication} app 
-	 * @param {DNA} dna 
-	 * @returns {Fighter}
-	 */
-	fighter_dna_factory(app, dna) {
-		return app.fighter_factory(undefined, undefined, Color.white, new AIController(dna));
+	fitness_func(object) {
+		return 1;
 	}
 
 	/**
@@ -139,15 +149,7 @@ class EvolutionManager {
 		this.save_generation();
 
 		this.generate_new_generation();
-	}
 
-	/**
-	 * Generate a fully random population of length EvolutionManager.population_size
-	 * @param {GameApplication} app Game application 
-	 */
-	generate_random_pop(app) {
-		while (this.population.length < EvolutionManager.population_size) {
-			this.population.push(app, this.fighter_dna_factory());
-		}
+		this.generation++;
 	}
 }
