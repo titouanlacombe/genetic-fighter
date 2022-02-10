@@ -38,8 +38,10 @@ class Bullet extends GameObject {
 	/**
 	 * Simulate the bullet
 	 * Apply forces & Kill if no life left
+	 * @param {Array} objects array of GameObjects
+	 * @param {Number} dt delta time between steps 
 	 */
-	simulate() {
+	simulate(objects, dt) {
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Bullet.friction));
 

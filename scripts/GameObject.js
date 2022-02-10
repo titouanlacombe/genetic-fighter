@@ -32,8 +32,9 @@ class GameObject {
 	/**
 	 * Simulate the object
 	 * @param {Number} dt delta time between steps 
+	 * @param {Array} objects array of GameObjects
 	 */
-	simulate(dt) {
+	simulate(objects, dt) {
 		// Empty
 	}
 

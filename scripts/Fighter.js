@@ -37,10 +37,8 @@ class Fighter extends GameObject {
 	 * @param {Color} color Base color of the object
 	 * @param {Controller} controller Controller of the object
 	 */
-	constructor(app, x, y, color = Color.white, controller = null) {
+	constructor(x, y, color = Color.white, controller = null) {
 		super();
-
-		this.app = app;
 
 		// Generate random position if no provided
 		if (!x) {
@@ -120,15 +118,16 @@ class Fighter extends GameObject {
 	/**
 	 * Simmulate the object
 	 * Apply the forces
+	 * @param {Array} objects array of GameObjects
 	 * @param {Number} dt delta time between steps 
 	 */
-	simulate(dt) {
+	simulate(objects, dt) {
 		// Controller
 		if (this.controller) {
 			let command = this.controller.control(this, dt);
 			this.command_rotation(command.rotation ?? 0);
 			this.command_thrust(command.thrust ?? 0, dt);
-			this.command_fire(command.fire ?? false);
+			this.command_fire(command.fire ?? false, objects);
 		}
 
 		// Cannon cooldown
@@ -221,9 +220,10 @@ class Fighter extends GameObject {
 	/**
 	 * Execute the fire command
 	 * @param {Boolean} bool Only fire if this is true
+	 * @param {Array} objects array of GameObjects
 	 * @returns {Boolean} If success
 	 */
-	command_fire(bool) {
+	command_fire(bool, sim_objects) {
 		if (!bool) {
 			return false;
 		}
@@ -247,7 +247,7 @@ class Fighter extends GameObject {
 		added_vel.rotate(this.angle);
 		bullet.vel.add(added_vel);
 		// Add to objects
-		this.app.objects.push(bullet);
+		sim_objects.push(bullet);
 
 		return true;
 	}
