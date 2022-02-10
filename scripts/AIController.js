@@ -8,6 +8,7 @@ class AIController extends Controller {
 
     /**
      * @constructor
+     * @param {DNA} dna dna of the AI
      */
     constructor(dna) {
         super();
