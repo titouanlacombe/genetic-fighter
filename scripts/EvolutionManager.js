@@ -3,7 +3,7 @@
  */
 class EvolutionManager {
 	/** Number of childs at the beginning of each generation */
-	static population_size = 3;
+	static population_size = 2;
 
 	/**
 	 * @constructor
@@ -116,15 +116,14 @@ class EvolutionManager {
 	generate_new_generation(app) {
 		let dnas = [];
 
-		// Computing fitness & stats
-		let max_fitness = 0;
-		let total_fitness = 0;
+		// --- Finding min/max fitnesses ---
+		let max_fitness = -Infinity;
+		let min_fitness = Infinity;
 		let best = null;
 		for (let fighter of this.population) {
 			let dna = this.get_dna(fighter);
 			// Hack: store fitness in dna for now
 			dna.fitness = this.fitness_func(fighter);
-			total_fitness += dna.fitness;
 
 			// Find max
 			if (dna.fitness > max_fitness) {
@@ -132,20 +131,31 @@ class EvolutionManager {
 				best = dna;
 			}
 
+			// Find min
+			if (dna.fitness < min_fitness) {
+				min_fitness = dna.fitness;
+			}
+
 			dnas.push(dna);
 		}
 
-		// --- Choosing new generation ---
-		// New population
-		let new_population = [];
-		// Keep best in new generation
-		new_population.push(this.fighter_dna_factory(app, best));
-
-		// Building choice array
-		// Normalizing fitnesses
+		// --- Normalizing fitnesses ---
+		// Remaping between 0 & 1
+		for (let dna of dnas) {
+			dna.fitness = map_value(dna.fitness, min_fitness, max_fitness);
+		}
+		// Computing total amount of fitness
+		let total_fitness = 0;
+		for (let dna of dnas) {
+			total_fitness += dna.fitness;
+		}
+		// Dividing each fitness by total (to have a total of 1)
 		for (let dna of dnas) {
 			dna.fitness /= total_fitness;
 		}
+
+		// --- Choosing new generation ---
+		// Building parent choice array
 		let choice_array = [];
 		let running_fitness = 0;
 		for (let dna of dnas) {
@@ -156,6 +166,11 @@ class EvolutionManager {
 				"object": dna
 			});
 		}
+
+		// New population
+		let new_population = [];
+		// Keep best in new generation
+		new_population.push(this.fighter_dna_factory(app, best));
 
 		// The better the fitness the better the chance to go in new generation
 		while (new_population.length < EvolutionManager.population_size) {

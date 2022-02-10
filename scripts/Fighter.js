@@ -6,7 +6,7 @@
  */
 class Fighter extends GameObject {
 	/** Amount life removed by unit of time to limit game time */
-	static life_loss = 0.02;
+	static life_loss = 0.2;
 
 	/** Amount of air friction (& rotation) */
 	static friction = 0.05;
