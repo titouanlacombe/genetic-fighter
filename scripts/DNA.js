@@ -67,7 +67,7 @@ class DNA {
 	static merge(dna1, dna2) {
 		let dna = new this();
 		// TODO: add a method to merge by picking random parent genes
-		for (let attribute in this) {
+		for (let attribute in dna) {
 			dna[attribute] = (dna1[attribute] + dna2[attribute]) / 2;
 		}
 		return dna;

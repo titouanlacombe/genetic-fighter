@@ -1,3 +1,5 @@
+add a time limit to evolution (dmg / dt?)
+
 switch to typescript?
 better aiming controller?
 
