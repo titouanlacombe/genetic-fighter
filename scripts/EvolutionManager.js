@@ -160,6 +160,7 @@ class EvolutionManager {
 			let parent2 = this.choice(choice_array);
 
 			let child_dna = DNA.merge(parent1, parent2);
+			child_dna.mutate();
 
 			new_population.push(this.fighter_dna_factory(app, child_dna));
 		}

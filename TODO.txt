@@ -1,11 +1,13 @@
 move resolve poly2 to utilities
-add a time limit to evolution (dmg / dt?)
-add a method to merge by picking random parent genes
-load generation if there is data in save
-implement load_generation
 
-switch to typescript?
-better aiming controller?
+begin modeling evolution simmulation {
+	add a time limit to evolution (dmg / dt?)
+	load generation if there is data in save
+	implement load_generation
+	add a method to merge by picking random parent genes
+	being able to visualize evolution
+	evolution sim loop does a generation by frames & then display the results
+}
 
 improve game? {
 	test adding ability for the cannon to turn on its own
@@ -14,24 +16,15 @@ improve game? {
 	add obstacles ?
 }
 
-begin modeling evolution simmulation {
-	create ai dna object
-	being able to visualize evolution
-	if no munitions left in objects => winner max life
-	evolution sim loop does a generation by frames
-	then display the results
-	evolution game object
-}
-
-ai evolution mode {
-	???
-}
-
 add interesting mechanics {
-	parent choissisent partenaire le plus proche (pour éviter des mélanges de stratégies infructueux, element de random quand meme pour éviter de stuck)
+	parent choissisent partenaire le plus proche dans l'espace vectoriel DNA {
+		pour éviter des mélanges de stratégies infructueux, element de random quand meme pour éviter de stuck
+	}
 	need a lot of random in each generation (comment garder en vie? systeme de lignées?)
 	damage proportional to kinetic energy
 	mutation rate dynamic
 	ignore explored zones (DB needed ?)
 	comparer temp de convergence (fitness score reached)
 }
+
+better aiming controller?
