@@ -7,10 +7,12 @@ class EvolveApp extends Game {
     /**
      * @constructor
      */
-    constructor(target_generation) {
+    constructor() {
         super();
-        this.evolve = new EvolutionManager(0.1, 5);
-        this.target_generation = target_generation;
+        this.target_generation = 0;
+        this.evolve = new EvolutionManager();
+        this.target_generation = 0;
+        this.generation_size;
     }
 
     /**
@@ -20,21 +22,23 @@ class EvolveApp extends Game {
         console.log("Initialization");
         this.objects = [];
 
-        console.log(this.evolve.size);
+        console.log(this.generation_size);
 
-        for (let i = 0; i < this.evolve.size; i++) {
-            let f = new Fighter();
-            f.controller = new AIController(DNA.random());
-            this.objects.push(f);
+        console.log("Population : ", this.evolve.population, "length -> ", this.evolve.population.length);
+
+        if (!this.evolve.population.length) {
+            console.log("Population empty", this.evolve.population);
+            for (let i = 0; i < this.generation_size; i++) {
+                let f = new Fighter();
+                f.controller = new AIController(DNA.random());
+                this.evolve.population.push(f);
+                this.objects.push(f);
+            }
         }
+
 
         // console.log(this.objects);
     }
-
-    // update() {
-    //     super.update();
-    // }
-
 
     /**
      * Exit when the is a winner or all objects are dead
@@ -42,6 +46,8 @@ class EvolveApp extends Game {
      */
     exiting() {
         super.exiting();
+        console.log(this.evolve.population);
+        // this.evolve.trigger_new_generation()
         // download generation's DNA
         // start new generation if generation < target_generation
     }
