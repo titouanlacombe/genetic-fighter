@@ -36,7 +36,7 @@ class EvolveApp extends Application {
 			this.running = false;
 		}
 
-		this.running = false;
+		// this.running = false;
 	}
 
 	/**

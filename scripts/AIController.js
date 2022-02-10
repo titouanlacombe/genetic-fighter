@@ -14,6 +14,9 @@ class AIController extends Controller {
 		super();
 
 		// --- DNA ---
+		if (!dna) {
+			dna = DNA.random();
+		}
 		this.dna = dna;
 
 		// --- non DNA ---
@@ -391,8 +394,6 @@ class AIController extends Controller {
 
 		// Reset debug drawing context
 		renderer.resetTransform();
-
-		console.log(command);
 
 		return command;
 	}

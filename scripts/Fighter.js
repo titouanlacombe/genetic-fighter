@@ -31,13 +31,16 @@ class Fighter extends GameObject {
 
 	/**
 	 * @constructor
+	 * @param {GameApplication} app Game application
 	 * @param {Number} x Starting x position
 	 * @param {Number} y Starting x position
 	 * @param {Color} color Base color of the object
 	 * @param {Controller} controller Controller of the object
 	 */
-	constructor(x, y, color = Color.white, controller = null) {
+	constructor(app, x, y, color = Color.white, controller = null) {
 		super();
+
+		this.app = app;
 
 		// Generate random position if no provided
 		if (!x) {
@@ -124,7 +127,7 @@ class Fighter extends GameObject {
 		if (this.controller) {
 			let command = this.controller.control(this, dt);
 			this.command_rotation(command.rotation ?? 0);
-			this.command_thrust(command.thrust ?? 0);
+			this.command_thrust(command.thrust ?? 0, dt);
 			this.command_fire(command.fire ?? false);
 		}
 
@@ -191,14 +194,15 @@ class Fighter extends GameObject {
 	/**
 	 * Execute the thrust command
 	 * @param {Number} throttle 
+	 * @param {Number} dt delta time between steps 
 	 */
-	command_thrust(throttle) {
+	command_thrust(throttle, dt) {
 		if (this.fuel <= 0) {
 			return;
 		}
 
 		throttle = this.command_validator(throttle, 0, 1);
-		this.fuel -= throttle * Fighter.fuel_consumption * sim_dt;
+		this.fuel -= throttle * Fighter.fuel_consumption * dt;
 
 		let thrustForce = new Vector2(0, -throttle * Fighter.thrust_command_authority);
 		thrustForce.rotate(this.angle);
@@ -243,7 +247,7 @@ class Fighter extends GameObject {
 		added_vel.rotate(this.angle);
 		bullet.vel.add(added_vel);
 		// Add to objects
-		objects.push(bullet);
+		this.app.objects.push(bullet);
 
 		return true;
 	}

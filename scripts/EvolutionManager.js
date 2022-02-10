@@ -67,17 +67,19 @@ class EvolutionManager {
 
 	/**
 	 * Create a new fighter at a random position with AIController and dna
+	 * @param {GameApplication} app 
 	 * @param {DNA} dna 
 	 * @returns {Fighter}
 	 */
-	fighter_dna_factory(dna) {
-		return new Fighter(undefined, undefined, Color.white, new AIController(dna));
+	fighter_dna_factory(app, dna) {
+		return app.fighter_factory(undefined, undefined, Color.white, new AIController(dna));
 	}
 
 	/**
 	 * Generate new population with previouses fitnesses
+	 * @param {GameApplication} app Game application
 	 */
-	generate_new_generation() {
+	generate_new_generation(app) {
 		// Computing fitness & stats
 		let max_fitness = 0;
 		let total_fitness = 0;
@@ -123,7 +125,7 @@ class EvolutionManager {
 
 			let child_dna = DNA.merge(parent1, parent2);
 
-			new_population.push(this.fighter_dna_factory(child_dna));
+			new_population.push(this.fighter_dna_factory(app, child_dna));
 		}
 
 		this.population = new_population;
@@ -139,9 +141,13 @@ class EvolutionManager {
 		this.generate_new_generation();
 	}
 
-	generate_random_pop() {
+	/**
+	 * Generate a fully random population of length EvolutionManager.population_size
+	 * @param {GameApplication} app Game application 
+	 */
+	generate_random_pop(app) {
 		while (this.population.length < EvolutionManager.population_size) {
-			this.population.push(this.fighter_dna_factory(DNA.random()));
+			this.population.push(app, this.fighter_dna_factory());
 		}
 	}
 }

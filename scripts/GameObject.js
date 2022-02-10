@@ -74,7 +74,6 @@ class GameObject {
 		this.rotation += this.torque * dt;
 		this.angle += this.rotation * dt;
 		this.torque = 0;
-		console.log(this.pos.x());
 	}
 
 	/**

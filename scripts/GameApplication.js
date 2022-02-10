@@ -20,6 +20,11 @@ class GameApplication extends Application {
 		this.fixed_dt = 0.3;
 	}
 
+
+	fighter_factory(x, y, color, controller) {
+		return new Fighter(this, x, y, color, controller);
+	}
+
 	/**
 	 * Create a player
 	 * Link key events to controller
@@ -29,8 +34,8 @@ class GameApplication extends Application {
 	 * @param {Player1Controller} controller
 	 * @returns {Fighter} New player
 	 */
-	static player_factory(x, y, color, controller) {
-		let player = new Fighter(x, y, color, controller);
+	player_factory(x, y, color, controller) {
+		let player = this.fighter_factory(x, y, color, controller);
 
 		// User input linking
 		framework.link_event('keydown', (e) => {
@@ -52,13 +57,13 @@ class GameApplication extends Application {
 
 		// Spawns AIs
 		for (let i = 0; i < 3; i++) {
-			let f = new Fighter();
-			f.controller = new AIController();
-			this.objects.push(f);
+			this.objects.push(
+				this.fighter_factory(undefined, undefined, Color.white, new AIController())
+			);
 		}
 
 		// Spawns Players
-		this.objects.push(GameApplication.player_factory(100, framework.height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
+		this.objects.push(this.player_factory(100, framework.height / 2, Color.fromHex("#9a39a3"), new Player1Controller()));
 		// this.objects.push(this.player_factory(framework.width - 100, framework.height / 2, Color.fromHex("#4287f5"), new Player2Controller()));
 	}
 
