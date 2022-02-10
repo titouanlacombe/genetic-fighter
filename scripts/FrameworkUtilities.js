@@ -90,3 +90,21 @@ function draw_line(renderer, xa, ya, xb, yb, width = 2, style = "red") {
 function randval(min = 0, max = 100) {
     return Math.random() * (max - min) + min;
 }
+
+/**
+ * Create a file with filename and make user download it
+ * @param {String} filename name of the file to be downloaded
+ * @param {String} text file content
+ */
+function create_download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
