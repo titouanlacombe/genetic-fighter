@@ -1,27 +1,23 @@
 begin modeling evolution simmulation {
-	load generation if there is data in save
 	implement load_generation
+	load_generation if there is data in save folder
 	add a method to merge by picking random parent genes
-	being able to visualize evolution
-	evolution sim loop does a generation by frames & then display the results
 }
 
 improve game? {
 	test adding ability for the cannon to turn on its own
 	unnable tu turn if vel too low?
-	improve feel
 	add obstacles ?
+	better aiming controller for AIs?
 }
 
 add interesting mechanics {
 	parent choissisent partenaire le plus proche dans l'espace vectoriel DNA {
-		pour éviter des mélanges de stratégies infructueux, element de random quand meme pour éviter de stuck
+		=> pour éviter des mélanges de stratégies infructueux
 	}
 	need a lot of random in each generation (comment garder en vie? systeme de lignées?)
-	damage proportional to kinetic energy
-	mutation rate dynamic
-	ignore explored zones (DB needed ?)
-	comparer temp de convergence (fitness score reached)
+	damage proportional to kinetic energy?
+	dynamic mutation rate ?
+	ignore explored zones of dna vector space (DB needed ?)
+	comparer temp de convergence avec differentes methodes (fitness score reached)
 }
-
-better aiming controller?
