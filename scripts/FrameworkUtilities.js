@@ -108,3 +108,32 @@ function create_download(filename, text) {
 
 	document.body.removeChild(element);
 }
+
+
+/**
+ * Solve the polynome: A*x^2 + B*x + C = 0
+ * @param {Number} A 
+ * @param {Number} B 
+ * @param {Number} C 
+ * @returns {Array} Array of solutions
+ */
+function resolve_poly2(A, B, C) {
+	// TODO add preconditions for A, B, C
+	let delta = B ** 2 - 4 * A * C;
+
+	if (delta < 0) {
+		// No solutions
+		return [];
+	}
+	else if (delta == 0) {
+		let x1 = - B / (2 * A);
+		return [x1];
+	}
+	else {
+		let del = Math.sqrt(delta);
+		let x1 = (- B + del) / (2 * A);
+		let x2 = (- B - del) / (2 * A);
+
+		return [x1, x2];
+	}
+}

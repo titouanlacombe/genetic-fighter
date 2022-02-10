@@ -106,7 +106,7 @@ class EvolutionManager {
 	 * @param {Fighter} object 
 	 */
 	fitness_func(object) {
-		return 1;
+		return object.time_lived;
 	}
 
 	/**
@@ -114,15 +114,16 @@ class EvolutionManager {
 	 * @param {GameApplication} app Game application
 	 */
 	generate_new_generation(app) {
-		let dnas = this.get_dnas();
+		let dnas = [];
 
 		// Computing fitness & stats
 		let max_fitness = 0;
 		let total_fitness = 0;
 		let best = null;
-		for (let dna of dnas) {
+		for (let fighter of this.population) {
+			let dna = this.get_dna(fighter);
 			// Hack: store fitness in dna for now
-			dna.fitness = this.fitness_func(dna);
+			dna.fitness = this.fitness_func(fighter);
 			total_fitness += dna.fitness;
 
 			// Find max
@@ -130,6 +131,8 @@ class EvolutionManager {
 				max_fitness = dna.fitness;
 				best = dna;
 			}
+
+			dnas.push(dna);
 		}
 
 		// --- Choosing new generation ---

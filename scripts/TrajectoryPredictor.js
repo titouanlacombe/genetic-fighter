@@ -87,34 +87,6 @@ class TrajectoryPredictor {
 	}
 
 	/**
-	 * Solve the polynome: A*x^2 + B*x + C = 0
-	 * @param {Number} A 
-	 * @param {Number} B 
-	 * @param {Number} C 
-	 * @returns {Array} Array of solutions
-	 */
-	static resolve_poly2(A, B, C) {
-		// TODO preconditions A, B, C
-		let delta = B ** 2 - 4 * A * C;
-
-		if (delta < 0) {
-			// No solutions
-			return [];
-		}
-		else if (delta == 0) {
-			let x1 = - B / (2 * A);
-			return [x1];
-		}
-		else {
-			let del = Math.sqrt(delta);
-			let x1 = (- B + del) / (2 * A);
-			let x2 = (- B - del) / (2 * A);
-
-			return [x1, x2];
-		}
-	}
-
-	/**
 	 * Return the angle wich obj need to fire in order to hit target
 	 * This function asumes objects keep their current speed
 	 * @param {GameObject} obj The firering object
@@ -171,7 +143,7 @@ class TrajectoryPredictor {
 		let B = 2 * diff_pos.scalar(diff_vel);
 		let C = diff_pos.squared_norm();
 
-		let solutions = this.resolve_poly2(A, B, C);
+		let solutions = resolve_poly2(A, B, C);
 
 		// If no solutions
 		if (solutions.length == 0) {

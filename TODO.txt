@@ -1,7 +1,4 @@
-move resolve poly2 to utilities
-
 begin modeling evolution simmulation {
-	add a time limit to evolution (dmg / dt?)
 	load generation if there is data in save
 	implement load_generation
 	add a method to merge by picking random parent genes

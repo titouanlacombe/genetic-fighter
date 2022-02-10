@@ -5,6 +5,9 @@
  * @extends GameObject
  */
 class Fighter extends GameObject {
+	/** Amount life removed by unit of time to limit game time */
+	static life_loss = 0.02;
+
 	/** Amount of air friction (& rotation) */
 	static friction = 0.05;
 	static rot_friction = 0.1;
@@ -63,6 +66,7 @@ class Fighter extends GameObject {
 
 		this.radius = Fighter.size;
 		this.cannon_cooldown = 0;
+		this.time_lived = 0;
 	}
 
 	/**
@@ -130,7 +134,8 @@ class Fighter extends GameObject {
 			this.command_fire(command.fire ?? false, objects);
 		}
 
-		// Cannon cooldown
+		this.time_lived += dt;
+		this.life -= Fighter.life_loss * dt;
 		this.cannon_cooldown -= dt;
 
 		// Vel friction
