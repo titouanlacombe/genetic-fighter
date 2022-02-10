@@ -1,2 +1,3 @@
 // Launch application
-framework.start(new Game());
+framework = new Framework();
+framework.start(new EvolveApp());

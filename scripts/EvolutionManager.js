@@ -14,7 +14,6 @@ class EvolutionManager {
         this.pool = [];
         this.calculate_fitness();
 
-        framework.start(new Game(size));
         console.log(this.population);
     }
 
@@ -64,9 +63,6 @@ class EvolutionManager {
         }
         this.generations++;
 
-        framework.start(new Game());
-        console.log("New game");
-
     }
 
     find_best() {
@@ -92,5 +88,3 @@ class EvolutionManager {
         return this.generations;
     }
 }
-
-evolve = new EvolutionManager(0.1, 1);
