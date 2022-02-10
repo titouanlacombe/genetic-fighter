@@ -117,7 +117,7 @@ class EvolutionManager {
         }
 
         // The better the fitness the better the chance to go in new generation
-        while (new_population.length < this.population_size) {
+        while (new_population.length < EvolutionManager.population_size) {
             let parent1 = this.get_dna(this.choice(choice_array));
             let parent2 = this.get_dna(this.choice(choice_array));
 
@@ -140,8 +140,8 @@ class EvolutionManager {
     }
 
     generate_random_pop() {
-        while (this.population.length < this.population_size) {
-            this.population.push(fighter_dna_factory(DNA.random()));
+        while (this.population.length < EvolutionManager.population_size) {
+            this.population.push(this.fighter_dna_factory(DNA.random()));
         }
     }
 }

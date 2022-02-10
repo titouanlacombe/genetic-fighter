@@ -385,17 +385,12 @@ class AIController extends Controller {
         }
 
         // Generate command
-        let command = {};
-
-        try {
-            command = this[this.state.code](object, near_by_objects);
-        }
-        catch (error) {
-            console.log(error);
-        }
+        let command = this[this.state.code](object, near_by_objects);
 
         // Reset debug drawing context
         renderer.resetTransform();
+
+        console.log(command);
 
         return command;
     }

@@ -35,6 +35,8 @@ class EvolveApp extends Application {
             // TODO: generate new pop & reset game
             this.running = false;
         }
+
+        this.running = false;
     }
 
     /**
