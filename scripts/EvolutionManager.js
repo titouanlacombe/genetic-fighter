@@ -142,7 +142,7 @@ class EvolutionManager {
 		}
 		average_fitness /= dnas.length;
 
-		console.log("Best: " + max_fitness);
+		console.log("Best: " + max_fitness, best);
 		console.log("Average: " + average_fitness);
 
 		// --- Normalizing fitnesses ---

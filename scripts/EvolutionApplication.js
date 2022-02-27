@@ -31,11 +31,11 @@ class EvolutionApplication extends Application {
 
 	update() {
 		// Heavy computing version
-		while (this.game.running) {
-			this.game.update();
-		}
+		// while (this.game.running) {
+		// 	this.game.update();
+		// }
 
-		// this.game.update();
+		this.game.update();
 
 		// If game finished
 		if (!this.game.running) {
