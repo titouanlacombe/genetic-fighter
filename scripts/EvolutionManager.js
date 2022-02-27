@@ -92,9 +92,11 @@ class EvolutionManager {
 		for (let dna of this.population) {
 			total_fitness += dna.fitness;
 		}
-		// Dividing each fitness by total (to have a total of 1)
-		for (let dna of this.population) {
-			dna.fitness /= total_fitness;
+		if (total_fitness != 0) {
+			// Dividing each fitness by total (to have a total of 1)
+			for (let dna of this.population) {
+				dna.fitness /= total_fitness;
+			}
 		}
 
 		// --- Choosing new generation ---
