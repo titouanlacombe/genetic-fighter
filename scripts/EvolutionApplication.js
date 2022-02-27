@@ -35,37 +35,6 @@ class EvolutionApplication extends Application {
 		this.game.initing(this.evolver.population.slice());
 	}
 
-	draw_graph(renderer, list, color) {
-		// Precondition
-		if (list.length < 2) {
-			return;
-		}
-
-		// list min/max
-		let min_val = Math.min(...list);
-		let max_val = Math.max(...list);
-
-		// Renderer config
-		renderer.lineWidth = 2;
-		renderer.strokeStyle = color.toString();
-		renderer.beginPath();
-
-		// First point
-		let x = 0;
-		let y = map_value(list[0], min_val, max_val, 0, framework.height);
-		renderer.moveTo(x, y);
-
-		// Rest of the points
-		for (let i = 1; i < list.length; i++) {
-
-			x = map_value(i, 0, list.length, 0, framework.width);
-			y = map_value(list[i], min_val, max_val, 0, framework.height);
-			renderer.lineTo(x, y);
-		}
-
-		renderer.stroke();
-	}
-
 	draw_results() {
 		let renderer = framework.get_renderer();
 
@@ -74,8 +43,8 @@ class EvolutionApplication extends Application {
 		renderer.fillRect(0, 0, framework.width, framework.height);
 
 		// Draw graphs
-		this.draw_graph(renderer, this.average_fitnesses, Color.blue);
-		this.draw_graph(renderer, this.best_fitnesses, Color.red);
+		draw_graph(renderer, this.average_fitnesses, Color.blue);
+		draw_graph(renderer, this.best_fitnesses, Color.red);
 	}
 
 	evolve() {

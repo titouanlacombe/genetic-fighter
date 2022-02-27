@@ -81,6 +81,47 @@ function draw_line(renderer, xa, ya, xb, yb, width = 2, style = "red") {
 	renderer.stroke();
 }
 
+function draw_graph(renderer, numbers_list, line_color = Color.white, graph_x = 0, graph_y = 0, graph_width = framework.width, graph_height = framework.height) {
+	// Precondition
+	if (numbers_list.length < 2) {
+		return;
+	}
+
+	// Graph limits
+	let graph_y2 = graph_y + graph_height;
+	let graph_x2 = graph_x + graph_width;
+
+	// numbers_list min/max
+	let min_val = Math.min(...numbers_list);
+	let max_val = Math.max(...numbers_list);
+
+	// Renderer config
+	renderer.lineWidth = 2;
+	renderer.strokeStyle = line_color.toString();
+	renderer.beginPath();
+
+	let element_x;
+	let element_y;
+	let i = 0;
+
+	function draw_vertex(method) {
+		element_x = map_value(i, 0, numbers_list.length, graph_x, graph_x2);
+		element_y = map_value(numbers_list[i], min_val, max_val, graph_y, graph_y2);
+		renderer[method](element_x, element_y);
+	}
+
+	// First point
+	draw_vertex("moveTo");
+
+	// Rest of the points
+	for (i = 1; i < numbers_list.length; i++) {
+
+		draw_vertex("lineTo");
+	}
+
+	renderer.stroke();
+}
+
 /**
  * Generate a random value between min & max
  * @param {Number} min 
