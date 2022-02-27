@@ -5,7 +5,7 @@
  */
 class EvolutionApplication extends Application {
 	/** If activated, proccess 1 generation per frame instead of 1 game update per frame */
-	static compute_mode = true;
+	static compute_mode = false;
 
 	/**
 	 * @constructor
@@ -86,7 +86,7 @@ class EvolutionApplication extends Application {
 		}
 
 		this.init_game();
-		this.game.do_draw = false;
+		this.game.do_draw = !EvolutionApplication.compute_mode;
 	}
 
 	draw_results() {

@@ -1,8 +1,10 @@
 begin modeling evolution simmulation {
+	add stategies to generate new generation (parent / copy + mutate)
 	add a method to merge by picking random parent genes
 	add enemies killed in fitness?
 }
 
+debug occasionnal crash
 running average of average ?
 finish doc
 
@@ -22,4 +24,14 @@ add interesting mechanics {
 	dynamic mutation rate ?
 	ignore explored zones of dna vector space (DB needed ?)
 	comparer temp de convergence avec differentes methodes (fitness score reached)
+}
+
+try many tries see if we get same results
+result 1 interpretation {
+	low wanted_target_dist to escape bullets
+	low min_fire_error to avoid firering?
+
+	survival: {
+		defend from other while protecting them?
+	}
 }
