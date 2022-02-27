@@ -159,7 +159,9 @@ function request_files(callback, accept) {
 	if (accept) {
 		element.setAttribute('accept', accept);
 	}
-	element.addEventListener('change', callback, false);
+	element.addEventListener('change', (e) => {
+		callback(e.target.files);
+	}, false);
 
 	document.body.appendChild(element);
 
