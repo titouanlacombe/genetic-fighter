@@ -4,7 +4,6 @@ begin modeling evolution simmulation {
 	add a method to merge by picking random parent genes
 }
 
-https://stackoverflow.com/questions/3582671/how-to-open-a-local-disk-file-with-javascript
 optimize generate_new_generation by using stats
 running average of average ?
 finish doc
