@@ -13,6 +13,8 @@ class GameApplication extends Application {
 		this.objects = [];
 		/** Winner of the game (last standing fighter) */
 		this.winner = null;
+		/** Wether to draw or not */
+		this.do_draw = null;
 
 		/** Time since the start of the simulation */
 		this.sim_time = 0;
@@ -76,7 +78,9 @@ class GameApplication extends Application {
 	 * Draw last frame & display winner
 	 */
 	exiting() {
-		this.draw();
+		if (this.do_draw) {
+			this.draw();
+		}
 
 		// if (this.winner) {
 		// 	console.log("Winner: ", this.winner);
@@ -118,7 +122,9 @@ class GameApplication extends Application {
 		this.sim_time += sim_dt;
 
 		// Draw the objects
-		this.draw();
+		if (this.do_draw) {
+			this.draw();
+		}
 
 		// Move the objects
 		for (let object of this.objects) {

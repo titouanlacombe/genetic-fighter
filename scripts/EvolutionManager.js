@@ -10,7 +10,7 @@ class EvolutionManager {
 	 */
 	constructor() {
 		// Current generation number
-		this.generation = null;
+		this.generations = null;
 		this.population = null;
 	}
 
@@ -39,7 +39,7 @@ class EvolutionManager {
 	 */
 	generate_random_pop(app) {
 		this.population = [];
-		this.generation = 1;
+		this.generations = 1;
 		while (this.population.length < EvolutionManager.population_size) {
 			this.population.push(this.fighter_dna_factory(app));
 		}
@@ -67,12 +67,12 @@ class EvolutionManager {
 
 		// Create JSON
 		let json = JSON.stringify({
-			"gen": this.generation,
+			"gen": this.generations,
 			"dnas": dnas,
 		});
 
 		// Create download
-		create_download(`generation-${this.generation}.json`, json);
+		create_download(`generation-${this.generations}.json`, json);
 	}
 
 	/**
@@ -97,7 +97,8 @@ class EvolutionManager {
 				return object.object;
 			}
 		}
-		console.log("Warning: choice couldn't find better score: " + score);
+		console.log("Warning: choice couldn't find a score better than " + score + " in:");
+		console.log(wheighted_array);
 		return null;
 	}
 
@@ -107,6 +108,44 @@ class EvolutionManager {
 	 */
 	fitness_func(object) {
 		return object.time_lived;
+	}
+
+	get_generation_stats() {
+		let dnas = [];
+
+		// --- Finding min/max fitnesses ---
+		let max_fitness = -Infinity;
+		let min_fitness = Infinity;
+		let average_fitness = 0;
+		let best_dna = null;
+		for (let fighter of this.population) {
+			let dna = this.get_dna(fighter);
+			// Hack: store fitness in dna for now
+			dna.fitness = this.fitness_func(fighter);
+			average_fitness += dna.fitness;
+
+			// Find max
+			if (dna.fitness > max_fitness) {
+				max_fitness = dna.fitness;
+				best_dna = dna;
+			}
+
+			// Find min
+			if (dna.fitness < min_fitness) {
+				min_fitness = dna.fitness;
+			}
+
+			dnas.push(dna);
+		}
+		average_fitness /= dnas.length;
+
+		return {
+			"generation": this.generations,
+			"average_fitness": average_fitness,
+			"best_fitness": max_fitness,
+			"best_dna": best_dna,
+			"worst_fitness": min_fitness,
+		};
 	}
 
 	/**
@@ -141,9 +180,6 @@ class EvolutionManager {
 			dnas.push(dna);
 		}
 		average_fitness /= dnas.length;
-
-		console.log("Best: " + max_fitness, best);
-		console.log("Average: " + average_fitness);
 
 		// --- Normalizing fitnesses ---
 		// Remaping between 0 & 1
@@ -190,6 +226,7 @@ class EvolutionManager {
 		}
 
 		this.population = new_population;
+		this.generations++;
 	}
 
 	/**
@@ -198,12 +235,12 @@ class EvolutionManager {
 	 * @param {GameApplication} app Game application
 	 */
 	evolve(app) {
-		console.log("Generation: " + this.generation);
+		let gen_stats = this.get_generation_stats();
 
 		// this.save_generation();
 
 		this.generate_new_generation(app);
 
-		this.generation++;
+		return gen_stats;
 	}
 }

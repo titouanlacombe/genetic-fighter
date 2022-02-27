@@ -4,6 +4,12 @@ begin modeling evolution simmulation {
 	add a method to merge by picking random parent genes
 }
 
+draw graph in utilities
+running average of average ?
+finish doc
+evol manager pop is dna not fighter
+optimize generate_new_generation by using stats
+
 improve game? {
 	test adding ability for the cannon to turn on its own
 	unnable tu turn if vel too low?
