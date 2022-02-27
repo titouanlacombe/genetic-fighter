@@ -108,16 +108,16 @@ class EvolutionApplication extends Application {
 		}
 
 		// Generate new pop
-		let gen_stats = this.evolver.evolve(this.game);
+		let gen_stats = this.evolver.evolve();
 
 		// Log stats
-		// console.log("Generation: " + gen_stats.generation);
-		// console.log("Average: " + gen_stats.average_fitness);
-		// console.log("Best: " + gen_stats.best_fitness, gen_stats.best_dna);
+		console.log("Generation: " + gen_stats.generation);
+		console.log("Average: " + gen_stats.average_fitness);
+		console.log("Best: " + gen_stats.max_fitness, gen_stats.best_dna);
 
 		// Update progress trackers
 		this.average_fitnesses.push(gen_stats.average_fitness);
-		this.best_fitnesses.push(gen_stats.best_fitness);
+		this.best_fitnesses.push(gen_stats.max_fitness);
 		this.best_dnas.push(gen_stats.best_dna);
 
 		// Draw progress graphs
