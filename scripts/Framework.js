@@ -136,8 +136,11 @@ class Framework {
 			this.app.update(this.dt);
 		}
 		catch (error) {
-			// So that app can save it's data if needed
-			this.stop();
+			this.pause();
+
+			// Give app opportunity to save sensible data
+			this.app.crashed();
+
 			throw error;
 		}
 

@@ -28,4 +28,10 @@ class Application {
 	 */
 	update() {
 	}
+
+	/**
+	 * Called if app crashes
+	 */
+	crashed() {
+	}
 }
