@@ -138,7 +138,7 @@ function randval(min = 0, max = 100) {
  * @param {String} text file content
  */
 function create_download(filename, text) {
-	var element = document.createElement('downloader_tmp');
+	var element = document.createElement('a');
 	element.style.display = 'none';
 
 	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -152,7 +152,7 @@ function create_download(filename, text) {
 }
 
 function request_files(callback, accept) {
-	var element = document.createElement("INPUT");
+	var element = document.createElement("input");
 	element.style.display = 'none';
 
 	element.setAttribute("type", "file");
