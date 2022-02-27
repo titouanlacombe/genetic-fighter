@@ -19,11 +19,23 @@ class EvolutionApplication extends Application {
 		this.best_dnas = [];
 	}
 
+	// Init game with fighters created from dna population
+	init_game() {
+		let fighters = [];
+		for (const dna of this.evolver.population) {
+			fighters.push(this.game.fighter_factory(undefined, undefined, Color.white, new AIController(dna)));
+		}
+		this.game.initing(fighters);
+
+		this.fighters_copy = this.game.objects.slice();
+	}
+
 	/**
 	 * Spawns objets (AI)
 	 */
 	initing() {
 		this.running = true;
+		this.game.do_draw = false;
 
 		if (/* TODO implement save loading */ true) {
 			this.evolver = new EvolutionManager();
@@ -32,7 +44,7 @@ class EvolutionApplication extends Application {
 			this.evolver = EvolutionManager.load_generation("");
 		}
 
-		this.game.initing(this.evolver.population.slice());
+		this.init_game();
 	}
 
 	draw_results() {
@@ -48,6 +60,11 @@ class EvolutionApplication extends Application {
 	}
 
 	evolve() {
+		// Calculate fitnesses
+		for (const fighter of this.fighters_copy) {
+			fighter.controller.dna.fitness = this.evolver.fitness_function(fighter);
+		}
+
 		// Generate new pop
 		let gen_stats = this.evolver.evolve(this.game);
 
@@ -84,8 +101,7 @@ class EvolutionApplication extends Application {
 			// Evolve & draw stats graphs
 			this.evolve();
 
-			// Init game with a copy of new pop
-			this.game.initing(this.evolver.population.slice());
+			this.init_game();
 		}
 	}
 

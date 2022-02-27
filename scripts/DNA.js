@@ -83,6 +83,7 @@ class DNA {
 
 	/**
 	 * Mutate DNA by using class static parameters
+	 * @returns {DNA}
 	 */
 	mutate() {
 		for (let attribute in this) {
@@ -97,5 +98,7 @@ class DNA {
 				this[attribute] *= 1 + (change * sign);
 			}
 		}
+
+		return this;
 	}
 }

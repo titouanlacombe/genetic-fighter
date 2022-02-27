@@ -278,7 +278,8 @@ class Fighter extends GameObject {
 	die() {
 		if (this.controller instanceof Player1Controller) {
 			console.log("Player 1 died");
-		} else if (this.controller instanceof Player2Controller) {
+		}
+		else if (this.controller instanceof Player2Controller) {
 			console.log("Player 2 died");
 		}
 	}

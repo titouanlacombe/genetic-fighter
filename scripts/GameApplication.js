@@ -14,7 +14,7 @@ class GameApplication extends Application {
 		/** Winner of the game (last standing fighter) */
 		this.winner = null;
 		/** Wether to draw or not */
-		this.do_draw = null;
+		this.do_draw = true;
 
 		/** Time since the start of the simulation */
 		this.sim_time = 0;
