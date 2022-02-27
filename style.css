@@ -1,5 +1,7 @@
 html,
 body {
+	color: white;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	margin: 0px;
 	padding: 0px;
 	width: 100%;
