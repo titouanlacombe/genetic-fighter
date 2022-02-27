@@ -83,7 +83,7 @@ function draw_line(renderer, xa, ya, xb, yb, width = 2, style = "red") {
 
 function draw_graph(renderer, numbers_list, line_color, graph_x, graph_y, graph_width, graph_height) {
 	// Precondition
-	if (numbers_list.length < 2) {
+	if (numbers_list.length < 1) {
 		return;
 	}
 
