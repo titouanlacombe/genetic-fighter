@@ -153,9 +153,11 @@ class EvolutionApplication extends Application {
 	exiting() {
 		this.game.exiting();
 		this.save();
+		this.draw_results();
 	}
 
 	crashed() {
 		this.save();
+		this.draw_results();
 	}
 }
