@@ -6,31 +6,31 @@
  */
 class Fighter extends GameObject {
 	/** Amount life removed by unit of time to limit game time */
-	static life_loss = 0.2;
+	static life_loss = 0.1;
 
 	/** Amount of air friction (& rotation) */
 	static friction = 0.05;
-	static rot_friction = 0.1;
+	static rot_friction = 0.2;
 
 	/** Size in pixels (main body) */
-	static size = 5;
+	static size = 8;
 	static lineWidth = Fighter.size / 2.5;
 
 	/** Amount of force that a commands can exerce */
-	static rot_command_authority = 0.01;
-	static thrust_command_authority = 0.20;
+	static rot_command_authority = 0.03;
+	static thrust_command_authority = 0.25;
 
 	/** Fuel consumed by unit of time */
-	static fuel_consumption = 0.1;
+	static fuel_consumption = 0.3;
 	/** Initial velocity of bullets leaving the cannon */
 	static fire_vel = 10;
 	/** Cannon cooldown in units of time */
-	static cannon_fire_cooldown = 4;
+	static cannon_fire_cooldown = 6;
 
 	/** Max amount of each status */
 	static max_fuel = 100;
 	static max_life = 100;
-	static max_munitions = 300;
+	static max_munitions = 30;
 
 	/**
 	 * @constructor

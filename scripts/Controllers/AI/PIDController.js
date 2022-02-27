@@ -32,6 +32,10 @@ class PIDController {
 	 * @returns {Number}
 	 */
 	control(current, target, dt) {
+		if (target === null) {
+			return 0;
+		}
+
 		let error = target - current;
 		// console.log('error? ' + error);
 

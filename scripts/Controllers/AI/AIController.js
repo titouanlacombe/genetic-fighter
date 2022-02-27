@@ -164,7 +164,10 @@ class AIController extends Controller {
 	get_firering_angle(object) {
 		let renderer = framework.get_renderer();
 
-		let result = TrajectoryPredictor.get_firering_angle(object, this.target, Fighter.fire_vel);
+		let result = null;
+		if (this.target) {
+			result = TrajectoryPredictor.get_firering_angle(object, this.target, Fighter.fire_vel);
+		}
 
 		if (result != null) {
 			// Debug drawing
@@ -183,6 +186,7 @@ class AIController extends Controller {
 		}
 		else {
 			console.log("Warning: no firing angle solutions found");
+			return null;
 		}
 
 		return result.angle;
@@ -196,6 +200,10 @@ class AIController extends Controller {
 	 * @returns {Boolean} If we should try to fire
 	 */
 	do_fire(current_angle, target_angle) {
+		if (target_angle === null) {
+			return false;
+		}
+
 		return Math.abs(current_angle - target_angle) < this.dna.min_fire_error;
 	}
 

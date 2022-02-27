@@ -1,12 +1,10 @@
 begin modeling evolution simmulation {
 	add a method to merge by picking random parent genes (merge strategie? mutation strategie?)
-	rework filesystem (moar folders)
 	add enemies killed in fitness?
 }
 
-debug occasionnal crash
-running average of average ?
-finish doc
+running average of average fitness (green line) ?
+finish documentation
 
 improve game? {
 	test adding ability for the cannon to turn on its own
