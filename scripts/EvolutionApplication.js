@@ -14,9 +14,40 @@ class EvolutionApplication extends Application {
 		super();
 		this.game = new GameApplication();
 		this.evolver = null;
-		this.average_fitnesses = [];
-		this.best_fitnesses = [];
-		this.best_dnas = [];
+
+		framework.link_event('keydown', (e) => {
+			if (e.code == "KeyL") {
+
+				request_files((files) => {
+
+					if (files.length != 1) {
+						console.log("Error: only one file needs to be selected");
+						return;
+					}
+
+					read_file(files[0], (contents) => {
+						// Reinit app with data
+						framework.app.initing(contents);
+					});
+
+				}, ".json");
+			}
+			else if (e.code == "KeyS") {
+				this.save();
+			}
+		});
+	}
+
+	save() {
+		create_download(
+			`[Genetic Fighters] Generation-${this.evolver.generations}.json`,
+			JSON.stringify(this.evolver)
+		);
+	}
+
+	load(data) {
+		console.log(this.evolver);
+		this.evolver = JSON.parse(data);
 	}
 
 	// Init game with fighters created from dna population
@@ -25,26 +56,32 @@ class EvolutionApplication extends Application {
 		for (const dna of this.evolver.population) {
 			fighters.push(this.game.fighter_factory(undefined, undefined, Color.white, new AIController(dna)));
 		}
-		this.game.initing(fighters);
 
-		this.fighters_copy = this.game.objects.slice();
+		this.fighters_copy = fighters.slice();
+
+		this.game.initing(fighters);
 	}
 
 	/**
 	 * Spawns objets (AI)
 	 */
-	initing() {
+	initing(contents) {
 		this.running = true;
-		this.game.do_draw = false;
 
-		if (/* TODO implement save loading */ true) {
+		this.average_fitnesses = [];
+		this.best_fitnesses = [];
+		this.best_dnas = [];
+
+		if (contents instanceof String) {
+			this.load(contents);
+		}
+		else {
 			this.evolver = new EvolutionManager();
 			this.evolver.generate_random_pop(this.game);
-		} else {
-			this.evolver = EvolutionManager.load_generation("");
 		}
 
 		this.init_game();
+		this.game.do_draw = false;
 	}
 
 	draw_results() {
@@ -69,9 +106,9 @@ class EvolutionApplication extends Application {
 		let gen_stats = this.evolver.evolve(this.game);
 
 		// Log stats
-		console.log("Generation: " + gen_stats.generation);
-		console.log("Average: " + gen_stats.average_fitness);
-		console.log("Best: " + gen_stats.best_fitness, gen_stats.best_dna);
+		// console.log("Generation: " + gen_stats.generation);
+		// console.log("Average: " + gen_stats.average_fitness);
+		// console.log("Best: " + gen_stats.best_fitness, gen_stats.best_dna);
 
 		// Update progress trackers
 		this.average_fitnesses.push(gen_stats.average_fitness);
@@ -110,10 +147,10 @@ class EvolutionApplication extends Application {
 	 */
 	exiting() {
 		this.game.exiting();
+		this.save();
+	}
 
-		// TODO Download save
-		console.log("Downloading save...");
-
-		this.evolver = null;
+	crashed() {
+		this.save();
 	}
 }
