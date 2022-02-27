@@ -170,11 +170,10 @@ class Framework {
 			let canvas = document.getElementById('canvas');
 
 			// Update the canvas size
-			console.log(canvas);
 			object.width = canvas.width = canvas.parentElement.offsetWidth;
 			object.height = canvas.height = canvas.parentElement.offsetHeight;
 
-			console.log(object.width, object.height);
+			// console.log(object.width, object.height);
 		};
 	}
 

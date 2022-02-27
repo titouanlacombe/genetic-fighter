@@ -81,7 +81,7 @@ function draw_line(renderer, xa, ya, xb, yb, width = 2, style = "red") {
 	renderer.stroke();
 }
 
-function draw_graph(renderer, numbers_list, line_color = Color.white, graph_x = 0, graph_y = 0, graph_width = framework.width, graph_height = framework.height) {
+function draw_graph(renderer, numbers_list, line_color, graph_x, graph_y, graph_width, graph_height) {
 	// Precondition
 	if (numbers_list.length < 2) {
 		return;

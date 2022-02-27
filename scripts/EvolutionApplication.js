@@ -55,8 +55,8 @@ class EvolutionApplication extends Application {
 		renderer.fillRect(0, 0, framework.width, framework.height);
 
 		// Draw graphs
-		draw_graph(renderer, this.average_fitnesses, Color.blue);
-		draw_graph(renderer, this.best_fitnesses, Color.red);
+		draw_graph(renderer, this.average_fitnesses, Color.blue, 0, 0, framework.width, framework.height);
+		draw_graph(renderer, this.best_fitnesses, Color.red, 0, 0, framework.width, framework.height);
 	}
 
 	evolve() {
@@ -112,6 +112,7 @@ class EvolutionApplication extends Application {
 		this.game.exiting();
 
 		// TODO Download save
+		console.log("Downloading save...");
 
 		this.evolver = null;
 	}
