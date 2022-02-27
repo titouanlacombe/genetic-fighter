@@ -162,32 +162,33 @@ class AIController extends Controller {
 	 * @returns {Number}
 	 */
 	get_firering_angle(object) {
-		let renderer = framework.get_renderer();
-
-		let result = null;
-		if (this.target) {
-			result = TrajectoryPredictor.get_firering_angle(object, this.target, Fighter.fire_vel);
+		// Precondition
+		if (!this.target) {
+			return null;
 		}
 
-		if (result != null) {
-			// Debug drawing
-			// let target_pos = this.target.pos.clone().add(this.target.vel.clone().mul(result.dt));
+		let result = TrajectoryPredictor.get_firering_angle(object, this.target, Fighter.fire_vel);
 
-			// Draw angle
-			// Vector2.fromAngle(result.angle).draw(Color.red, 30);
-
-			// console.log(target_pos);
-			// console.log(result.dt);
-			// console.log(result.angle);
-
-			// Draw red point at target x bullet intersection
-			// target_pos.sub(object.pos);
-			// draw_point(renderer, target_pos.x(), target_pos.y(), 2, "red");
-		}
-		else {
+		// Postcondition
+		if (result === null) {
 			console.log("Warning: no firing angle solutions found");
 			return null;
 		}
+
+		// Debug drawing
+		// let renderer = framework.get_renderer();
+		// let target_pos = this.target.pos.clone().add(this.target.vel.clone().mul(result.dt));
+
+		// Draw angle
+		// Vector2.fromAngle(result.angle).draw(Color.red, 30);
+
+		// console.log(target_pos);
+		// console.log(result.dt);
+		// console.log(result.angle);
+
+		// Draw red point at target x bullet intersection
+		// target_pos.sub(object.pos);
+		// draw_point(renderer, target_pos.x(), target_pos.y(), 2, "red");
 
 		return result.angle;
 	}

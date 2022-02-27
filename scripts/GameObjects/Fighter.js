@@ -30,7 +30,7 @@ class Fighter extends GameObject {
 	/** Max amount of each status */
 	static max_fuel = 100;
 	static max_life = 100;
-	static max_munitions = 30;
+	static max_munitions = 20;
 
 	/**
 	 * @constructor
