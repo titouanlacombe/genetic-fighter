@@ -26,26 +26,6 @@ class EvolutionManager {
 	}
 
 	/**
-	 * Stringify this object & make user download
-	 */
-	save() {
-		// Create JSON
-		let json_string = JSON.stringify(this);
-
-		// Create download
-		create_download(`[Genetic Fighters] Generation-${this.generations}.json`, json_string);
-	}
-
-	/**
-	 * Load json data to create Evolution manager
-	 * @param {String} data json data
-	 * @returns {EvolutionManager}
-	 */
-	static load(data) {
-		return JSON.parse(data);
-	}
-
-	/**
 	 * Choose a random object in a weighted array
 	 * Score need to be croissant & be between 0 & 1
 	 * @param {Array} wheighted_array array of object with a score & an object
