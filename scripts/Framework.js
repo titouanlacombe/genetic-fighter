@@ -14,6 +14,8 @@ class Framework {
 		// Public
 		/** Dimentions of the canvas */
 		this.width = 0; this.height = 0;
+		/** Wether the app is currently paused */
+		this.paused = true;
 		/** Number of frames displayed since the start */
 		this.frames = 0;
 		/** Seconds since the start */
@@ -34,8 +36,33 @@ class Framework {
 			}
 		});
 
+		// Key shortcut to pause/unpause the app
+		this.link_event('keydown', (e) => {
+			if (e.code == "KeyP") {
+				this.paused ? this.unpause() : this.pause();
+			}
+		});
+
 		// Link canvas resize event
 		window.addEventListener('resize', this.app_resize);
+	}
+
+	/**
+	 * Pause the app by stoping the animation loop
+	 */
+	pause() {
+		this.paused = true;
+		// Stop the loop
+		window.cancelAnimationFrame(this.last_request_id);
+	}
+
+	/**
+	 * Unpause the app by restarting the animation loop
+	 */
+	unpause() {
+		this.paused = false;
+		// Restart the loop
+		this.last_request_id = window.requestAnimationFrame((_new_time) => { this.loop(_new_time); });
 	}
 
 	/**
@@ -61,14 +88,14 @@ class Framework {
 		this.app.initing();
 
 		// Start the loop
-		this.last_request_id = window.requestAnimationFrame((_new_time) => { this.loop(_new_time); });
+		this.unpause();
 	}
 
 	/**
 	 * Stops the app, the framework
 	 */
 	stop() {
-		window.cancelAnimationFrame(this.last_request_id);
+		this.pause();
 		this.app.exiting();
 	}
 
