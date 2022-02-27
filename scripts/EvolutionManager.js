@@ -53,70 +53,39 @@ class EvolutionManager {
 	}
 
 	get_generation_stats() {
-		// --- Finding min/max fitnesses ---
-		let max_fitness = -Infinity;
-		let min_fitness = Infinity;
-		let average_fitness = 0;
-		let best_dna = null;
+		let gen_stats = {};
+		gen_stats.generation = this.generations;
+		gen_stats.max_fitness = -Infinity;
+		gen_stats.min_fitness = Infinity;
+		gen_stats.average_fitness = 0;
+		gen_stats.best_dna = null;
 
+		// --- Finding min/max fitnesses ---
 		for (let dna of this.population) {
 			// Hack: store fitness in dna for now
-			average_fitness += dna.fitness;
+			gen_stats.average_fitness += dna.fitness;
 
 			// Find max
-			if (dna.fitness > max_fitness) {
-				max_fitness = dna.fitness;
-				best_dna = dna;
+			if (dna.fitness > gen_stats.max_fitness) {
+				gen_stats.max_fitness = dna.fitness;
+				gen_stats.best_dna = dna;
 			}
 
 			// Find min
-			if (dna.fitness < min_fitness) {
-				min_fitness = dna.fitness;
+			if (dna.fitness < gen_stats.min_fitness) {
+				gen_stats.min_fitness = dna.fitness;
 			}
 		}
-		average_fitness /= this.population.length;
+		gen_stats.average_fitness /= this.population.length;
 
-		return {
-			"generation": this.generations,
-			"average_fitness": average_fitness,
-			"best_fitness": max_fitness,
-			"best_dna": best_dna,
-			"worst_fitness": min_fitness,
-		};
+		return gen_stats;
 	}
 
-	/**
-	 * Generate new population with previouses fitnesses
-	 * @param {GameApplication} app Game application
-	 */
-	generate_new_generation(app) {
-		// --- Finding min/max fitnesses ---
-		let max_fitness = -Infinity;
-		let min_fitness = Infinity;
-		let average_fitness = 0;
-		let best_dna = null;
-
-		for (let dna of this.population) {
-			// Hack: store fitness in dna for now
-			average_fitness += dna.fitness;
-
-			// Find max
-			if (dna.fitness > max_fitness) {
-				max_fitness = dna.fitness;
-				best_dna = dna;
-			}
-
-			// Find min
-			if (dna.fitness < min_fitness) {
-				min_fitness = dna.fitness;
-			}
-		}
-		average_fitness /= this.population.length;
-
+	generate_new_generation(gen_stats) {
 		// --- Normalizing fitnesses ---
 		// Remaping between 0 & 1
 		for (let dna of this.population) {
-			dna.fitness = map_value(dna.fitness, min_fitness, max_fitness);
+			dna.fitness = map_value(dna.fitness, gen_stats.min_fitness, gen_stats.max_fitness);
 		}
 		// Computing total amount of fitness
 		let total_fitness = 0;
@@ -143,8 +112,9 @@ class EvolutionManager {
 
 		// New population
 		let new_population = [];
+
 		// Keep best in new generation
-		new_population.push(best_dna);
+		new_population.push(gen_stats.best_dna);
 
 		// The better the fitness the better the chance to go in new generation
 		while (new_population.length < EvolutionManager.population_size) {
@@ -161,18 +131,9 @@ class EvolutionManager {
 		this.generations++;
 	}
 
-	/**
-	 * Save old generation
-	 * Generate new one
-	 * @param {GameApplication} app Game application
-	 */
-	evolve(app) {
+	evolve() {
 		let gen_stats = this.get_generation_stats();
-
-		// this.save_generation();
-
-		this.generate_new_generation(app);
-
+		this.generate_new_generation(gen_stats);
 		return gen_stats;
 	}
 }
