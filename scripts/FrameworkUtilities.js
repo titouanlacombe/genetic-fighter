@@ -138,11 +138,12 @@ function randval(min = 0, max = 100) {
  * @param {String} text file content
  */
 function create_download(filename, text) {
-	var element = document.createElement('a');
+	var element = document.createElement('downloader_tmp');
+	element.style.display = 'none';
+
 	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
 	element.setAttribute('download', filename);
 
-	element.style.display = 'none';
 	document.body.appendChild(element);
 
 	element.click();
@@ -150,6 +151,31 @@ function create_download(filename, text) {
 	document.body.removeChild(element);
 }
 
+function request_file(callback, accept) {
+	var element = document.createElement("INPUT");
+	element.style.display = 'none';
+
+	element.setAttribute("type", "file");
+	element.addEventListener('change', callback, false);
+	if (accept) {
+		element.addEventListener('accept', accept);
+	}
+
+	document.body.appendChild(element);
+
+	element.click();
+
+	document.body.removeChild(element);
+}
+
+function read_file(file, callback) {
+	var reader = new FileReader();
+	reader.onload = function (e) {
+		var contents = e.target.result;
+		callback(contents);
+	};
+	reader.readAsText(file);
+}
 
 /**
  * Solve the polynome: A*x^2 + B*x + C = 0
