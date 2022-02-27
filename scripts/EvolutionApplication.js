@@ -16,6 +16,7 @@ class EvolutionApplication extends Application {
 		this.evolver = null;
 
 		framework.link_event('keydown', (e) => {
+			// Load
 			if (e.code == "KeyL") {
 
 				request_files((files) => {
@@ -32,8 +33,14 @@ class EvolutionApplication extends Application {
 
 				}, ".json");
 			}
+			// Save
 			else if (e.code == "KeyS") {
 				this.save();
+			}
+			// Swap mode
+			else if (e.code == "Numpad0") {
+				EvolutionApplication.compute_mode = !EvolutionApplication.compute_mode;
+				this.game.do_draw = !EvolutionApplication.compute_mode;
 			}
 		});
 	}
