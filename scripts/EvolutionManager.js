@@ -26,24 +26,6 @@ class EvolutionManager {
 	}
 
 	/**
-	 * Choose a random object in a weighted array
-	 * Score need to be croissant & be between 0 & 1
-	 * @param {Array} wheighted_array array of object with a score & an object
-	 * @returns {Object | null}
-	 */
-	choice(wheighted_array) {
-		let score = Math.random();
-		for (let object of wheighted_array) {
-			if (object.score > score) {
-				return object.object;
-			}
-		}
-		console.log("Warning: choice couldn't find a score better than " + score + " in:");
-		console.log(wheighted_array);
-		return null;
-	}
-
-	/**
 	 * Calculate the fitness of a fighter
 	 * @param {Fighter} object 
 	 * @returns {Number}
@@ -81,7 +63,7 @@ class EvolutionManager {
 		return gen_stats;
 	}
 
-	generate_new_generation(gen_stats) {
+	generate_new_generation(gen_stats, strategie) {
 		// --- Normalizing fitnesses ---
 		// Remaping between 0 & 1
 		for (let dna of this.population) {
@@ -99,43 +81,14 @@ class EvolutionManager {
 			}
 		}
 
-		// --- Choosing new generation ---
-		// Building parent choice array
-		let choice_array = [];
-		let running_fitness = 0;
-		for (let dna of this.population) {
-			running_fitness += dna.fitness;
-
-			choice_array.push({
-				"score": running_fitness,
-				"object": dna
-			});
-		}
-
 		// New population
-		let new_population = [];
-
-		// Keep best in new generation
-		// new_population.push(gen_stats.best_dna);
-
-		// The better the fitness the better the chance to go in new generation
-		while (new_population.length < EvolutionManager.population_size) {
-
-			let parent1 = this.choice(choice_array);
-			let parent2 = this.choice(choice_array);
-
-			let child_dna = DNA.merge(parent1, parent2);
-			child_dna.mutate();
-			new_population.push(child_dna);
-		}
-
-		this.population = new_population;
+		this.population = strategie.generate_new_population(this.population);
 		this.generations++;
 	}
 
-	evolve() {
+	evolve(strategie) {
 		let gen_stats = this.get_generation_stats();
-		this.generate_new_generation(gen_stats);
+		this.generate_new_generation(gen_stats, strategie);
 		return gen_stats;
 	}
 }

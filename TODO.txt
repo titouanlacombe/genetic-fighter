@@ -1,6 +1,6 @@
 begin modeling evolution simmulation {
-	add stategies to generate new generation (parent / copy + mutate)
-	add a method to merge by picking random parent genes
+	add a method to merge by picking random parent genes (merge strategie? mutation strategie?)
+	rework filesystem (moar folders)
 	add enemies killed in fitness?
 }
 

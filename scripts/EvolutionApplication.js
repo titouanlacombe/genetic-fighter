@@ -115,7 +115,7 @@ class EvolutionApplication extends Application {
 		}
 
 		// Generate new pop
-		let gen_stats = this.evolver.evolve();
+		let gen_stats = this.evolver.evolve(new PopulationEvolverParentsStrategie());
 
 		// Log stats
 		console.log("Generation: " + gen_stats.generation);
