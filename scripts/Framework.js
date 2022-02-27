@@ -121,7 +121,14 @@ class Framework {
 		// console.log("frame: ", this.frames);
 
 		// Call the app
-		this.app.update(this.dt);
+		try {
+			this.app.update(this.dt);
+		}
+		catch (error) {
+			// So that app can save it's data if needed
+			this.stop();
+			throw error;
+		}
 
 		// Call next loop if app still running
 		if (this.app.running) {
