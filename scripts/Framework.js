@@ -34,11 +34,11 @@ class Framework {
 				this.launch();
 			}
 			// Pause the app
-			else if (e.code == "KeyP") {
+			else if (e.code == "Space") {
 				this.paused() ? this.unpause() : this.pause();
 			}
 			// Stop the app
-			else if (e.code == "KeyS") {
+			else if (e.code == "Escape") {
 				this.stop();
 			}
 		});
