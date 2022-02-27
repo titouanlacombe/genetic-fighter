@@ -1,10 +1,7 @@
 begin modeling evolution simmulation {
-	implement load_generation
-	load_generation if there is data in save folder
 	add a method to merge by picking random parent genes
 }
 
-optimize generate_new_generation by using stats
 running average of average ?
 finish doc
 
