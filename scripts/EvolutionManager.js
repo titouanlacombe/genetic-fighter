@@ -116,7 +116,7 @@ class EvolutionManager {
 		let new_population = [];
 
 		// Keep best in new generation
-		new_population.push(gen_stats.best_dna);
+		// new_population.push(gen_stats.best_dna);
 
 		// The better the fitness the better the chance to go in new generation
 		while (new_population.length < EvolutionManager.population_size) {

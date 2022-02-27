@@ -1,5 +1,6 @@
 begin modeling evolution simmulation {
 	add a method to merge by picking random parent genes
+	add enemies killed in fitness?
 }
 
 running average of average ?
