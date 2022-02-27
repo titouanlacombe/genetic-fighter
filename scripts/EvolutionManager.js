@@ -3,7 +3,7 @@
  */
 class EvolutionManager {
 	/** Number of childs at the beginning of each generation */
-	static population_size = 100;
+	static population_size = 4;
 
 	/**
 	 * @constructor

@@ -4,6 +4,9 @@
  * @extends Application
  */
 class EvolutionApplication extends Application {
+	/** If activated proccess 1 generation per frame instead of 1 game update per frame */
+	static compute_mode = true;
+
 	/**
 	 * @constructor
 	 */
@@ -30,12 +33,14 @@ class EvolutionApplication extends Application {
 	}
 
 	update() {
-		// Heavy computing version
-		// while (this.game.running) {
-		// 	this.game.update();
-		// }
-
-		this.game.update();
+		if (EvolutionApplication.compute_mode) {
+			while (this.game.running) {
+				this.game.update();
+			}
+		}
+		else {
+			this.game.update();
+		}
 
 		// If game finished
 		if (!this.game.running) {
