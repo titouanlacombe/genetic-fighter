@@ -61,7 +61,7 @@ class EvolutionManager {
 		gen_stats.best_dna = null;
 
 		// --- Finding min/max fitnesses ---
-		for (let dna of this.population) {
+		for (const dna of this.population) {
 			// Hack: store fitness in dna for now
 			gen_stats.average_fitness += dna.fitness;
 

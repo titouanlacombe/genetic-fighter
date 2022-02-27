@@ -28,6 +28,7 @@ function constrain_value(value, min = 0, max = 1) {
 
 /**
  * Scale s from [min, max] to [wanted_min, wanted_max]
+ * If min == max return average of wanted_min & wanted_max
  * @param {Number} s 
  * @param {Number} min 
  * @param {Number} max 
@@ -38,6 +39,11 @@ function constrain_value(value, min = 0, max = 1) {
 function map_value(s, min, max, wanted_min = 0, wanted_max = 1) {
 	// Normalize s
 	let scale = max - min;
+
+	if (scale == 0) {
+		return (wanted_min + wanted_max) / 2;
+	}
+
 	s = (s - min) / scale;
 
 	// Scale s
