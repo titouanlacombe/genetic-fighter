@@ -151,15 +151,15 @@ function create_download(filename, text) {
 	document.body.removeChild(element);
 }
 
-function request_file(callback, accept) {
+function request_files(callback, accept) {
 	var element = document.createElement("INPUT");
 	element.style.display = 'none';
 
 	element.setAttribute("type", "file");
-	element.addEventListener('change', callback, false);
 	if (accept) {
-		element.addEventListener('accept', accept);
+		element.setAttribute('accept', accept);
 	}
+	element.addEventListener('change', callback, false);
 
 	document.body.appendChild(element);
 
