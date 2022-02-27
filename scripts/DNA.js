@@ -73,13 +73,13 @@ class DNA {
 	}
 
 	/** Chance of a mutation to appear on a certain gene */
-	static mutation_chance = 0.01;
+	static mutation_chance = 0.5;
 
 	/** Average amount of change brought by a mutation */
-	static mutation_average = 0.05;
+	static mutation_average = 0.1;
 
 	/** Ecart type of random change brought by a mutation */
-	static mutation_ecart_type = 0.02;
+	static mutation_ecart_type = 0.05;
 
 	/**
 	 * Mutate DNA by using class static parameters
@@ -87,14 +87,15 @@ class DNA {
 	 */
 	mutate() {
 		for (let attribute in this) {
-			if (Math.random() < this.mutation_chance) {
+			if (Math.random() < DNA.mutation_chance) {
+
 				let sign = (Math.random() < 0.5) ? -1 : 1;
+
 				let change = randval(
-					// Min
-					this.mutation_average - this.mutation_ecart_type,
-					// Max
-					this.mutation_average + this.mutation_ecart_type
+					DNA.mutation_average - DNA.mutation_ecart_type,
+					DNA.mutation_average + DNA.mutation_ecart_type
 				);
+
 				this[attribute] *= 1 + (change * sign);
 			}
 		}
