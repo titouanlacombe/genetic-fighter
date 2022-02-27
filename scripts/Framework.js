@@ -58,6 +58,12 @@ class Framework {
 	 * Pause the app by stoping the animation loop
 	 */
 	pause() {
+		// Pre condition
+		if (this.paused()) {
+			console.log("Warning: requested to pause when app was already paused");
+			return;
+		}
+
 		// Stop the loop
 		window.cancelAnimationFrame(this.last_request_id);
 		this.last_request_id = null;
@@ -67,6 +73,12 @@ class Framework {
 	 * Unpause the app by restarting the animation loop
 	 */
 	unpause() {
+		// Pre condition
+		if (!this.paused()) {
+			console.log("Warning: requested to unpause when app was already unpaused");
+			return;
+		}
+
 		// Restart the loop
 		this.last_request_id = window.requestAnimationFrame((_new_time) => { this.loop(_new_time); });
 	}
