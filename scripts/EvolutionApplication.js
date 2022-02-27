@@ -46,8 +46,13 @@ class EvolutionApplication extends Application {
 	}
 
 	load(data) {
-		console.log(this.evolver);
-		this.evolver = JSON.parse(data);
+		let json_evolver = JSON.parse(data);
+
+		this.evolver = new EvolutionManager();
+
+		for (let attribute in this.evolver) {
+			this.evolver[attribute] = json_evolver[attribute];
+		}
 	}
 
 	// Init game with fighters created from dna population
@@ -72,7 +77,7 @@ class EvolutionApplication extends Application {
 		this.best_fitnesses = [];
 		this.best_dnas = [];
 
-		if (contents instanceof String) {
+		if (typeof contents === "string") {
 			this.load(contents);
 		}
 		else {
