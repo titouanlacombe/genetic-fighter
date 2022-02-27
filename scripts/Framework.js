@@ -26,18 +26,20 @@ class Framework {
 		/** Application */
 		this.app = null;
 
-		// Key shortcut to reset the app
+		// Key shortcuts
 		this.link_event('keydown', (e) => {
+			// Reset the app
 			if (e.code == "KeyR") {
 				this.stop();
 				this.launch();
 			}
-		});
-
-		// Key shortcut to pause/unpause the app
-		this.link_event('keydown', (e) => {
-			if (e.code == "KeyP") {
+			// Pause the app
+			else if (e.code == "KeyP") {
 				this.paused() ? this.unpause() : this.pause();
+			}
+			// Stop the app
+			else if (e.code == "KeyS") {
+				this.stop();
 			}
 		});
 
