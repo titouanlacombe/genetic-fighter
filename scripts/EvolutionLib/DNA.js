@@ -73,13 +73,13 @@ class DNA {
 	}
 
 	/** Chance of a mutation to appear on a certain gene */
-	static mutation_chance = 0.5;
+	static mutation_chance = 0.1;
 
 	/** Average amount of change brought by a mutation */
-	static mutation_average = 0.1;
+	static mutation_average = 0.05;
 
 	/** Ecart type of random change brought by a mutation */
-	static mutation_ecart_type = 0.05;
+	static mutation_ecart_type = 0.03;
 
 	/**
 	 * Mutate DNA by using class static parameters

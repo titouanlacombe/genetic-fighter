@@ -28,8 +28,8 @@ class PopulationEvolverParentsStrategie extends PopulationEvolverStrategieInterf
 	generate_new_population(old_population) {
 		let new_population = [];
 
-		// Set half of population to random dna to prevent local maximas
-		while (new_population.length < EvolutionManager.population_size / 2) {
+		// Set 1 / 6 th of the population to random dna to prevent local maximas
+		while (new_population.length < EvolutionManager.population_size / 6) {
 			new_population.push(DNA.random());
 		}
 
