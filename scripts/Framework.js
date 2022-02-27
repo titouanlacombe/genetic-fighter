@@ -42,7 +42,9 @@ class Framework {
 		});
 
 		// Link canvas resize event
-		window.addEventListener('resize', this.app_resize);
+		window.addEventListener('resize', this.get_resize_callback());
+		// Resize at load
+		window.addEventListener('DOMContentLoaded', this.get_resize_callback());
 	}
 
 	/**
@@ -85,9 +87,6 @@ class Framework {
 	 * @param {Application} app 
 	 */
 	launch() {
-		// Init framework
-		this.app_resize();
-
 		// Init the app
 		this.app.initing();
 
@@ -164,17 +163,23 @@ class Framework {
 		document.addEventListener(event, callback);
 	}
 
-	/**
-	 * Update the app size vars with the new HTML canvas size
-	 */
-	app_resize() {
-		let canvas = document.getElementById('canvas');
+	get_resize_callback() {
+		let object = this;
+		return () => {
+			// Update the app size vars with the new HTML canvas size
+			let canvas = document.getElementById('canvas');
 
-		// Update the canvas size
-		this.width = canvas.width = canvas.parentElement.offsetWidth;
-		this.height = canvas.height = canvas.parentElement.offsetHeight;
+			// Update the canvas size
+			console.log(canvas);
+			object.width = canvas.width = canvas.parentElement.offsetWidth;
+			object.height = canvas.height = canvas.parentElement.offsetHeight;
 
-		// console.log(this.width, this.height);
+			console.log(object.width, object.height);
+		};
+	}
+
+	resize() {
+		this.get_resize_callback()();
 	}
 }
 
