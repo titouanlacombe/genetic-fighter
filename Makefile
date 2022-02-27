@@ -6,8 +6,7 @@ npm-rm-proxy:
 	npm config rm https-proxy
 
 setup:
-	npm install jsdoc
-	npm install clean-jsdoc-theme
+	npm install jsdoc clean-jsdoc-theme
 
 # || true is a hack to silence return value of jsdoc wich isn't 0
 doc:
