@@ -5,6 +5,7 @@ begin modeling evolution simmulation {
 	remove need from choice array (it's possible)
 	move dna merge from parent selection strategie to evolve strat
 	add enemies killed in fitness?
+	color for random dna (color in dna ?)
 }
 
 running average of average fitness (green line) ?
