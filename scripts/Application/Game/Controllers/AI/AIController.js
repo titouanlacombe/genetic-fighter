@@ -249,6 +249,11 @@ class AIController extends Controller {
 	 * @returns {Command}
 	 */
 	control_from_vector(object, speed_target) {
+		if (speed_target.isNaN()) {
+			console.log(object, speed_target);
+			throw new Error("Speed target NaN");
+		}
+
 		let object_angle = this.get_angle(object);
 
 		let target_angle = speed_target.angle();

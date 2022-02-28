@@ -9,12 +9,16 @@
 		for (let attribute in dna) {
 			// Averages between parents
 			dna[attribute] = 0;
-			for (let parent in dnas) {
+			for (let parent of dnas) {
 				dna[attribute] += parent[attribute];
 			}
 			dna[attribute] /= dnas.length;
-			console.log(dna[attribute]);
 		}
+
+		if (dna.isNaN()) {
+			throw new Error("DNA NaN after merge");
+		}
+
 		return dna;
     }
 }

@@ -32,8 +32,11 @@ class PIDController {
 	 * @returns {Number}
 	 */
 	control(current, target, dt) {
-		if (target === null) {
-			return 0;
+		if (isNaN(current) || isNaN(target) || isNaN(dt)) {
+			console.log(current);
+			console.log(target);
+			console.log(dt);
+			throw new Error("Invalid arguments");
 		}
 
 		let error = target - current;
@@ -56,6 +59,13 @@ class PIDController {
 
 		// console.log("P: " + P + ", I: " + this.I + ", D: " + D);
 
-		return P + this.I + D;
+		let result = P + this.I + D;
+
+		if (isNaN(result)) {
+			console.log(this);
+			throw new Error("Result NaN");
+		}
+
+		return result;
 	}
 }

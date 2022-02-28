@@ -129,4 +129,13 @@ class Vector {
 		}
 		return sum;
 	}
+
+	isNaN() {
+		for (const data of this.data) {
+			if (isNaN(data)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
