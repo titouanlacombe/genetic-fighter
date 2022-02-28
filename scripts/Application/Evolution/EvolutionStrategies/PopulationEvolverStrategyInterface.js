@@ -1,8 +1,8 @@
 /**
- * Interface Population Evolver Strategie, Strategie used to generate new population at evolution
+ * Interface Population Evolver Strategy Strategyused to generate new population at evolution
  * @interface
  */
-class PopulationEvolverStrategieInterface {
+class PopulationEvolverStrategyInterface {
     /**
      * 
      * @param {Array} old_population 

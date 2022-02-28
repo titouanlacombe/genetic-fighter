@@ -1,5 +1,5 @@
 begin modeling evolution simmulation {
-	add a method to merge by picking random parent genes (merge strategie? mutation strategie?)
+	add a method to merge by picking random parent genes (merge Strategy mutation Strategy)
 	add enemies killed in fitness?
 	bonus if last standing?
 	better win function (fighters remainning <= 1)

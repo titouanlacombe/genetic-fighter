@@ -1,8 +1,8 @@
 /**
- * Interface Population Evolver Strategie, Strategie used to generate new population at evolution
- * @extends PopulationEvolverStrategieInterface
+ * Interface Population Evolver Strategy Strategyused to generate new population at evolution
+ * @extends PopulationEvolverStrategyInterface
  */
-class PopulationEvolverParentsStrategie extends PopulationEvolverStrategieInterface {
+class PopulationEvolverParentsStrategy extends PopulationEvolverStrategyInterface {
 	/**
 	 * Choose a random object in a weighted array
 	 * Score need to be croissant & be between 0 & 1

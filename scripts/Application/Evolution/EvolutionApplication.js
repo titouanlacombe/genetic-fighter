@@ -12,7 +12,7 @@ class EvolutionApplication extends Application {
 	 */
 	constructor() {
 		super();
-		this.game = new GameApplication();
+		this.game = new GameApplication(new OnlyFighterLeftStrategy());
 		this.evolver = null;
 
 		framework.link_event('keydown', (e) => {
@@ -115,7 +115,7 @@ class EvolutionApplication extends Application {
 		}
 
 		// Generate new pop
-		let gen_stats = this.evolver.evolve(new PopulationEvolverParentsStrategie());
+		let gen_stats = this.evolver.evolve(new PopulationEvolverParentsStrategy());
 
 		// Log stats
 		console.log("Generation: " + gen_stats.generation);

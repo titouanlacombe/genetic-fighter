@@ -63,7 +63,7 @@ class EvolutionManager {
 		return gen_stats;
 	}
 
-	generate_new_generation(gen_stats, strategie) {
+	generate_new_generation(gen_stats, strategy) {
 		// --- Normalizing fitnesses ---
 		// Remaping between 0 & 1
 		for (let dna of this.population) {
@@ -82,13 +82,13 @@ class EvolutionManager {
 		}
 
 		// New population
-		this.population = strategie.generate_new_population(this.population);
+		this.population = strategy.generate_new_population(this.population);
 		this.generations++;
 	}
 
-	evolve(strategie) {
+	evolve(strategy) {
 		let gen_stats = this.get_generation_stats();
-		this.generate_new_generation(gen_stats, strategie);
+		this.generate_new_generation(gen_stats, strategy);
 		return gen_stats;
 	}
 }

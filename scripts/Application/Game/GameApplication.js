@@ -3,12 +3,14 @@
  * @extends Application
  */
 class GameApplication extends Application {
-	/**
-	 * @constructor
-	 */
-	constructor() {
+	constructor(winner_strategy) {
 		super();
 
+		if (!winner_strategy) {
+			this.winner_strategy = new OnlyGameObjectLeftStrategy();
+		}
+
+		this.winner_strategy = winner_strategy;
 		/** Objects in the simulation */
 		this.objects = [];
 		/** Winner of the game (last standing fighter) */
@@ -155,24 +157,9 @@ class GameApplication extends Application {
 
 		this.objects = alive;
 
-		this.winner = this.get_winner();
-		if (this.winner != null || this.objects.length == 0) {
+		this.winner = this.winner_strategy.get_winner(this.objects);
+		if (this.winner !== null) {
 			this.running = false;
-		}
-	}
-
-	/**
-	 * Try to get the winner
-	 * null if no winner
-	 */
-	get_winner() {
-		let is_last_fighter = this.objects.length == 1 && this.objects[0] instanceof Fighter;
-
-		if (is_last_fighter) {
-			return this.objects[0];
-		}
-		else {
-			return null;
 		}
 	}
 }
