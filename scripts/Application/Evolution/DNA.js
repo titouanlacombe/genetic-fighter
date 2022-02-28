@@ -50,11 +50,11 @@ class DNA {
 		dna.wall_K = randval(0, 10);
 		dna.min_thrust = randval(0, 10);
 		dna.angle_Kp = randval(0, 20);
-		dna.angle_Ki = randval(0, 10);
-		dna.angle_Kd = randval(0, 10);
+		dna.angle_Ki = randval(0, 0);
+		dna.angle_Kd = randval(0, 0);
 		dna.vel_Kp = randval(0, 20);
-		dna.vel_Ki = randval(0, 10);
-		dna.vel_Kd = randval(0, 10);
+		dna.vel_Ki = randval(0, 0);
+		dna.vel_Kd = randval(0, 0);
 		return dna;
 	}
 

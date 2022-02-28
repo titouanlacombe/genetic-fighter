@@ -1,4 +1,5 @@
 begin modeling evolution simmulation {
+	graph is inverted (because y negative)
 	add a method to merge by picking random parent genes (merge Strategy)
 	make normalized fitness not delete fitness
 	remove need from choice array (it's possible)
