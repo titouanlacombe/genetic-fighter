@@ -3,18 +3,10 @@
  */
 class ParentsChildCreationStrategy extends ChildCreationStrategyInterface
 {
-	/**
-	 * Merge two DNA by averaging their values
-	 * @param {DNA} dna1 
-	 * @param {DNA} dna2 
-	 * @returns {DNA}
-	 */
-	merge(dna1, dna2) {
-		let dna = new DNA();
-		for (let attribute in dna) {
-			dna[attribute] = (dna1[attribute] + dna2[attribute]) / 2;
-		}
-		return dna;
+	constructor(dna_merge_strategy) {
+		super();
+
+		this.dna_merge_strategy = dna_merge_strategy;
 	}
 
 	/**
@@ -43,6 +35,6 @@ class ParentsChildCreationStrategy extends ChildCreationStrategyInterface
 		let parent1 = this.choice(choice_array);
 		let parent2 = this.choice(choice_array);
 
-		return this.merge(parent1, parent2);
+		return this.dna_merge_strategy.merge_dnas([parent1, parent2]);
     }
 }

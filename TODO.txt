@@ -1,6 +1,6 @@
 begin modeling evolution simmulation {
-	add a method to merge by picking random parent genes (merge Strategy mutation Strategy)
-	dna merge strategy
+	add a method to merge by picking random parent genes (merge Strategy)
+	move dna merge from parent selection strategie to evolve strat
 	add enemies killed in fitness?
 }
 

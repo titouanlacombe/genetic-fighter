@@ -26,6 +26,10 @@ function constrain_value(value, min = 0, max = 1) {
 	return value;
 }
 
+function pick_random(list) {
+	return list[Math.floor(Math.random() * list.length)];
+}
+
 /**
  * Scale s from [min, max] to [wanted_min, wanted_max]
  * If min == max return average of wanted_min & wanted_max
