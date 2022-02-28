@@ -113,6 +113,10 @@ class EvolutionApplication extends Application {
 		for (const fighter of this.fighters_copy) {
 			fighter.controller.dna.fitness = this.evolver.fitness_function(fighter);
 		}
+		// Bonus to winner
+		if (this.game.winner instanceof Fighter) {
+			this.game.winner.controller.dna.fitness += 50;
+		}
 
 		// Generate new pop
 		let gen_stats = this.evolver.evolve(new PopulationEvolverParentsStrategy());
