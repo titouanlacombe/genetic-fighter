@@ -1,5 +1,7 @@
 begin modeling evolution simmulation {
 	add a method to merge by picking random parent genes (merge Strategy)
+	make normalized fitness not delete fitness
+	remove need from choice array (it's possible)
 	move dna merge from parent selection strategie to evolve strat
 	add enemies killed in fitness?
 }
