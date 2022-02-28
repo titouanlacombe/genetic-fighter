@@ -33,3 +33,8 @@ result 1 interpretation {
 		defend from other while protecting them?
 	}
 }
+
+futures expansions {
+	switch to electron https://www.electronjs.org/
+	writing sim in c++ https://lupomontero.com/writing-node-js-modules-in-cpp/
+}
