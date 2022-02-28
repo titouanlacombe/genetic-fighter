@@ -8,7 +8,9 @@ class EvolutionManager {
 	/**
 	 * @constructor
 	 */
-	constructor() {
+	constructor(evolution_strategy) {
+		this.evolution_strategy = evolution_strategy;
+
 		// Current generation number
 		this.generations = 1;
 		this.population = [];
@@ -63,7 +65,7 @@ class EvolutionManager {
 		return gen_stats;
 	}
 
-	generate_new_generation(gen_stats, strategy) {
+	generate_new_generation(gen_stats) {
 		// --- Normalizing fitnesses ---
 		// Remaping between 0 & 1
 		for (let dna of this.population) {
@@ -82,13 +84,13 @@ class EvolutionManager {
 		}
 
 		// New population
-		this.population = strategy.generate_new_population(this.population);
+		this.population = this.evolution_strategy.generate_new_population(this.population);
 		this.generations++;
 	}
 
-	evolve(strategy) {
+	evolve() {
 		let gen_stats = this.get_generation_stats();
-		this.generate_new_generation(gen_stats, strategy);
+		this.generate_new_generation(gen_stats);
 		return gen_stats;
 	}
 }

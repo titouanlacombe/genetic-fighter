@@ -55,8 +55,6 @@ class EvolutionApplication extends Application {
 	load(data) {
 		let json_evolver = JSON.parse(data);
 
-		this.evolver = new EvolutionManager();
-
 		for (let attribute in this.evolver) {
 			this.evolver[attribute] = json_evolver[attribute];
 		}
@@ -84,11 +82,21 @@ class EvolutionApplication extends Application {
 		this.best_fitnesses = [];
 		this.best_dnas = [];
 
+		this.evolver = new EvolutionManager(
+			new BaseEvolutionStrategy(
+				new BaseDNAMutationStrategy(0.1, 0.05, 0.03),
+				new ParentsChildCreationStrategy(),
+				1 / 6,
+				true
+			)
+		);
+
 		if (typeof contents === "string") {
+			// Load save
 			this.load(contents);
 		}
 		else {
-			this.evolver = new EvolutionManager();
+			// Generate random start population
 			this.evolver.generate_random_pop(this.game);
 		}
 
@@ -119,7 +127,7 @@ class EvolutionApplication extends Application {
 		}
 
 		// Generate new pop
-		let gen_stats = this.evolver.evolve(new PopulationEvolverParentsStrategy());
+		let gen_stats = this.evolver.evolve();
 
 		// Log stats
 		console.log("Generation: " + gen_stats.generation);

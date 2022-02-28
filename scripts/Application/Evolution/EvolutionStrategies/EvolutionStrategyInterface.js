@@ -2,7 +2,8 @@
  * Interface Population Evolver Strategy Strategyused to generate new population at evolution
  * @interface
  */
-class PopulationEvolverStrategyInterface {
+class EvolutionStrategyInterface
+{
     /**
      * 
      * @param {Array} old_population 

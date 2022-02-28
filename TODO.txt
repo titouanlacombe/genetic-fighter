@@ -1,8 +1,7 @@
 begin modeling evolution simmulation {
 	add a method to merge by picking random parent genes (merge Strategy mutation Strategy)
+	dna merge strategy
 	add enemies killed in fitness?
-	bonus if last standing?
-	better win function (fighters remainning <= 1)
 }
 
 running average of average fitness (green line) ?

@@ -57,49 +57,4 @@ class DNA {
 		dna.vel_Kd = 0;
 		return dna;
 	}
-
-	/**
-	 * Merge two DNA by averaging their values
-	 * @param {DNA} dna1 
-	 * @param {DNA} dna2 
-	 * @returns {DNA}
-	 */
-	static merge(dna1, dna2) {
-		let dna = new this();
-		for (let attribute in dna) {
-			dna[attribute] = (dna1[attribute] + dna2[attribute]) / 2;
-		}
-		return dna;
-	}
-
-	/** Chance of a mutation to appear on a certain gene */
-	static mutation_chance = 0.1;
-
-	/** Average amount of change brought by a mutation */
-	static mutation_average = 0.05;
-
-	/** Ecart type of random change brought by a mutation */
-	static mutation_ecart_type = 0.03;
-
-	/**
-	 * Mutate DNA by using class static parameters
-	 * @returns {DNA}
-	 */
-	mutate() {
-		for (let attribute in this) {
-			if (Math.random() < DNA.mutation_chance) {
-
-				let sign = (Math.random() < 0.5) ? -1 : 1;
-
-				let change = randval(
-					DNA.mutation_average - DNA.mutation_ecart_type,
-					DNA.mutation_average + DNA.mutation_ecart_type
-				);
-
-				this[attribute] *= 1 + (change * sign);
-			}
-		}
-
-		return this;
-	}
 }
