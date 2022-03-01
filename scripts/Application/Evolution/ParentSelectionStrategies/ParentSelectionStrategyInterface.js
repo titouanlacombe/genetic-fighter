@@ -1,12 +1,12 @@
 /**
  * @interface
  */
-class ChildCreationStrategyInterface {
+class ParentSelectionStrategyInterface {
     /**
      * 
      * @param {Array} old_population 
      */
-    create_child(old_population) {
+    select_parents(old_population) {
         // Nothing
     }
 }

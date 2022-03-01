@@ -1,12 +1,12 @@
 /**
  * @interface
  */
-class ParentsChildCreationStrategy extends ChildCreationStrategyInterface
+class ProportionalChanceParentSelectionStrategy extends ParentSelectionStrategyInterface
 {
-	constructor(dna_merge_strategy) {
+	constructor(nb_parents) {
 		super();
 
-		this.dna_merge_strategy = dna_merge_strategy;
+		this.nb_parents = nb_parents;
 	}
 
 	/**
@@ -40,10 +40,13 @@ class ParentsChildCreationStrategy extends ChildCreationStrategyInterface
      * 
      * @param {Array} old_population 
      */
-    create_child(old_population) {
-		let parent1 = this.choice(old_population, "normalized_fitness");
-		let parent2 = this.choice(old_population, "normalized_fitness");
+	select_parents(old_population) {
+		let parents = [];
 
-		return this.dna_merge_strategy.merge_dnas([parent1, parent2]);
+		for (let i = 0; i < this.nb_parents; i++) {
+			parents.push(this.choice(old_population, "normalized_fitness"));
+		}
+
+		return parents;
     }
 }

@@ -84,10 +84,9 @@ class EvolutionApplication extends Application {
 
 		this.evolver = new EvolutionManager(
 			new BaseEvolutionStrategy(
+				new ProportionalChanceParentSelectionStrategy(2),
+				new AverageDNAMergeStrategy(),
 				new BaseDNAMutationStrategy(0.1, 0.05, 0.03),
-				new ParentsChildCreationStrategy(
-					new AverageDNAMergeStrategy()
-				),
 				1 / 6,
 				true
 			)

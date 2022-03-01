@@ -4,10 +4,12 @@
  */
 class BaseEvolutionStrategy extends EvolutionStrategyInterface
 {
-	constructor(dna_mutation_strategy, child_creation_strategy, random_fraction, keep_best) {
+	constructor(parent_selection_strategy, dna_merge_strategy, dna_mutation_strategy, random_fraction, keep_best) {
 		super();
+
+		this.parent_selection_strategy = parent_selection_strategy;
+		this.dna_merge_strategy = dna_merge_strategy;
 		this.dna_mutation_strategy = dna_mutation_strategy;
-		this.child_creation_strategy = child_creation_strategy;
 		this.random_fraction = random_fraction;
 		this.keep_best = keep_best;
 	}
@@ -38,8 +40,11 @@ class BaseEvolutionStrategy extends EvolutionStrategyInterface
 		// Fills the rest with childs
 		while (new_population.length < EvolutionManager.population_size) {
 
-			let child_dna = this.child_creation_strategy.create_child(old_population);
-
+			// Select parents
+			let parents = this.parent_selection_strategy.select_parents(old_population);
+			// Merge parent's dnas to create the child's dna
+			let child_dna = this.dna_merge_strategy.merge_dnas(parents);
+			// Mutate child's dna
 			this.dna_mutation_strategy.mutate_dna(child_dna);
 
 			new_population.push(child_dna);
