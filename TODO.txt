@@ -1,10 +1,13 @@
 begin modeling evolution simmulation {
-	move dna merge from parent selection strategie to evolve strat
 	merge 3 proggress trackers arrays into 1 (replace average fitness by median because best / median will be dna or keep average ? sort dnas?)
-	add enemies killed in fitness?
+
+	add max length to proggress tracker (null if infinite)
+
 	color for random dna (color in dna ? dna in fighter ?)
 	make fighter dump it's stats in dna (now only need dna to evaluate fitness)
 	make fitness calculation a strategie
+
+	add enemies killed in fitness?
 }
 
 running average of median/average fitness (green line) ?

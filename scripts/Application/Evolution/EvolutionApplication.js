@@ -12,9 +12,11 @@ class EvolutionApplication extends Application {
 	 */
 	constructor() {
 		super();
+
 		this.game = new GameApplication(new OnlyFighterLeftStrategy());
 		this.evolver = null;
 
+		// Add app key shortcuts
 		framework.link_event('keydown', (e) => {
 			// Load
 			if (e.code == "KeyL") {
@@ -78,9 +80,7 @@ class EvolutionApplication extends Application {
 	initing(contents) {
 		this.running = true;
 
-		this.average_fitnesses = [];
-		this.best_fitnesses = [];
-		this.best_dnas = [];
+		this.progress_tracker = [];
 
 		this.evolver = new EvolutionManager(
 			new BaseEvolutionStrategy(
@@ -113,8 +113,15 @@ class EvolutionApplication extends Application {
 		renderer.fillRect(0, 0, framework.width, framework.height);
 
 		// Draw graphs
-		draw_graph(renderer, this.average_fitnesses, Color.blue, 0, 0, framework.width, framework.height);
-		draw_graph(renderer, this.best_fitnesses, Color.red, 0, 0, framework.width, framework.height);
+		// Average fitness
+		draw_graph(renderer, this.progress_tracker.map((el) => {
+			return el.average_fitness;
+		}), Color.blue, 0, 0, framework.width, framework.height);
+
+		// Best fitness
+		draw_graph(renderer, this.progress_tracker.map((el) => {
+			return el.max_fitness;
+		}), Color.red, 0, 0, framework.width, framework.height);
 	}
 
 	evolve() {
@@ -122,6 +129,7 @@ class EvolutionApplication extends Application {
 		for (const fighter of this.fighters_copy) {
 			fighter.controller.dna.fitness = this.evolver.fitness_function(fighter);
 		}
+		
 		// Bonus to winner
 		if (this.game.winner instanceof Fighter) {
 			this.game.winner.controller.dna.fitness += 50;
@@ -130,18 +138,13 @@ class EvolutionApplication extends Application {
 		// Generate new pop
 		let gen_stats = this.evolver.evolve();
 
-		// Log stats
+		// Log results
 		console.log("Generation: " + gen_stats.generation);
 		console.log("Average: " + gen_stats.average_fitness);
 		console.log("Best: " + gen_stats.max_fitness);
 
 		// Update progress trackers
-		this.average_fitnesses.push(gen_stats.average_fitness);
-		this.best_fitnesses.push(gen_stats.max_fitness);
-		this.best_dnas.push(gen_stats.best_dna);
-
-		// Draw progress graphs
-		this.draw_results();
+		this.progress_tracker.push(gen_stats);
 	}
 
 	update() {
@@ -152,6 +155,7 @@ class EvolutionApplication extends Application {
 			}
 		}
 		else {
+			// Single update per frame
 			this.game.update();
 		}
 
@@ -163,6 +167,10 @@ class EvolutionApplication extends Application {
 			// Evolve & draw stats graphs
 			this.evolve();
 
+			// Draw progress graphs
+			this.draw_results();
+			
+			// Restart game
 			this.init_game();
 		}
 	}
