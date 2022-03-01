@@ -37,28 +37,27 @@ class EvolutionManager {
 	}
 
 	get_generation_stats() {
+		if (this.population.length == 0) {
+			throw new Error("Empty population");
+		}
+
+		// Sorting dnas
+		this.population.sort((a, b) => b.fitness - a.fitness);
+
 		let gen_stats = {};
+
+		// Generation number
 		gen_stats.generation = this.generations;
-		gen_stats.max_fitness = -Infinity;
-		gen_stats.min_fitness = Infinity;
+
+		// Best / Median / Worst dna
+		gen_stats.best_dna = this.population[0];
+		gen_stats.median_dna = this.population[Math.floor(this.population.length / 2)];
+		gen_stats.worst_dna = this.population[this.population.length - 1];
+		
+		// Calculating average fitness
 		gen_stats.average_fitness = 0;
-		gen_stats.best_dna = null;
-
-		// --- Finding min/max fitnesses ---
 		for (const dna of this.population) {
-			// Hack: store fitness in dna for now
 			gen_stats.average_fitness += dna.fitness;
-
-			// Find max
-			if (dna.fitness > gen_stats.max_fitness) {
-				gen_stats.max_fitness = dna.fitness;
-				gen_stats.best_dna = dna;
-			}
-
-			// Find min
-			if (dna.fitness < gen_stats.min_fitness) {
-				gen_stats.min_fitness = dna.fitness;
-			}
 		}
 		gen_stats.average_fitness /= this.population.length;
 
@@ -68,12 +67,12 @@ class EvolutionManager {
 	generate_new_generation(gen_stats) {
 		// Normalizing fitnesses (between 0 & 1)
 		for (let dna of this.population) {
-			dna.normalized_fitness = map_value(dna.fitness, gen_stats.min_fitness, gen_stats.max_fitness);
+			dna.normalized_fitness = map_value(dna.fitness, gen_stats.best_dna.fitness, gen_stats.worst_dna.fitness);
 		}
 
 		// New population
 		this.population = this.evolution_strategy.generate_new_population(this.population);
-		
+
 		this.generations++;
 	}
 

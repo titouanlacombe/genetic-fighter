@@ -1,6 +1,4 @@
 begin modeling evolution simmulation {
-	add median dna ? sort dnas ?
-
 	color for random dna (color in dna ? dna in fighter ?)
 	make fighter dump it's stats in dna (now only need dna to evaluate fitness)
 	make fitness calculation a strategie

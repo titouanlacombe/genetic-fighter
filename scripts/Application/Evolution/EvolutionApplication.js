@@ -117,12 +117,12 @@ class EvolutionApplication extends Application {
 		// Average fitness
 		draw_graph(renderer, this.progress_tracker.map((el) => {
 			return el.average_fitness;
-		}), Color.blue, 0, 0, framework.width, framework.height);
+		}), Color.blue, 0, 0, framework.width, framework.height / 2);
 
 		// Best fitness
 		draw_graph(renderer, this.progress_tracker.map((el) => {
-			return el.max_fitness;
-		}), Color.red, 0, 0, framework.width, framework.height);
+			return el.best_dna.fitness;
+		}), Color.red, 0,  framework.height / 2, framework.width, framework.height / 2);
 	}
 
 	evolve() {
@@ -142,7 +142,7 @@ class EvolutionApplication extends Application {
 		// Log results
 		console.log("Generation: " + gen_stats.generation);
 		console.log("Average: " + gen_stats.average_fitness);
-		console.log("Best: " + gen_stats.max_fitness);
+		console.log("Best: " + gen_stats.best_dna.fitness);
 
 		// Update progress trackers
 		this.progress_tracker.push(gen_stats);
