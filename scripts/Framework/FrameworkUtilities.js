@@ -116,7 +116,8 @@ function draw_graph(renderer, numbers_list, line_color, graph_x, graph_y, graph_
 
 	function draw_vertex(method) {
 		element_x = map_value(i, 0, numbers_list.length, graph_x, graph_x2);
-		element_y = map_value(numbers_list[i], min_val, max_val, graph_y, graph_y2);
+		// Invert graph_y2 & graph_y because in canvas screenspace y dimension is inverted
+		element_y = map_value(numbers_list[i], min_val, max_val, graph_y2, graph_y);
 		renderer[method](element_x, element_y);
 	}
 
