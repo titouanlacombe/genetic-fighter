@@ -25,7 +25,7 @@ class AIController extends Controller {
 		this.vel_pid = new PIDController(this.dna.vel_Kp, this.dna.vel_Ki, this.dna.vel_Kd);
 
 		// Variables
-		this.target = null;
+		this.attack_target = null;
 
 		// Init AI states
 		this.init_states();
@@ -46,17 +46,17 @@ class AIController extends Controller {
 		// --- "aiming" state ---
 		// Switch to "positionning" if target not at good distance
 		aiming.add_exit(positionning, (object) => {
-			if (!this.target) {
+			if (!this.attack_target) {
 				return false;
 			}
 
-			let d = object.dist_to(this.target);
+			let d = object.dist_to(this.attack_target);
 			return d < this.dna.min_fighter_dist || d > this.dna.max_fighter_dist;
 		});
 
 		// Switch to "searching" if has no target
 		aiming.add_exit(searching, (object) => {
-			return this.target == null;
+			return this.attack_target == null;
 		});
 
 		// Switch to "turret" if has no fuel
@@ -72,16 +72,16 @@ class AIController extends Controller {
 		// --- "positionning" state ---
 		// Switch to "aiming" if target is in range
 		positionning.add_exit(aiming, (object) => {
-			if (!this.target) {
+			if (!this.attack_target) {
 				return false;
 			}
-			let d = this.target.dist_to(object);
+			let d = this.attack_target.dist_to(object);
 			return d < this.dna.max_fighter_dist && d > (this.dna.min_fighter_dist + 50);
 		});
 
 		//	Switch to "searching" if has no target
 		positionning.add_exit(searching, (object) => {
-			return this.target == null;
+			return this.attack_target == null;
 		});
 
 		// Switch to "turret" if has no fuel
@@ -97,7 +97,7 @@ class AIController extends Controller {
 		// --- "searching" state ---
 		// Switch to "positionning" when finds a target
 		searching.add_exit(positionning, (object) => {
-			return this.target != null;
+			return this.attack_target != null;
 		});
 
 		this.state = searching;
@@ -125,7 +125,7 @@ class AIController extends Controller {
 			if (potential instanceof Fighter) {
 				let distance = object.dist_to(potential);
 				if (distance < min_distance) {
-					this.target = potential;
+					this.attack_target = potential;
 					min_distance = distance;
 				}
 			}
@@ -142,15 +142,15 @@ class AIController extends Controller {
 	 */
 	manage_target(object, near_by_objects) {
 		// Loose target if => too far or dead
-		if (this.target) {
-			if (!this.target.alive ||
-				this.target.dist_to(object) > this.dna.max_fighter_dist) {
-				this.target = null;
+		if (this.attack_target) {
+			if (!this.attack_target.alive ||
+				this.attack_target.dist_to(object) > this.dna.max_fighter_dist) {
+				this.attack_target = null;
 			}
 		}
 
 		// If no target try to find new target
-		if (!this.target) {
+		if (!this.attack_target) {
 			this.find_target(object, near_by_objects);
 		}
 	}
@@ -163,11 +163,11 @@ class AIController extends Controller {
 	 */
 	get_firering_angle(object) {
 		// Precondition
-		if (!this.target) {
+		if (!this.attack_target) {
 			return null;
 		}
 
-		let result = TrajectoryPredictor.get_firering_angle(object, this.target, Fighter.fire_vel);
+		let result = TrajectoryPredictor.get_firering_angle(object, this.attack_target, Fighter.fire_vel);
 
 		// Postcondition
 		if (result === null) {
@@ -177,7 +177,7 @@ class AIController extends Controller {
 
 		// Debug drawing
 		// let renderer = framework.get_renderer();
-		// let target_pos = this.target.pos.clone().add(this.target.vel.clone().mul(result.dt));
+		// let target_pos = this.attack_target.pos.clone().add(this.attack_target.vel.clone().mul(result.dt));
 
 		// Draw angle
 		// Vector2.fromAngle(result.angle).draw(Color.red, 30);
@@ -300,7 +300,7 @@ class AIController extends Controller {
 		let speed_target = new Vector2();
 
 		// Constrain target distance to object
-		let diff_pos = this.target.pos.clone().sub(object.pos);
+		let diff_pos = this.attack_target.pos.clone().sub(object.pos);
 		let target_pos = diff_pos.clone().normalize(this.dna.wanted_target_dist);
 		let error = diff_pos.sub(target_pos);
 

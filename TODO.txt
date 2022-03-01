@@ -4,6 +4,8 @@ begin modeling evolution simmulation {
 	make fitness calculation a strategie
 
 	add enemies killed in fitness?
+
+	rename object in AI to control target
 }
 
 running average of median/average fitness (green line) ?
