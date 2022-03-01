@@ -103,7 +103,7 @@ class GameApplication extends Application {
 
 		// Draw objects
 		for (let object of this.objects) {
-			object.draw_wrapper(renderer);
+			object.draw(renderer);
 		}
 	}
 
@@ -147,11 +147,11 @@ class GameApplication extends Application {
 		// Only keep alive objects
 		let alive = [];
 		for (let object of this.objects) {
-			if (object.alive) {
-				alive.push(object);
+			if (object.is_dead()) {
+				object.die();
 			}
 			else {
-				object.die();
+				alive.push(object);
 			}
 		}
 

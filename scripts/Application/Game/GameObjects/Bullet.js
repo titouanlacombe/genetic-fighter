@@ -22,13 +22,14 @@ class Bullet extends PhysicGameObject {
 		this.vel.setv(vel);
 
 		this.radius = Fighter.lineWidth / 2;
+		this.alive = true;
 	}
 
 	/**
 	 * Draw the bullet
 	 * @param {Renderer} renderer 
 	 */
-	draw(renderer) {
+	_draw(renderer) {
 		renderer.beginPath();
 		renderer.arc(0, 0, this.radius, 0, 2 * Math.PI);
 		renderer.fillStyle = "white";
@@ -59,6 +60,14 @@ class Bullet extends PhysicGameObject {
 			// les Bullets s'annulent
 			this.alive = false;
 		}
+	}
+
+	/**
+	 * Returns wether the object needs to stay in the update loop
+	 * @returns {Boolean}
+	 */
+	is_dead() {
+		return !this.alive;
 	}
 
 	/**

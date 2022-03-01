@@ -95,9 +95,9 @@ class Fighter extends PhysicGameObject {
 
 	/**
 	 * Draw the object
-	 * @param {Renderer} renderer 
+	 * @param {Renderer} renderer
 	 */
-	draw(renderer) {
+	_draw(renderer) {
 		renderer.lineWidth = Fighter.lineWidth;
 
 		// Draw the cannon
@@ -270,6 +270,14 @@ class Fighter extends PhysicGameObject {
 		} else if (object instanceof Fighter) {
 			this.life -= 100;
 		}
+	}
+
+	/**
+	 * Returns wether the object needs to stay in the update loop
+	 * @returns {Boolean}
+	 */
+	is_dead() {
+		return this.life < 0;
 	}
 
 	/**

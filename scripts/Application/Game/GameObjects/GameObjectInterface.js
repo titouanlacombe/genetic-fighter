@@ -22,6 +22,14 @@ class GameObjectInterface {
 	}
 
 	/**
+	 * Returns wether the object needs to stay in the update loop
+	 * @returns {Boolean}
+	 */
+	is_dead() {
+		// Empty
+	}
+
+	/**
 	 * Called when object is removed from objects list
 	 */
 	die() {
