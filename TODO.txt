@@ -1,7 +1,5 @@
 begin modeling evolution simmulation {
-	merge 3 proggress trackers arrays into 1 (replace average fitness by median because best / median will be dna or keep average ? sort dnas?)
-
-	add max length to proggress tracker (null if infinite)
+	add median dna ? sort dnas ?
 
 	color for random dna (color in dna ? dna in fighter ?)
 	make fighter dump it's stats in dna (now only need dna to evaluate fitness)
@@ -42,6 +40,8 @@ result 1 interpretation {
 }
 
 futures expansions {
+	ability to override max & min in draw graph utility
+
 	switch to electron https://www.electronjs.org/
 	switch to typescript & compile with make
 	writing sim in c++ https://lupomontero.com/writing-node-js-modules-in-cpp/

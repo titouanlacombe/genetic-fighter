@@ -6,6 +6,7 @@
 class EvolutionApplication extends Application {
 	/** If activated, proccess 1 generation per frame instead of 1 game update per frame */
 	static compute_mode = false;
+	static progress_tracker_max_length = 1000;
 
 	/**
 	 * @constructor
@@ -145,6 +146,10 @@ class EvolutionApplication extends Application {
 
 		// Update progress trackers
 		this.progress_tracker.push(gen_stats);
+
+		if (this.progress_tracker.length > EvolutionApplication.progress_tracker_max_length ?? false) {
+			this.progress_tracker.shift();
+		}
 	}
 
 	update() {
