@@ -25,7 +25,8 @@
 	<script src="scripts/Framework/Application.js"></script>
 
 	<!-- GameObjects -->
-	<script src="scripts/Application/Game/GameObjects/GameObject.js"></script>
+	<script src="scripts/Application/Game/GameObjects/GameObjectInterface.js"></script>
+	<script src="scripts/Application/Game/GameObjects/PhysicGameObject.js"></script>
 	<script src="scripts/Application/Game/GameObjects/Bullet.js"></script>
 	<script src="scripts/Application/Game/GameObjects/Fighter.js"></script>
 
@@ -33,7 +34,7 @@
 	<script src="scripts/Application/Game/Controllers/Controller.js"></script>
 	<script src="scripts/Application/Game/Controllers/Player1Controller.js"></script>
 	<script src="scripts/Application/Game/Controllers/Player2Controller.js"></script>
-	
+
 	<!-- AI Controllers -->
 	<script src="scripts/Application/Game/Controllers/AI/TrajectoryPredictor.js"></script>
 	<script src="scripts/Application/Game/Controllers/AI/PIDController.js"></script>
@@ -51,7 +52,8 @@
 
 	<!-- Parent Selection Strategies -->
 	<script src="scripts/Application/Evolution/ParentSelectionStrategies/ParentSelectionStrategyInterface.js"></script>
-	<script src="scripts/Application/Evolution/ParentSelectionStrategies/ProportionalChanceParentSelectionStrategy.js"></script>
+	<script src="scripts/Application/Evolution/ParentSelectionStrategies/ProportionalChanceParentSelectionStrategy.js">
+	</script>
 
 	<!-- DNA Merging Strategies -->
 	<script src="scripts/Application/Evolution/DNAMergeStrategies/DNAMergeStrategyInterface.js"></script>

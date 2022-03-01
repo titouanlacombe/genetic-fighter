@@ -1,13 +1,12 @@
 /**
- * GameObject
- * Handle basic simulation & drawing
- * @abstract
  */
-class GameObject {
+class PhysicGameObject extends GameObjectInterface {
 	/**
 	 * @constructor
 	 */
 	constructor() {
+		super();
+
 		this.pos = new Vector2();
 		this.vel = new Vector2();
 		this.frc = new Vector2();
@@ -17,7 +16,22 @@ class GameObject {
 		this.torque = 0;
 
 		this.radius = 0;
-		this.alive = true;
+	}
+
+	/**
+	 * Tells the renderer to go to the objects position & rotation before drawing
+	 * @param {Renderer} renderer 
+	 */
+	draw(renderer) {
+		// Setting transforms to object state
+		renderer.translate(this.pos.x(), this.pos.y());
+		renderer.rotate(this.angle);
+
+		// Drawing object
+		this._draw(renderer);
+
+		// Reseting renderer transformations by restoring saved state
+		renderer.resetTransform();
 	}
 
 	/**
@@ -27,38 +41,6 @@ class GameObject {
 	 */
 	dist_to(object) {
 		return this.pos.clone().sub(object.pos).norm();
-	}
-
-	/**
-	 * Simulate the object
-	 * @param {Number} dt delta time between steps 
-	 * @param {Array} objects array of GameObjects
-	 */
-	simulate(objects, dt) {
-		// Empty
-	}
-
-	/**
-	 * Tells the renderer to go to the objects position & rotation before drawing
-	 * @param {Renderer} renderer 
-	 */
-	draw_wrapper(renderer) {
-		// Setting transforms to object state
-		renderer.translate(this.pos.x(), this.pos.y());
-		renderer.rotate(this.angle);
-
-		// Drawing object
-		this.draw(renderer);
-
-		// Reseting renderer transformations by restoring saved state
-		renderer.resetTransform();
-	}
-
-	/**
-	 * Draw the object
-	 */
-	draw() {
-		// Empty
 	}
 
 	/**
@@ -89,13 +71,6 @@ class GameObject {
 	 * Called if object exit sim boundaries
 	 */
 	out_of_bound() {
-		// Empty
-	}
-
-	/**
-	 * Called when object is removed from objects list
-	 */
-	die() {
 		// Empty
 	}
 }

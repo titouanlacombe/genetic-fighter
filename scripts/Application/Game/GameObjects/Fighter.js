@@ -2,9 +2,9 @@
  * Main GameObject
  * Can thrust, fire
  * Affected by friction and controller commands
- * @extends GameObject
+ * @extends PhysicGameObject
  */
-class Fighter extends GameObject {
+class Fighter extends PhysicGameObject {
 	/** Amount life removed by unit of time to limit game time */
 	static life_loss = 0.1;
 
@@ -125,7 +125,7 @@ class Fighter extends GameObject {
 	 * @param {Array} objects array of GameObjects
 	 * @param {Number} dt delta time between steps 
 	 */
-	simulate(objects, dt) {
+	update(objects, dt) {
 		// Controller
 		if (this.controller) {
 			let command = this.controller.control(this, dt);

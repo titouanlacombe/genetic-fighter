@@ -141,7 +141,7 @@ class GameApplication extends Application {
 
 		// Simulate the objects
 		for (let object of this.objects) {
-			object.simulate(this.objects, sim_dt);
+			object.update(this.objects, sim_dt);
 		}
 
 		// Only keep alive objects

@@ -2,9 +2,9 @@
  * Bullet fired by Fighter cannon
  * Simple object, only force applied to it is friction
  * 
- * @extends GameObject
+ * @extends PhysicGameObject
  */
-class Bullet extends GameObject {
+class Bullet extends PhysicGameObject {
 	/**
 	 * Specify the amount of air friction applied to the bullet
 	 * @static
@@ -41,7 +41,7 @@ class Bullet extends GameObject {
 	 * @param {Array} objects array of GameObjects
 	 * @param {Number} dt delta time between steps 
 	 */
-	simulate(objects, dt) {
+	update(objects, dt) {
 		// Vel friction
 		this.frc.add(this.vel.clone().mul(-Bullet.friction));
 

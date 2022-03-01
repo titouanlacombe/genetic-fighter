@@ -1,4 +1,7 @@
 begin modeling evolution simmulation {
+	fighter command object with validate and such
+	game -- update -> controller -- command -> fighter / pb how to pass events: events are handeled by controller or passed to fighter => is_dead function
+
 	color for random dna (color in dna ? dna in fighter ?)
 	make fighter dump it's stats in dna (now only need dna to evaluate fitness)
 	make fitness calculation a strategie
