@@ -35,22 +35,10 @@ class BaseEvolutionStrategy extends EvolutionStrategyInterface
 			new_population.push(best_dna);
 		}
 
-		// Building fitness array
-		let choice_array = [];
-		let running_fitness = 0;
-		for (let dna of old_population) {
-			running_fitness += dna.fitness;
-
-			choice_array.push({
-				"score": running_fitness,
-				"object": dna
-			});
-		}
-
 		// Fills the rest with childs
 		while (new_population.length < EvolutionManager.population_size) {
 
-			let child_dna = this.child_creation_strategy.create_child(choice_array);
+			let child_dna = this.child_creation_strategy.create_child(old_population);
 
 			this.dna_mutation_strategy.mutate_dna(child_dna);
 

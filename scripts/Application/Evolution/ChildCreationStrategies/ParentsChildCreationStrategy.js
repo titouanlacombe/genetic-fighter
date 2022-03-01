@@ -10,20 +10,29 @@ class ParentsChildCreationStrategy extends ChildCreationStrategyInterface
 	}
 
 	/**
-	 * Choose a random object in a weighted array
-	 * Score need to be croissant & be between 0 & 1
-	 * @param {Array} wheighted_array array of object with a score & an object
-	 * @returns {Object | null}
 	 */
-	 choice(wheighted_array) {
-		let score = Math.random();
-		for (let object of wheighted_array) {
-			if (object.score > score) {
-				return object.object;
+	choice(array, score_attibute = "score") {
+		// Calculate total score in array
+		let total_score = 0;
+		for (let object of array) {
+			total_score += object[score_attibute];
+		}
+
+		// Choosing element weighted by score
+		let random_score = Math.random() * total_score;
+		let running_score = 0;
+
+		for (let object of array) {
+			running_score += object[score_attibute];
+
+			if (running_score > random_score) {
+				return object;
 			}
 		}
-		console.log("Warning: choice couldn't find a score better than " + score + " in:");
-		console.log(wheighted_array);
+
+		console.log("Warning: choice couldn't find a score better than " + random_score + " in:");
+		console.log(array);
+		
 		return null;
 	}
 
@@ -31,9 +40,9 @@ class ParentsChildCreationStrategy extends ChildCreationStrategyInterface
      * 
      * @param {Array} old_population 
      */
-    create_child(choice_array) {
-		let parent1 = this.choice(choice_array);
-		let parent2 = this.choice(choice_array);
+    create_child(old_population) {
+		let parent1 = this.choice(old_population, "normalized_fitness");
+		let parent2 = this.choice(old_population, "normalized_fitness");
 
 		return this.dna_merge_strategy.merge_dnas([parent1, parent2]);
     }

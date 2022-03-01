@@ -134,7 +134,7 @@ class EvolutionApplication extends Application {
 		// Log stats
 		console.log("Generation: " + gen_stats.generation);
 		console.log("Average: " + gen_stats.average_fitness);
-		console.log("Best: " + gen_stats.max_fitness, gen_stats.best_dna);
+		console.log("Best: " + gen_stats.max_fitness);
 
 		// Update progress trackers
 		this.average_fitnesses.push(gen_stats.average_fitness);

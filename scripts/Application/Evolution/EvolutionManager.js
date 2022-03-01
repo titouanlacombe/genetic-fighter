@@ -66,25 +66,14 @@ class EvolutionManager {
 	}
 
 	generate_new_generation(gen_stats) {
-		// --- Normalizing fitnesses ---
-		// Remaping between 0 & 1
+		// Normalizing fitnesses (between 0 & 1)
 		for (let dna of this.population) {
-			dna.fitness = map_value(dna.fitness, gen_stats.min_fitness, gen_stats.max_fitness);
-		}
-		// Computing total amount of fitness
-		let total_fitness = 0;
-		for (let dna of this.population) {
-			total_fitness += dna.fitness;
-		}
-		if (total_fitness != 0) {
-			// Dividing each fitness by total (to have a total of 1)
-			for (let dna of this.population) {
-				dna.fitness /= total_fitness;
-			}
+			dna.normalized_fitness = map_value(dna.fitness, gen_stats.min_fitness, gen_stats.max_fitness);
 		}
 
 		// New population
 		this.population = this.evolution_strategy.generate_new_population(this.population);
+		
 		this.generations++;
 	}
 
